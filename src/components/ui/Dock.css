@@ -1,0 +1,149 @@
+/* ── Outer wrapper ── */
+.dock-outer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* ── Floating glass pill ── */
+.dock-panel {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.5rem;
+  border-radius: 1.5rem;
+  /* Light mode: subtle dark tint so it's visible on white bg */
+  background: rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  padding: 0.6rem 1rem;
+}
+
+/* Dark mode overrides */
+:is(.dark) .dock-panel {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ── Individual item — width animated, height auto ── */
+.dock-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px 6px;
+  min-height: 60px;
+  border-radius: 0.875rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+:is(.dark) .dock-item {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dock-item:hover {
+  background: rgba(0, 255, 157, 0.12);
+  border-color: rgba(0, 255, 157, 0.35);
+}
+
+.dock-item:focus-visible {
+  outline: 2px solid rgba(0, 255, 157, 0.6);
+  outline-offset: 2px;
+}
+
+/* ── Icon ── */
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.7);
+  flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+:is(.dark) .dock-icon {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dock-item:hover .dock-icon {
+  color: #00C97B;
+  transform: scale(1.15);
+}
+
+:is(.dark) .dock-item:hover .dock-icon {
+  color: #00FF9D;
+}
+
+/* ── Permanent text label below icon ── */
+.dock-item-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.55);
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  transition: color 0.2s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+:is(.dark) .dock-item-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dock-item:hover .dock-item-label {
+  color: #00C97B;
+}
+
+:is(.dark) .dock-item:hover .dock-item-label {
+  color: rgba(0, 255, 157, 0.95);
+}
+
+/* ── Floating tooltip (appears above on hover) ── */
+.dock-label {
+  position: absolute;
+  top: -2.2rem;
+  left: 50%;
+  width: fit-content;
+  white-space: nowrap;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.2rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #0a0a0a;
+  pointer-events: none;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+}
+
+:is(.dark) .dock-label {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(5, 8, 22, 0.92);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}

@@ -1,0 +1,322 @@
+
+> codequesters@0.1.0 build
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 15 errors:
+./src/components/Footer.tsx:2:1
+Export Github doesn't exist in target module
+  [90m1 |[0m ...[33mk[0m [36mfrom[0m [32m'next/link'[0m;
+[31m[1m>[0m [90m2 |[0m ...[33merminal[0m, [33mMail[0m, [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m } [36mfrom[0m [32m'luci...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m ...
+  [90m4 |[0m ...[36mction[0m [33mFooter[0m() {
+  [90m5 |[0m ...
+
+The export Github was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-rsc] (ecmascript).
+Did you mean to import Gift?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Footer.tsx
+    ./src/app/layout.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Github doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Github was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] (ecmascript).
+Did you mean to import Gift?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Github doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Github was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] (ecmascript).
+Did you mean to import Gift?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.tsx:2:1
+Export Linkedin doesn't exist in target module
+  [90m1 |[0m ...[33mk[0m [36mfrom[0m [32m'next/link'[0m;
+[31m[1m>[0m [90m2 |[0m ...[33merminal[0m, [33mMail[0m, [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m } [36mfrom[0m [32m'luci...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m ...
+  [90m4 |[0m ...[36mction[0m [33mFooter[0m() {
+  [90m5 |[0m ...
+
+The export Linkedin was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-rsc] (ecmascript).
+Did you mean to import Link?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Footer.tsx
+    ./src/app/layout.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Linkedin doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Linkedin was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] (ecmascript).
+Did you mean to import Link?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Linkedin doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Linkedin was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] (ecmascript).
+Did you mean to import Link?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/Sponsors.tsx:5:1
+Export SiAmazonwebservices doesn't exist in target module
+  [90m3 |[0m ...[36mrom[0m [32m"framer-motion"[0m;
+  [90m4 |[0m ... [36mfrom[0m [32m"@/components/ui/LogoLoop"[0m;
+[31m[1m>[0m [90m5 |[0m ...[33mSiMicrosoft[0m, [33mSiAmazonwebservices[0m, [33mSiGithub[0m, [33mSiTwilio[0m, [33mSiPolygon[0m } [36mfr..[0m.
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m ...
+  [90m7 |[0m ...[33mnsors[0m() {
+  [90m8 |[0m ... [
+
+The export SiAmazonwebservices was not found in module [project]/node_modules/react-icons/si/index.mjs [app-client] (ecmascript).
+Did you mean to import SiAnswer?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/Sponsors.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/Sponsors.tsx:5:1
+Export SiAmazonwebservices doesn't exist in target module
+  [90m3 |[0m ...[36mrom[0m [32m"framer-motion"[0m;
+  [90m4 |[0m ... [36mfrom[0m [32m"@/components/ui/LogoLoop"[0m;
+[31m[1m>[0m [90m5 |[0m ...[33mSiMicrosoft[0m, [33mSiAmazonwebservices[0m, [33mSiGithub[0m, [33mSiTwilio[0m, [33mSiPolygon[0m } [36mfr..[0m.
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m ...
+  [90m7 |[0m ...[33mnsors[0m() {
+  [90m8 |[0m ... [
+
+The export SiAmazonwebservices was not found in module [project]/node_modules/react-icons/si/index.mjs [app-ssr] (ecmascript).
+Did you mean to import SiAnswer?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/Sponsors.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/Sponsors.tsx:5:1
+Export SiMicrosoft doesn't exist in target module
+  [90m3 |[0m ...[36mrom[0m [32m"framer-motion"[0m;
+  [90m4 |[0m ... [36mfrom[0m [32m"@/components/ui/LogoLoop"[0m;
+[31m[1m>[0m [90m5 |[0m ...[33mSiMicrosoft[0m, [33mSiAmazonwebservices[0m, [33mSiGithub[0m, [33mSiTwilio[0m, [33mSiPolygon[0m } [36mfr..[0m.
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m ...
+  [90m7 |[0m ...[33mnsors[0m() {
+  [90m8 |[0m ... [
+
+The export SiMicrosoft was not found in module [project]/node_modules/react-icons/si/index.mjs [app-client] (ecmascript).
+Did you mean to import SiMiro?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/Sponsors.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/Sponsors.tsx:5:1
+Export SiMicrosoft doesn't exist in target module
+  [90m3 |[0m ...[36mrom[0m [32m"framer-motion"[0m;
+  [90m4 |[0m ... [36mfrom[0m [32m"@/components/ui/LogoLoop"[0m;
+[31m[1m>[0m [90m5 |[0m ...[33mSiMicrosoft[0m, [33mSiAmazonwebservices[0m, [33mSiGithub[0m, [33mSiTwilio[0m, [33mSiPolygon[0m } [36mfr..[0m.
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m6 |[0m ...
+  [90m7 |[0m ...[33mnsors[0m() {
+  [90m8 |[0m ... [
+
+The export SiMicrosoft was not found in module [project]/node_modules/react-icons/si/index.mjs [app-ssr] (ecmascript).
+Did you mean to import SiMiro?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/Sponsors.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.tsx:2:1
+Export Twitter doesn't exist in target module
+  [90m1 |[0m ...[33mk[0m [36mfrom[0m [32m'next/link'[0m;
+[31m[1m>[0m [90m2 |[0m ...[33merminal[0m, [33mMail[0m, [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m } [36mfrom[0m [32m'luci...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m ...
+  [90m4 |[0m ...[36mction[0m [33mFooter[0m() {
+  [90m5 |[0m ...
+
+The export Twitter was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-rsc] (ecmascript).
+Did you mean to import Timer?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Footer.tsx
+    ./src/app/layout.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Twitter doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Twitter was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] (ecmascript).
+Did you mean to import Timer?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Twitter doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Twitter was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] (ecmascript).
+Did you mean to import Timer?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Youtube doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Youtube was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-client] (ecmascript).
+Did you mean to import Route?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+./src/components/sections/CommunityEcosystem.tsx:4:1
+Export Youtube doesn't exist in target module
+  [90m2 |[0m ...
+  [90m3 |[0m ... { motion } [36mfrom[0m [32m"framer-motion"[0m;
+[31m[1m>[0m [90m4 |[0m ... { [33mMessageCircle[0m, [33mGithub[0m, [33mLinkedin[0m, [33mTwitter[0m, [33mYoutube[0m } [36mfrom[0m [32m"lucide-...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m5 |[0m ... { [33mSiDiscord[0m } [36mfrom[0m [32m"react-icons/si"[0m;
+  [90m6 |[0m ...
+  [90m7 |[0m ... [36mfunction[0m [33mCommunityEcosystem[0m() {
+
+The export Youtube was not found in module [project]/node_modules/lucide-react/dist/esm/lucide-react.mjs [app-ssr] (ecmascript).
+Did you mean to import Route?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./src/components/sections/CommunityEcosystem.tsx
+    ./src/app/page.tsx
+
+
+    at <unknown> (./src/components/Footer.tsx:2:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/Footer.tsx:2:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/sections/Sponsors.tsx:5:1)
+    at <unknown> (./src/components/sections/Sponsors.tsx:5:1)
+    at <unknown> (./src/components/sections/Sponsors.tsx:5:1)
+    at <unknown> (./src/components/sections/Sponsors.tsx:5:1)
+    at <unknown> (./src/components/Footer.tsx:2:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)
+    at <unknown> (./src/components/sections/CommunityEcosystem.tsx:4:1)

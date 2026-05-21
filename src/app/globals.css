@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Light mode — white bg, near-black text, green primary */
+    --background: #ffffff;
+    --foreground: #0a0a0a;
+    --primary: #00C97B;
+    --primary-foreground: #ffffff;
+    --card: rgba(255, 255, 255, 0.75);
+    --muted: #555555;
+    --border: rgba(0, 0, 0, 0.1);
+  }
+
+  .dark {
+    /* Dark mode — near-black bg, white text, bright green primary */
+    --background: #050816;
+    --foreground: #ffffff;
+    --primary: #00FF9D;
+    --primary-foreground: #050816;
+    --card: rgba(255, 255, 255, 0.05);
+    --muted: #888888;
+    --border: rgba(255, 255, 255, 0.1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* All sections sit above the fixed particles layer */
+  section {
+    position: relative;
+    z-index: 10;
+  }
+}
+
+/* Glass card — works in both modes */
+.glass-card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.dark .glass-card {
+  box-shadow: 0 0 15px rgba(0, 255, 157, 0.04);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 157, 0.1);
+}
+
+/* Green gradient text */
+.text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(90deg, var(--primary), #00e5ff);
 }
