@@ -1,60 +1,59 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, Presentation, Trophy, Briefcase, GraduationCap, Handshake } from "lucide-react";
+import { Users, Building2, CalendarDays, Network, Handshake } from "lucide-react";
+
+const stats = [
+  { icon: Users,       value: "10,000+",    label: "Builders Reached" },
+  { icon: Building2,   value: "200+",       label: "Colleges Connected" },
+  { icon: CalendarDays,value: "50+",        label: "Events & Workshops" },
+  { icon: Network,     value: "100+",       label: "Industry Connections" },
+  { icon: Handshake,   value: "Countless",  label: "Collaborations Created" },
+];
 
 export function ImpactStats() {
-  const stats = [
-    { icon: Users, value: "15,000+", label: "Community Members", color: "from-blue-500 to-cyan-400" },
-    { icon: Presentation, value: "75+", label: "Online Workshops", color: "from-purple-500 to-pink-400" },
-    { icon: Trophy, value: "30+", label: "Hackathons Conducted", color: "from-amber-500 to-orange-400" },
-    { icon: Briefcase, value: "150+", label: "Projects Built", color: "from-emerald-500 to-green-400" },
-    { icon: GraduationCap, value: "50+", label: "Campus Ambassadors", color: "from-indigo-500 to-blue-400" },
-    { icon: Handshake, value: "20+", label: "Industry Partners", color: "from-rose-500 to-red-400" },
-  ];
-
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3"
+          >
+            The Ecosystem In Motion
+          </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold font-heading mb-4"
-          >
-            Measurable <span className="text-gradient">Impact</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-muted-foreground max-w-2xl mx-auto"
+            className="text-3xl md:text-5xl font-bold font-heading"
           >
-            Our community is growing rapidly, empowering students across the nation to build, innovate, and lead.
-          </motion.p>
+            Numbers That <span className="text-gradient">Speak</span>
+          </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 max-w-5xl mx-auto">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card p-6 flex items-start gap-4 group"
+              className="glass-card p-6 flex flex-col items-center text-center group hover:-translate-y-1 transition-transform duration-300 border border-border hover:border-primary/30"
             >
-              <div className={`p-4 rounded-xl bg-gradient-to-br ${stat.color} bg-opacity-10 shadow-inner group-hover:scale-110 transition-transform duration-300`}>
-                <stat.icon className="w-8 h-8 text-white" />
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                <stat.icon className="w-5 h-5 text-primary" />
               </div>
-              <div>
-                <h3 className="text-3xl font-bold text-foreground mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-foreground group-hover:to-muted-foreground transition-all duration-300">
-                  {stat.value}
-                </h3>
-                <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
-              </div>
+              <span className="text-2xl md:text-3xl font-black text-foreground mb-1">
+                {stat.value}
+              </span>
+              <span className="text-xs font-medium text-muted-foreground leading-tight">
+                {stat.label}
+              </span>
             </motion.div>
           ))}
         </div>

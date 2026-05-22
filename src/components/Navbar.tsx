@@ -3,18 +3,17 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { Moon, Sun, Menu, X, Home, Map, CalendarDays, Zap, Users, UserPlus } from "lucide-react";
+import { Moon, Sun, Menu, X, Home, CalendarDays, BookOpen, Info, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import Dock from "@/components/ui/Dock";
 
 const navLinks = [
-  { name: "Home",       href: "#home",       icon: <Home       size={20} /> },
-  { name: "Journey",    href: "#journey",    icon: <Map        size={20} /> },
-  { name: "Events",     href: "#events",     icon: <CalendarDays size={20} /> },
-  { name: "Hackathons", href: "#hackathons", icon: <Zap        size={20} /> },
-  { name: "Community",  href: "#community",  icon: <Users      size={20} /> },
-  { name: "Join",       href: "#join",       icon: <UserPlus   size={20} /> },
+  { name: "Home",    href: "#home",    icon: <Home       size={20} /> },
+  { name: "Events",  href: "#events",  icon: <CalendarDays size={20} /> },
+  { name: "Stories", href: "#stories", icon: <BookOpen   size={20} /> },
+  { name: "About",   href: "#about",   icon: <Info       size={20} /> },
+  { name: "Contact", href: "#contact", icon: <Mail       size={20} /> },
 ];
 
 export function Navbar() {
@@ -105,7 +104,7 @@ export function Navbar() {
             />
           </div>
 
-          {/* ── Desktop: theme toggle + CTA ── */}
+          {/* ── Desktop: theme toggle + CTAs ── */}
           <div className="hidden md:flex items-center gap-3 shrink-0">
             <button
               onClick={toggleTheme}
@@ -116,6 +115,12 @@ export function Navbar() {
                 ? <Sun className="w-5 h-5" />
                 : <Moon className="w-5 h-5" />}
             </button>
+            <a
+              href="#contact"
+              className="px-4 py-2 rounded-xl border border-primary/30 text-primary font-semibold text-sm hover:bg-primary/10 transition-all"
+            >
+              Partner With Us
+            </a>
             <button
               onClick={() => scrollTo("#join")}
               className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(0,255,157,0.35)] hover:shadow-[0_0_25px_rgba(0,255,157,0.55)]"
