@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Trophy, BookOpen, Network, Briefcase, Users, Lightbulb } from "lucide-react";
+import { Text3DReveal } from "@/components/ui/Text3DReveal";
 
 const features = [
   {
@@ -40,36 +41,52 @@ export function WhatWeDo() {
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+
+        {/* ── Section heading with 3D text reveal ── */}
+        <div className="text-center mb-16 overflow-hidden">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3"
+            className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4"
           >
             What We Do
           </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl font-bold font-heading mb-4"
-          >
-            Built Around{" "}
-            <span className="text-gradient">Builder Growth</span>
-          </motion.h2>
+
+          {/* 3D flip-in heading — two lines, each with its own stagger */}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4 leading-tight">
+            {/* Line 1: "Built Around" */}
+            <span className="block mb-1">
+              <Text3DReveal
+                text="Built Around"
+                delay={0}
+                stagger={0.12}
+                className="text-foreground"
+              />
+            </span>
+            {/* Line 2: "Builder Growth" — gradient, slightly delayed */}
+            <span className="block">
+              <Text3DReveal
+                text="Builder Growth"
+                delay={0.28}
+                stagger={0.12}
+                className="text-gradient"
+              />
+            </span>
+          </h2>
+
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
+            transition={{ delay: 0.6 }}
             className="text-muted-foreground max-w-xl mx-auto"
           >
             Every initiative is designed with one goal — helping builders grow through execution.
           </motion.p>
         </div>
 
+        {/* ── Feature cards ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
           {features.map((f, i) => (
             <motion.div
