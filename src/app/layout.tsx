@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description:
     "India's student-first tech ecosystem helping the next generation of builders grow together.",
   icons: {
-    icon: "/logo-CQ.png",
-    apple: "/logo-CQ.png",
+    icon: "/logo-CQ-tech.png",
+    apple: "/logo-CQ-tech.png",
   },
 };
 

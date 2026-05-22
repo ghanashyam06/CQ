@@ -35,7 +35,7 @@ export function ImpactStats() {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-5 max-w-5xl mx-auto">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -43,12 +43,12 @@ export function ImpactStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card p-6 flex flex-col items-center text-center group hover:-translate-y-1 transition-transform duration-300 border border-border hover:border-primary/30"
+              className="glass-card p-4 sm:p-6 flex flex-col items-center text-center group hover:-translate-y-1 transition-transform duration-300 border border-border hover:border-primary/30"
             >
               <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
                 <stat.icon className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-2xl md:text-3xl font-black text-foreground mb-1">
+              <span className="text-xl sm:text-2xl md:text-3xl font-black text-foreground mb-1">
                 {stat.value}
               </span>
               <span className="text-xs font-medium text-muted-foreground leading-tight">

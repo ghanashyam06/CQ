@@ -11,22 +11,24 @@ export function Footer() {
 
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="#home" className="flex items-center gap-2.5 group">
-              <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-primary/20 shadow-[0_0_10px_rgba(0,255,157,0.15)] group-hover:shadow-[0_0_18px_rgba(0,255,157,0.35)] transition-shadow">
-                <Image src="/logo-CQ.png" alt="CodeQuesters Logo" fill sizes="36px" className="object-contain p-0.5" />
+            <Link href="#home" className="flex items-center gap-3 group">
+              <div className="relative w-12 h-12 shrink-0 group-hover:scale-105 transition-transform duration-200">
+                <Image src="/logo-CQ-tech.png" alt="CodeQuesters Logo" fill sizes="48px" className="object-contain" />
               </div>
-              <span className="text-lg font-bold font-heading text-foreground">CodeQuesters</span>
+              <span className="text-lg font-bold font-heading text-foreground leading-tight">
+                Code<span className="text-primary">Questers</span>
+              </span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
               A builder-first ecosystem helping students and creators grow through
               opportunities, collaboration, innovation, and execution.
             </p>
             <div className="flex gap-4 pt-2">
-              <a href="#" aria-label="WhatsApp"  className="text-muted-foreground hover:text-primary transition-colors"><FaWhatsapp  className="w-5 h-5" /></a>
-              <a href="#" aria-label="Instagram" className="text-muted-foreground hover:text-primary transition-colors"><FaInstagram className="w-5 h-5" /></a>
-              <a href="#" aria-label="LinkedIn"  className="text-muted-foreground hover:text-primary transition-colors"><FaLinkedin  className="w-5 h-5" /></a>
-              <a href="#" aria-label="GitHub"    className="text-muted-foreground hover:text-primary transition-colors"><FaGithub   className="w-5 h-5" /></a>
-              <a href="#" aria-label="Twitter/X" className="text-muted-foreground hover:text-primary transition-colors"><FaXTwitter  className="w-5 h-5" /></a>
+              <a href="https://whatsapp.com/channel/0029VbAjqOJFXUuja0h4G00j" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel"  className="text-muted-foreground hover:text-primary transition-colors"><FaWhatsapp  className="w-5 h-5" /></a>
+              <a href="https://www.instagram.com/codequesters"                  target="_blank" rel="noopener noreferrer" aria-label="Instagram"         className="text-muted-foreground hover:text-primary transition-colors"><FaInstagram className="w-5 h-5" /></a>
+              <a href="https://www.linkedin.com/company/codequesters"           target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"          className="text-muted-foreground hover:text-primary transition-colors"><FaLinkedin  className="w-5 h-5" /></a>
+              <a href="https://github.com/"                                     aria-label="GitHub"                                                      className="text-muted-foreground hover:text-primary transition-colors"><FaGithub   className="w-5 h-5" /></a>
+              <a href="https://x.com/"                                          aria-label="Twitter/X"                                                   className="text-muted-foreground hover:text-primary transition-colors"><FaXTwitter  className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -75,7 +77,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="flex items-center gap-2 text-muted-foreground hover:text-primary text-sm transition-colors">
+                <a href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary text-sm transition-colors">
                   <MessageCircle className="w-4 h-4" />
                   WhatsApp Community
                 </a>
