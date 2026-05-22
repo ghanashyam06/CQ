@@ -73,7 +73,7 @@ export function Hero() {
         >
           <a
             href="#join"
-            className="px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,255,157,0.4)] hover:shadow-[0_0_36px_rgba(0,255,157,0.6)]"
+            className="px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)]"
           >
             <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
             Join The Community

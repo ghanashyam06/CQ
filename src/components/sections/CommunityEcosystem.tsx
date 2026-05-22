@@ -46,7 +46,7 @@ export function CommunityEcosystem() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: platform.delay }}
-              className={`glass-card p-6 flex flex-col items-center justify-center gap-4 group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,157,0.3)]`}
+              className={`glass-card p-6 flex flex-col items-center justify-center gap-4 group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,99,0.3)]`}
             >
               <div className={`w-12 h-12 rounded-full ${platform.color} flex items-center justify-center text-white`}>
                 <platform.icon className="w-6 h-6" />

@@ -103,8 +103,8 @@ export function JourneyRoadmap() {
                 <div
                   className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 shrink-0 transition-all duration-300
                     bg-background border-2 border-primary
-                    shadow-[0_0_14px_rgba(0,255,157,0.18)]
-                    group-hover:shadow-[0_0_28px_rgba(0,255,157,0.45)]
+                    shadow-[0_0_14px_rgba(0,191,99,0.18)]
+                    group-hover:shadow-[0_0_28px_rgba(0,191,99,0.45)]
                     group-hover:scale-110 group-hover:bg-primary/10"
                 >
                   <step.icon

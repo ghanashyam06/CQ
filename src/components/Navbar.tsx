@@ -124,7 +124,7 @@ export function Navbar() {
             </a>
             <button
               onClick={() => scrollTo("#join")}
-              className="px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-[0_0_14px_rgba(0,255,157,0.35)] hover:shadow-[0_0_24px_rgba(0,255,157,0.55)] whitespace-nowrap"
+              className="px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-[0_0_14px_rgba(0,191,99,0.35)] hover:shadow-[0_0_24px_rgba(0,191,99,0.55)] whitespace-nowrap"
             >
               Join Community
             </button>
@@ -189,7 +189,7 @@ export function Navbar() {
               </a>
               <button
                 onClick={() => { scrollTo("#join"); setMobileMenu(false); }}
-                className="w-full text-center py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-[0_0_14px_rgba(0,255,157,0.3)]"
+                className="w-full text-center py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-[0_0_14px_rgba(0,191,99,0.3)]"
               >
                 Join Community
               </button>

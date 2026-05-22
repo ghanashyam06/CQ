@@ -15,7 +15,7 @@ export function FinalCTA() {
           initial={{ opacity: 0, scale: 0.96 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="glass-card max-w-5xl mx-auto p-12 md:p-20 text-center flex flex-col items-center border border-primary/20 shadow-[0_0_60px_rgba(0,255,157,0.08)]"
+          className="glass-card max-w-5xl mx-auto p-12 md:p-20 text-center flex flex-col items-center border border-primary/20 shadow-[0_0_60px_rgba(0,191,99,0.08)]"
         >
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -39,7 +39,7 @@ export function FinalCTA() {
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
             <a
               href="#"
-              className="px-8 py-4 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold text-base hover:bg-primary/90 transition-all shadow-[0_0_22px_rgba(0,255,157,0.4)] flex items-center justify-center gap-2"
+              className="px-8 py-4 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold text-base hover:bg-primary/90 transition-all shadow-[0_0_22px_rgba(0,191,99,0.4)] flex items-center justify-center gap-2"
             >
               <Rocket className="w-5 h-5" />
               Join Community

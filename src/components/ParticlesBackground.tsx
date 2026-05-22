@@ -27,8 +27,8 @@ export function ParticlesBackground() {
       <Particles
         particleColors={
           isDark
-            ? ["#00FF9D", "#00FF9D", "#ffffff"]
-            : ["#00C97B", "#00C97B", "#000000"]
+            ? ["#00BF63", "#00BF63", "#ffffff"]
+            : ["#00BF63", "#00BF63", "#000000"]
         }
         particleCount={200}
         particleSpread={10}

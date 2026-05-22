@@ -82,7 +82,7 @@ export function Hackathons() {
                 </div>
                 <Link
                   href="#"
-                  className="px-8 py-3 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,255,157,0.25)]"
+                  className="px-8 py-3 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,191,99,0.25)]"
                 >
                   Register Now
                   <ArrowRight className="w-5 h-5" />

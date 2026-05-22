@@ -86,12 +86,12 @@
 }
 
 .dock-item:hover .dock-icon {
-  color: #00C97B;
+  color: #00BF63;
   transform: scale(1.15);
 }
 
 :is(.dark) .dock-item:hover .dock-icon {
-  color: #00FF9D;
+  color: #00BF63;
 }
 
 /* ── Permanent text label below icon ── */
@@ -112,7 +112,7 @@
 }
 
 .dock-item:hover .dock-item-label {
-  color: #00C97B;
+  color: #00BF63;
 }
 
 :is(.dark) .dock-item:hover .dock-item-label {
