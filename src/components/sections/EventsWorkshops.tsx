@@ -3,13 +3,86 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, MapPin, ExternalLink } from "lucide-react";
+import { use3DTilt } from "@/hooks/use3DTilt";
+
+interface Event {
+  id: number;
+  title: string;
+  category: string;
+  date: string;
+  mode: string;
+  speaker: string;
+  tags: string[];
+  image: string;
+}
+
+function EventCard({ event }: { event: Event }) {
+  const cardRef = use3DTilt<HTMLDivElement>(6, 1000);
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
+      ref={cardRef}
+      className="glass-card overflow-hidden group flex flex-col h-full cursor-default"
+      style={{ willChange: "transform" }}
+    >
+      <div className="relative h-48 overflow-hidden">
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={event.image}
+          alt={event.title}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+        <div className="absolute top-4 right-4 z-20 flex gap-2">
+          {event.tags.map((tag, i) => (
+            <span key={i} className="px-2.5 py-1 text-xs font-semibold rounded-md bg-background/80 backdrop-blur-md text-foreground">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+          {event.title}
+        </h3>
+        
+        <div className="space-y-2 mb-6 mt-auto">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Calendar className="w-4 h-4 text-primary" />
+            <span>{event.date}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="w-4 h-4 text-primary" />
+            <span>{event.mode}</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
+          <div className="text-sm">
+            <span className="text-muted-foreground">By </span>
+            <span className="font-semibold text-foreground">{event.speaker}</span>
+          </div>
+          <button className="flex items-center gap-1 text-primary text-sm font-semibold hover:gap-2 transition-all">
+            Register <ExternalLink className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export function EventsWorkshops() {
   const [activeTab, setActiveTab] = useState("All");
 
   const tabs = ["All", "Workshops", "Bootcamps", "Sessions"];
 
-  const events = [
+  const events: Event[] = [
     {
       id: 1,
       title: "Full Stack Next.js Bootcamp",
@@ -97,59 +170,7 @@ export function EventsWorkshops() {
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           <AnimatePresence mode="popLayout">
             {filteredEvents.map((event) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                key={event.id}
-                className="glass-card overflow-hidden group flex flex-col h-full"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4 z-20 flex gap-2">
-                    {event.tags.map((tag, i) => (
-                      <span key={i} className="px-2.5 py-1 text-xs font-semibold rounded-md bg-background/80 backdrop-blur-md text-foreground">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                    {event.title}
-                  </h3>
-                  
-                  <div className="space-y-2 mb-6 mt-auto">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      <span>{event.date}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      <span>{event.mode}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
-                    <div className="text-sm">
-                      <span className="text-muted-foreground">By </span>
-                      <span className="font-semibold text-foreground">{event.speaker}</span>
-                    </div>
-                    <button className="flex items-center gap-1 text-primary text-sm font-semibold hover:gap-2 transition-all">
-                      Register <ExternalLink className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
+              <EventCard key={event.id} event={event} />
             ))}
           </AnimatePresence>
         </motion.div>

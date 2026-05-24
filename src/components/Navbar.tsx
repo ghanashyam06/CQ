@@ -28,7 +28,10 @@ export function Navbar() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hasScrolled = useRef(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   // GSAP glassmorphism on scroll
   useEffect(() => {

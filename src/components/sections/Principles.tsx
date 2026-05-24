@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react";
 import { Star, Telescope, Zap } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { use3DTilt } from "@/hooks/use3DTilt";
+
+import SpotlightCard from "@/components/ui/SpotlightCard";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -29,6 +32,33 @@ const principles = [
       "Building growth through execution, contribution, and innovation — not just content consumption.",
   },
 ];
+
+interface PrincipleCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+}
+
+function PrincipleCard({ icon: Icon, title, description }: PrincipleCardProps) {
+  const cardRef = use3DTilt<HTMLDivElement>(12, 1000);
+
+  return (
+    <SpotlightCard className="border border-border hover:border-primary/30 p-0 overflow-hidden h-full" spotlightColor="rgba(0, 191, 99, 0.12)" spotlightSize={250}>
+      <div
+        ref={cardRef}
+        className="principle-card p-8 group text-center cursor-default h-full"
+      >
+        <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.2)] transition-all duration-300">
+          <Icon className="w-7 h-7 text-primary" />
+        </div>
+        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+          {title}
+        </h3>
+        <p className="text-muted-foreground leading-relaxed text-sm">{description}</p>
+      </div>
+    </SpotlightCard>
+  );
+}
 
 export function Principles() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -87,16 +117,12 @@ export function Principles() {
 
         <div className="principles-grid grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {principles.map((p, i) => (
-            <div
+            <PrincipleCard
               key={i}
-              className="principle-card glass-card p-8 group hover:-translate-y-2 transition-all duration-300 border border-border hover:border-primary/30 hover:shadow-[0_0_30px_rgba(0,191,99,0.1)] text-center"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.2)] transition-all duration-300">
-                <p.icon className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">{p.title}</h3>
-              <p className="text-muted-foreground leading-relaxed text-sm">{p.description}</p>
-            </div>
+              icon={p.icon}
+              title={p.title}
+              description={p.description}
+            />
           ))}
         </div>
       </div>

@@ -86,10 +86,19 @@ export function ParticleCloud({
   const geometry = useMemo(() => {
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(count * 3);
+    
+    // A simple seedable LCG pseudo-random generator to remain pure/idempotent
+    // and satisfy the react-hooks/purity rule in React 19/Next 16.
+    let seed = 42;
+    const random = () => {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+
     for (let i = 0; i < count; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const r = radius * (0.3 + Math.random() * 0.7);
+      const theta = random() * Math.PI * 2;
+      const phi = Math.acos(2 * random() - 1);
+      const r = radius * (0.3 + random() * 0.7);
       pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       pos[i * 3 + 2] = r * Math.cos(phi);

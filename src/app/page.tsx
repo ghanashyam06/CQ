@@ -8,18 +8,22 @@ import { WhatWeDo }       from "@/components/sections/WhatWeDo";
 import { StoriesPreview } from "@/components/sections/StoriesPreview";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { FinalCTA }       from "@/components/sections/FinalCTA";
+import MagnetLines        from "@/components/ui/MagnetLines";
 
 export default function Home() {
   return (
     <>
       <Hero />
       <TrustedBy />
+      <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
       <AboutSnapshot />
       <Principles />
       <GroundRule />
       <ImpactStats />
+      <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
       <WhatWeDo />
       <StoriesPreview />
+      <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
       <ContactSection />
       <FinalCTA />
     </>

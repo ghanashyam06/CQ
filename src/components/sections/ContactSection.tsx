@@ -5,6 +5,8 @@ import { Mail, MessageCircle, Send, MapPin } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaLinkedin, FaGithub, FaXTwitter } from "react-icons/fa6";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import BorderGlow from "@/components/ui/BorderGlow";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -98,33 +100,37 @@ export function ContactSection() {
             <div className="space-y-4">
               <a
                 href="mailto:hello@codequesters.com"
-                className="flex items-center gap-4 glass-card p-4 border border-border hover:border-primary/30 transition-all group"
+                className="block group"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all">
-                  <Mail className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Email Us</p>
-                  <p className="text-xs text-muted-foreground">hello@codequesters.com</p>
-                </div>
+                <SpotlightCard className="flex items-center gap-4 border border-border hover:border-primary/30 transition-all p-4" spotlightColor="rgba(0, 191, 99, 0.1)">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all">
+                    <Mail className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">Email Us</p>
+                    <p className="text-xs text-muted-foreground">hello@codequesters.com</p>
+                  </div>
+                </SpotlightCard>
               </a>
 
               <a
                 href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 glass-card p-4 border border-border hover:border-primary/30 transition-all group"
+                className="block group"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all">
-                  <MessageCircle className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">WhatsApp Community</p>
-                  <p className="text-xs text-muted-foreground">Join our active builder group</p>
-                </div>
+                <SpotlightCard className="flex items-center gap-4 border border-border hover:border-primary/30 transition-all p-4" spotlightColor="rgba(0, 191, 99, 0.1)">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all">
+                    <MessageCircle className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">WhatsApp Community</p>
+                    <p className="text-xs text-muted-foreground">Join our active builder group</p>
+                  </div>
+                </SpotlightCard>
               </a>
 
-              <div className="flex items-center gap-4 glass-card p-4 border border-border">
+              <SpotlightCard className="flex items-center gap-4 border border-border p-4" spotlightColor="rgba(0, 191, 99, 0.1)">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
@@ -132,7 +138,7 @@ export function ContactSection() {
                   <p className="text-sm font-semibold text-foreground">Based in India</p>
                   <p className="text-xs text-muted-foreground">Building globally 🌍</p>
                 </div>
-              </div>
+              </SpotlightCard>
             </div>
 
             {/* Social links */}
@@ -163,60 +169,62 @@ export function ContactSection() {
 
           {/* Right — Form */}
           <div className="contact-right">
-            <form onSubmit={handleSubmit} className="glass-card p-8 border border-border space-y-5 neon-border">
-              <div>
-                <label htmlFor="contact-name" className="block text-sm font-semibold text-foreground mb-2">
-                  Your Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  value={formState.name}
-                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  placeholder="John Doe"
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm"
-                  required
-                />
-              </div>
+            <BorderGlow borderRadius="1rem" glowColor="#00bf63" glowSize={180}>
+              <form onSubmit={handleSubmit} className="p-8 space-y-5">
+                <div>
+                  <label htmlFor="contact-name" className="block text-sm font-semibold text-foreground mb-2">
+                    Your Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    value={formState.name}
+                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                    placeholder="John Doe"
+                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="contact-email" className="block text-sm font-semibold text-foreground mb-2">
-                  Email Address
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  value={formState.email}
-                  onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  placeholder="john@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm"
-                  required
-                />
-              </div>
+                <div>
+                  <label htmlFor="contact-email" className="block text-sm font-semibold text-foreground mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    value={formState.email}
+                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                    placeholder="john@example.com"
+                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="contact-message" className="block text-sm font-semibold text-foreground mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  rows={5}
-                  value={formState.message}
-                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  placeholder="Tell us what you're looking for..."
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm resize-none"
-                  required
-                />
-              </div>
+                <div>
+                  <label htmlFor="contact-message" className="block text-sm font-semibold text-foreground mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    rows={5}
+                    value={formState.message}
+                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                    placeholder="Tell us what you're looking for..."
+                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm resize-none"
+                    required
+                  />
+                </div>
 
-              <button
-                type="submit"
-                className="w-full px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,191,99,0.3)] hover:shadow-[0_0_30px_rgba(0,191,99,0.5)]"
-              >
-                <Send className="w-4 h-4" />
-                Send Message
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  className="w-full px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,191,99,0.3)] hover:shadow-[0_0_30px_rgba(0,191,99,0.5)]"
+                >
+                  <Send className="w-4 h-4" />
+                  Send Message
+                </button>
+              </form>
+            </BorderGlow>
           </div>
         </div>
       </div>

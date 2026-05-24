@@ -3,8 +3,14 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Trophy, Users, Star, Clock } from "lucide-react";
 import Link from "next/link";
+import { use3DTilt } from "@/hooks/use3DTilt";
+import { useMagnetic } from "@/hooks/useMagnetic";
+import StarBorder from "@/components/ui/StarBorder";
 
 export function Hackathons() {
+  const featuredRef = use3DTilt<HTMLDivElement>(5, 1000);
+  const registerRef = useMagnetic<HTMLAnchorElement>(0.22, 60);
+
   return (
     <section id="hackathons" className="py-24 relative overflow-hidden border-y border-border">
       <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
@@ -38,57 +44,66 @@ export function Hackathons() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-2 rounded-2xl glass-card overflow-hidden flex flex-col relative group"
+            className="lg:col-span-2"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <StarBorder speed="6s">
+              <div
+                ref={featuredRef}
+                className="rounded-2xl overflow-hidden flex flex-col relative group bg-card cursor-default"
+                style={{ willChange: "transform" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            <div className="p-8 md:p-12 flex flex-col justify-between h-full z-10">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-6 uppercase tracking-wider">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  Upcoming Event
-                </div>
-
-                <h3 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                  CodeQuesters <br />Hackathon 4.0
-                </h3>
-                <p className="text-muted-foreground text-lg mb-8 max-w-lg">
-                  A 48-hour hybrid hackathon focusing on AI, Web3, and Open Source. Join 2000+ developers building the future.
-                </p>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                  {[
-                    { icon: <Trophy className="w-6 h-6 text-amber-500 mx-auto mb-2" />, value: "₹5 Lakhs", label: "Prize Pool" },
-                    { icon: <Users className="w-6 h-6 text-blue-500 mx-auto mb-2" />, value: "2000+", label: "Participants" },
-                    { icon: <Clock className="w-6 h-6 text-primary mx-auto mb-2" />, value: "48 Hrs", label: "Duration" },
-                    { icon: <Star className="w-6 h-6 text-purple-500 mx-auto mb-2" />, value: "15+", label: "Sponsors" },
-                  ].map((stat, i) => (
-                    <div key={i} className="glass-card p-4 rounded-xl text-center">
-                      {stat.icon}
-                      <div className="font-bold text-foreground">{stat.value}</div>
-                      <div className="text-xs text-muted-foreground">{stat.label}</div>
+                <div className="p-8 md:p-12 flex flex-col justify-between h-full z-10">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-6 uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                      Upcoming Event
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between border-t border-border pt-6">
-                <div className="flex items-center gap-4">
-                  <div className="text-muted-foreground text-sm">Powered by</div>
-                  <div className="flex gap-2">
-                    <div className="h-6 w-16 bg-border rounded animate-pulse" />
-                    <div className="h-6 w-16 bg-border rounded animate-pulse" />
+                    <h3 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                      CodeQuesters <br />Hackathon 4.0
+                    </h3>
+                    <p className="text-muted-foreground text-lg mb-8 max-w-lg">
+                      A 48-hour hybrid hackathon focusing on AI, Web3, and Open Source. Join 2000+ developers building the future.
+                    </p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                      {[
+                        { icon: <Trophy className="w-6 h-6 text-amber-500 mx-auto mb-2" />, value: "₹5 Lakhs", label: "Prize Pool" },
+                        { icon: <Users className="w-6 h-6 text-blue-500 mx-auto mb-2" />, value: "2000+", label: "Participants" },
+                        { icon: <Clock className="w-6 h-6 text-primary mx-auto mb-2" />, value: "48 Hrs", label: "Duration" },
+                        { icon: <Star className="w-6 h-6 text-purple-500 mx-auto mb-2" />, value: "15+", label: "Sponsors" },
+                      ].map((stat, i) => (
+                        <div key={i} className="glass-card p-4 rounded-xl text-center">
+                          {stat.icon}
+                          <div className="font-bold text-foreground">{stat.value}</div>
+                          <div className="text-xs text-muted-foreground">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 items-center justify-between border-t border-border pt-6">
+                    <div className="flex items-center gap-4">
+                      <div className="text-muted-foreground text-sm">Powered by</div>
+                      <div className="flex gap-2">
+                        <div className="h-6 w-16 bg-border rounded animate-pulse" />
+                        <div className="h-6 w-16 bg-border rounded animate-pulse" />
+                      </div>
+                    </div>
+                    <Link
+                      ref={registerRef}
+                      href="#"
+                      className="px-8 py-3 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,191,99,0.25)]"
+                    >
+                      Register Now
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
                   </div>
                 </div>
-                <Link
-                  href="#"
-                  className="px-8 py-3 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,191,99,0.25)]"
-                >
-                  Register Now
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
               </div>
-            </div>
+            </StarBorder>
           </motion.div>
 
           {/* Past Hackathons */}
@@ -141,3 +156,4 @@ export function Hackathons() {
     </section>
   );
 }
+

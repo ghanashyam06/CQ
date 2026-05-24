@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,19 +14,21 @@ export function HeroScene() {
   const groupRef = useRef<THREE.Group>(null!);
   const { viewport } = useThree();
 
-  // Mouse parallax
+  // Mouse parallax with smooth lerping for a premium feel
   useFrame((state) => {
     if (!groupRef.current) return;
     const { x, y } = state.pointer;
+    
+    // Smoothly rotate the central group to follow the cursor (similar to MetaMask fox head)
     groupRef.current.rotation.y = THREE.MathUtils.lerp(
       groupRef.current.rotation.y,
-      x * 0.15,
-      0.05
+      x * 0.32, // More dynamic response range
+      0.06 // Highly fluid damping
     );
     groupRef.current.rotation.x = THREE.MathUtils.lerp(
       groupRef.current.rotation.x,
-      -y * 0.1,
-      0.05
+      -y * 0.22,
+      0.06
     );
   });
 
@@ -101,8 +103,17 @@ function RingGeometry() {
 
   useFrame((state) => {
     if (!ringRef.current) return;
-    ringRef.current.rotation.z = state.clock.elapsedTime * 0.1;
-    ringRef.current.rotation.x = Math.PI / 2 + Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
+    const { x, y } = state.pointer;
+    
+    // Constant rotation over time
+    ringRef.current.rotation.z = state.clock.elapsedTime * 0.08;
+    
+    // Counter-parallax: tilts opposite to the mouse to create deep spatial layers
+    const targetX = Math.PI / 2 + Math.sin(state.clock.elapsedTime * 0.2) * 0.05 + (y * 0.12);
+    const targetY = -x * 0.15;
+    
+    ringRef.current.rotation.x = THREE.MathUtils.lerp(ringRef.current.rotation.x, targetX, 0.05);
+    ringRef.current.rotation.y = THREE.MathUtils.lerp(ringRef.current.rotation.y, targetY, 0.05);
   });
 
   return (
