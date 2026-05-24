@@ -1,7 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Rocket, Handshake } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Rocket, Handshake, ArrowRight } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import dynamic from "next/dynamic";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const Scene3D = dynamic(
+  () => import("@/components/three/Scene3D").then((m) => ({ default: m.Scene3D })),
+  { ssr: false }
+);
+
+const HeroScene = dynamic(
+  () => import("@/components/three/HeroScene").then((m) => ({ default: m.HeroScene })),
+  { ssr: false }
+);
 
 const floatingKeywords = [
   "Build", "Innovate", "Collaborate", "Learn",
@@ -9,110 +26,178 @@ const floatingKeywords = [
 ];
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current || !contentRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.3 });
+
+      // Tagline pill
+      tl.from(".hero-tagline", {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: "power3.out",
+      });
+
+      // Headline characters
+      tl.from(".hero-headline-word", {
+        opacity: 0,
+        y: 50,
+        rotateX: -40,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: "power3.out",
+      }, "-=0.3");
+
+      // Subheadline
+      tl.from(".hero-sub", {
+        opacity: 0,
+        y: 25,
+        duration: 0.6,
+        ease: "power3.out",
+      }, "-=0.4");
+
+      // Highlight
+      tl.from(".hero-highlight", {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        ease: "power3.out",
+      }, "-=0.3");
+
+      // CTAs
+      tl.from(".hero-cta", {
+        opacity: 0,
+        y: 25,
+        stagger: 0.1,
+        duration: 0.5,
+        ease: "power3.out",
+      }, "-=0.2");
+
+      // Keywords
+      tl.from(".hero-keyword", {
+        opacity: 0,
+        scale: 0.6,
+        stagger: 0.04,
+        duration: 0.4,
+        ease: "back.out(1.5)",
+      }, "-=0.3");
+
+      // Scroll indicator
+      tl.from(".hero-scroll-indicator", {
+        opacity: 0,
+        y: -10,
+        duration: 0.5,
+        ease: "power2.out",
+      }, "-=0.2");
+
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-20 pb-12 overflow-hidden"
+      className="section-viewport relative pt-16 pb-12 overflow-hidden"
+      style={{ minHeight: "100vh" }}
     >
+      {/* 3D Background */}
+      <Scene3D camera={{ position: [0, 0, 6], fov: 60 }}>
+        <HeroScene />
+      </Scene3D>
+
       {/* Radial glow */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/8 blur-[140px] rounded-full" />
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/8 blur-[160px] rounded-full" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-
+      <div
+        ref={contentRef}
+        className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
+      >
         {/* Tagline pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs sm:text-sm font-semibold mb-6 tracking-widest uppercase"
-        >
+        <div className="hero-tagline inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs sm:text-sm font-semibold mb-8 tracking-widest uppercase neon-border">
           EXPLORE &nbsp;·&nbsp; LEARN &nbsp;·&nbsp; BUILD
-        </motion.div>
+        </div>
 
         {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
+        <h1
+          ref={headlineRef}
           className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-heading tracking-tight max-w-5xl leading-[1.1] mb-5 text-foreground"
+          style={{ perspective: "600px" }}
         >
-          Built for Students.{" "}
-          <span className="text-gradient">Powered by Builders.</span>
-        </motion.h1>
+          <span className="hero-headline-word inline-block">Built&nbsp;</span>
+          <span className="hero-headline-word inline-block">for&nbsp;</span>
+          <span className="hero-headline-word inline-block">Students.</span>
+          <br />
+          <span className="hero-headline-word inline-block text-gradient">Powered&nbsp;</span>
+          <span className="hero-headline-word inline-block text-gradient">by&nbsp;</span>
+          <span className="hero-headline-word inline-block text-gradient">Builders.</span>
+        </h1>
 
         {/* Subheadline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-3 leading-relaxed px-2"
-        >
+        <p className="hero-sub text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-3 leading-relaxed px-2">
           CodeQuesters is a builder-first ecosystem helping students, developers, founders,
           and creators grow through hackathons, workshops, collaborations, networking,
           and real-world opportunities.
-        </motion.p>
+        </p>
 
-        {/* Highlight statement */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.28 }}
-          className="text-sm sm:text-base font-semibold text-primary mb-8"
-        >
+        {/* Highlight */}
+        <p className="hero-highlight text-sm sm:text-base font-semibold text-primary mb-10 neon-text">
           We don&apos;t just build communities. We build outcomes.
-        </motion.p>
+        </p>
 
         {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-lg sm:max-w-none justify-center mb-12"
-        >
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-lg sm:max-w-none justify-center mb-14">
           <a
             href="#join"
-            className="px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)]"
+            className="hero-cta px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)] animate-pulse-glow"
           >
             <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
             Join The Community
           </a>
           <a
             href="#contact"
-            className="px-6 py-3.5 rounded-xl glass-card text-foreground font-bold text-sm sm:text-base hover:border-primary/40 transition-all flex items-center justify-center gap-2"
+            className="hero-cta px-7 py-3.5 rounded-xl glass-card text-foreground font-bold text-sm sm:text-base hover:border-primary/40 transition-all flex items-center justify-center gap-2"
           >
             <Handshake className="w-4 h-4 sm:w-5 sm:h-5" />
             Partner With Us
           </a>
           <a
             href="#stories"
-            className="px-6 py-3.5 rounded-xl text-primary font-bold text-sm sm:text-base hover:bg-primary/10 transition-all flex items-center justify-center gap-2 border border-primary/20"
+            className="hero-cta px-7 py-3.5 rounded-xl text-primary font-bold text-sm sm:text-base hover:bg-primary/10 transition-all flex items-center justify-center gap-2 border border-primary/20"
           >
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             Builder Stories
           </a>
-        </motion.div>
+        </div>
 
-        {/* Floating builder keywords */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.7 }}
-          className="flex flex-wrap justify-center gap-2 max-w-xl px-2"
-        >
-          {floatingKeywords.map((word, i) => (
-            <motion.span
+        {/* Floating keywords */}
+        <div className="flex flex-wrap justify-center gap-2 max-w-xl px-2 mb-12">
+          {floatingKeywords.map((word) => (
+            <span
               key={word}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.7 + i * 0.06 }}
-              className="px-3 py-1.5 rounded-full text-xs font-semibold border border-primary/20 text-primary/70 bg-primary/5 hover:bg-primary/15 hover:text-primary transition-all cursor-default"
+              className="hero-keyword px-3 py-1.5 rounded-full text-xs font-semibold border border-primary/20 text-primary/70 bg-primary/5 hover:bg-primary/15 hover:text-primary hover:border-primary/40 hover:shadow-[0_0_12px_rgba(0,191,99,0.2)] transition-all cursor-default"
             >
               {word}
-            </motion.span>
+            </span>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="hero-scroll-indicator flex flex-col items-center gap-2 text-muted-foreground/50">
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <div className="w-5 h-8 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
+            <div className="w-1 h-2 bg-primary rounded-full animate-bounce" />
+          </div>
+        </div>
       </div>
     </section>
   );

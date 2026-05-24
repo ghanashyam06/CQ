@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import { ParticlesBackground } from "@/components/ParticlesBackground";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -39,12 +38,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Fixed particles layer — behind everything */}
-          <ParticlesBackground />
-
           <Navbar />
 
-          {/* z-10 so content sits above particles */}
+          {/* z-10 so content sits above any background layers */}
           <main className="relative z-10 min-h-screen">
             {children}
           </main>

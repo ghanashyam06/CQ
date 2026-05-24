@@ -1,7 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const struggles = [
   "Lack of guidance",
@@ -12,8 +18,75 @@ const struggles = [
 ];
 
 export function AboutSnapshot() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Left column reveal
+      gsap.from(".about-left", {
+        opacity: 0,
+        x: -60,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Right column reveal
+      gsap.from(".about-right", {
+        opacity: 0,
+        x: 60,
+        duration: 0.8,
+        delay: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Struggle items stagger
+      gsap.from(".struggle-item", {
+        opacity: 0,
+        x: 20,
+        stagger: 0.08,
+        duration: 0.5,
+        delay: 0.3,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Solution card
+      gsap.from(".about-solution", {
+        opacity: 0,
+        y: 30,
+        scale: 0.95,
+        duration: 0.6,
+        delay: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 65%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} id="about" className="py-24 relative overflow-hidden">
       {/* Subtle glow */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -21,12 +94,7 @@ export function AboutSnapshot() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
 
           {/* Left — narrative */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="about-left">
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
               About Us
             </p>
@@ -42,45 +110,33 @@ export function AboutSnapshot() {
               We saw students struggling — so we built an ecosystem where builders
               don&apos;t just learn. They execute, collaborate, grow, and create impact together.
             </p>
-
-            {/* Highlight line */}
             <div className="border-l-2 border-primary pl-4 py-1">
               <p className="text-foreground font-semibold italic">
                 &ldquo;Most communities share content. CodeQuesters creates outcomes.&rdquo;
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right — struggles + solution */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-6"
-          >
+          <div className="about-right space-y-6">
             <div className="glass-card p-6 border border-border">
               <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
                 We saw students struggling with:
               </p>
               <ul className="space-y-3">
                 {struggles.map((s, i) => (
-                  <motion.li
+                  <li
                     key={i}
-                    initial={{ opacity: 0, x: 16 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 + i * 0.08 }}
-                    className="flex items-center gap-3 text-muted-foreground text-sm"
+                    className="struggle-item flex items-center gap-3 text-muted-foreground text-sm"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/50 shrink-0" />
                     {s}
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
             </div>
 
-            <div className="glass-card p-6 border border-primary/20 bg-primary/5">
+            <div className="about-solution glass-card p-6 border border-primary/20 bg-primary/5 neon-border">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>
@@ -92,7 +148,7 @@ export function AboutSnapshot() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

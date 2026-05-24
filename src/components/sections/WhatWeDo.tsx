@@ -1,8 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { Trophy, BookOpen, Network, Briefcase, Users, Lightbulb } from "lucide-react";
-import { Text3DReveal } from "@/components/ui/Text3DReveal";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const features = [
   {
@@ -38,73 +43,100 @@ const features = [
 ];
 
 export function WhatWeDo() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Heading reveal
+      gsap.from(".services-label", {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".services-heading", {
+        opacity: 0,
+        y: 30,
+        duration: 0.7,
+        delay: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".services-sub", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        delay: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Cards stagger from bottom
+      gsap.from(".service-card", {
+        opacity: 0,
+        y: 50,
+        stagger: 0.1,
+        duration: 0.6,
+        delay: 0.3,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".service-cards-grid",
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} id="events" className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* ── Section heading with 3D text reveal ── */}
-        <div className="text-center mb-16 overflow-hidden">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4"
-          >
+        <div className="text-center mb-16">
+          <p className="services-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
             What We Do
-          </motion.p>
-
-          {/* 3D flip-in heading — two lines, each with its own stagger */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4 leading-tight">
-            {/* Line 1: "Built Around" */}
-            <span className="block mb-1">
-              <Text3DReveal
-                text="Built Around"
-                delay={0}
-                stagger={0.12}
-                className="text-foreground"
-              />
-            </span>
-            {/* Line 2: "Builder Growth" — gradient, slightly delayed */}
-            <span className="block">
-              <Text3DReveal
-                text="Builder Growth"
-                delay={0.28}
-                stagger={0.12}
-                className="text-gradient"
-              />
-            </span>
+          </p>
+          <h2 className="services-heading text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4 leading-tight">
+            Built Around{" "}
+            <span className="text-gradient">Builder Growth</span>
           </h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-            className="text-muted-foreground max-w-xl mx-auto"
-          >
+          <p className="services-sub text-muted-foreground max-w-xl mx-auto">
             Every initiative is designed with one goal — helping builders grow through execution.
-          </motion.p>
+          </p>
         </div>
 
-        {/* ── Feature cards ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
+        <div className="service-cards-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
           {features.map((f, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="glass-card p-7 group hover:-translate-y-2 transition-transform duration-300 border border-border hover:border-primary/30"
+              className="service-card glass-card p-7 group hover:-translate-y-2 transition-all duration-300 border border-border hover:border-primary/30 hover:shadow-[0_0_30px_rgba(0,191,99,0.1)] cursor-default"
             >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.2)] transition-all duration-300">
                 <f.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                 {f.title}
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{f.description}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

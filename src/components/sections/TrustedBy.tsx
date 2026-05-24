@@ -1,9 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { LogoLoop } from "@/components/ui/LogoLoop";
 import { FaMicrosoft, FaGithub } from "react-icons/fa6";
 import { Users, Building2, Rocket, GraduationCap, Network, Lightbulb } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const partnerCategories = [
   { label: "SummerSaaS", icon: <Rocket className="w-5 h-5" /> },
@@ -16,11 +22,10 @@ const partnerCategories = [
   { label: "Student Clubs", icon: <Users className="w-5 h-5" /> },
 ];
 
-// Duplicate for seamless loop
 const logos = [
   ...partnerCategories,
   ...partnerCategories,
-].map((p, i) => ({
+].map((p) => ({
   node: (
     <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
       {p.icon}
@@ -32,40 +37,69 @@ const logos = [
 }));
 
 export function TrustedBy() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from(".trusted-label", {
+        opacity: 0, y: 20, duration: 0.5, ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".trusted-heading", {
+        opacity: 0, y: 25, duration: 0.6, delay: 0.1, ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".trusted-sub", {
+        opacity: 0, y: 20, duration: 0.5, delay: 0.15, ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".trusted-loop", {
+        opacity: 0, duration: 0.8, delay: 0.3, ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }, sectionRef.current);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-20 relative border-y border-border overflow-hidden">
+    <section ref={sectionRef} className="py-20 relative border-y border-border overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground mb-2"
-        >
+        <p className="trusted-label text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground mb-2">
           Trusted By
-        </motion.p>
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="text-2xl md:text-3xl font-bold text-foreground"
-        >
+        </p>
+        <h2 className="trusted-heading text-2xl md:text-3xl font-bold text-foreground">
           Builders, Communities &amp;{" "}
           <span className="text-gradient">Innovators</span>
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.15 }}
-          className="text-muted-foreground mt-3 max-w-xl mx-auto text-sm"
-        >
+        </h2>
+        <p className="trusted-sub text-muted-foreground mt-3 max-w-xl mx-auto text-sm">
           CodeQuesters collaborates with hackathons, student communities, startups,
           institutions, and industry professionals to create meaningful opportunities for builders.
-        </motion.p>
+        </p>
       </div>
 
-      <div className="relative w-full overflow-hidden flex flex-col gap-6">
+      <div className="trusted-loop relative w-full overflow-hidden flex flex-col gap-6">
         <LogoLoop
           logos={logos}
           speed={100}
