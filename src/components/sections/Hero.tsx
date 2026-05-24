@@ -5,6 +5,7 @@ import { Rocket, Handshake, ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
+import { useMagnetic } from "@/hooks/useMagnetic";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -29,6 +30,11 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Initialize magnetic buttons
+  const cta1Ref = useMagnetic<HTMLAnchorElement>(0.25, 65);
+  const cta2Ref = useMagnetic<HTMLAnchorElement>(0.2, 65);
+  const cta3Ref = useMagnetic<HTMLAnchorElement>(0.2, 65);
 
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current) return;
@@ -96,6 +102,20 @@ export function Hero() {
         ease: "power2.out",
       }, "-=0.2");
 
+      // Gentle floating animation for keyword badges
+      gsap.utils.toArray(".hero-keyword").forEach((el, i) => {
+        const htmlEl = el as HTMLElement;
+        gsap.to(htmlEl, {
+          y: "random(-6, 6)",
+          x: "random(-4, 4)",
+          duration: "random(2.5, 4)",
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: i * 0.08,
+        });
+      });
+
     }, sectionRef.current);
 
     return () => ctx.revert();
@@ -157,6 +177,7 @@ export function Hero() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-lg sm:max-w-none justify-center mb-14">
           <a
+            ref={cta1Ref}
             href="#join"
             className="hero-cta px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)] animate-pulse-glow"
           >
@@ -164,6 +185,7 @@ export function Hero() {
             Join The Community
           </a>
           <a
+            ref={cta2Ref}
             href="#contact"
             className="hero-cta px-7 py-3.5 rounded-xl glass-card text-foreground font-bold text-sm sm:text-base hover:border-primary/40 transition-all flex items-center justify-center gap-2"
           >
@@ -171,6 +193,7 @@ export function Hero() {
             Partner With Us
           </a>
           <a
+            ref={cta3Ref}
             href="#stories"
             className="hero-cta px-7 py-3.5 rounded-xl text-primary font-bold text-sm sm:text-base hover:bg-primary/10 transition-all flex items-center justify-center gap-2 border border-primary/20"
           >

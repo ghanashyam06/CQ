@@ -51,6 +51,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
   }
 
   body {
@@ -78,6 +79,51 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 191, 99, 0.5);
   }
+}
+
+/* ─── Premium Noise Overlay ─── */
+.section-noise {
+  position: relative;
+}
+
+.section-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+  background-image: repeating-radial-gradient(circle, #000 0%, #000 0.0001%, transparent 0.0001%, transparent 60%);
+  background-size: 2px 2px;
+}
+
+.dark .section-noise::before {
+  opacity: 0.045;
+  background-image: repeating-radial-gradient(circle, #fff 0%, #fff 0.0001%, transparent 0.0001%, transparent 60%);
+}
+
+/* ─── Glowing Gradient Dividers ─── */
+.glow-line {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 99, 0.4) 50%, transparent);
+  position: relative;
+}
+
+.glow-line::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 4px;
+  background: #00BF63;
+  filter: blur(4px);
+  border-radius: 50%;
+  opacity: 0.7;
 }
 
 /* ─── Glass Cards ─── */
@@ -238,9 +284,36 @@
   pointer-events: auto;
 }
 
+/* ─── Star Border Spin ─── */
+@keyframes spin-border {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Custom Cursor (desktop only) ─── */
+@media (pointer: fine) {
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
 /* ─── Section Divider ─── */
 .section-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border), transparent);
   margin: 0;
 }
+
+/* ─── ReactBits Animations ─── */
+@keyframes gradient-sweep {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+.animate-gradient-sweep {
+  background-size: 200% auto;
+  animation: gradient-sweep 8s linear infinite;
+}
+

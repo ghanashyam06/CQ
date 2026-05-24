@@ -8,7 +8,10 @@ import CircularGallery from "@/components/ui/CircularGallery";
 export function Testimonials() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const items = [
     { image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80", text: "Rohan S. - Built 3 projects" },

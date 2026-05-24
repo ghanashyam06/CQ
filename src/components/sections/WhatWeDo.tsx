@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react";
 import { Trophy, BookOpen, Network, Briefcase, Users, Lightbulb } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { use3DTilt } from "@/hooks/use3DTilt";
+import StarBorder from "@/components/ui/StarBorder";
+import SpotlightCard from "@/components/ui/SpotlightCard";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -41,6 +44,35 @@ const features = [
     description: "Building future-focused products, platforms, and tools that create real impact.",
   },
 ];
+
+interface ServiceCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+}
+
+function ServiceCard({ icon: Icon, title, description }: ServiceCardProps) {
+  const cardRef = use3DTilt<HTMLDivElement>(10, 1000);
+
+  return (
+    <StarBorder speed="6s">
+      <SpotlightCard className="p-0 border-none bg-transparent rounded-none h-full" spotlightColor="rgba(0, 191, 99, 0.12)" spotlightSize={200}>
+        <div
+          ref={cardRef}
+          className="service-card p-7 group cursor-default h-full"
+        >
+          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.2)] transition-all duration-300">
+            <Icon className="w-6 h-6 text-primary" />
+          </div>
+          <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+            {title}
+          </h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+        </div>
+      </SpotlightCard>
+    </StarBorder>
+  );
+}
 
 export function WhatWeDo() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -125,18 +157,12 @@ export function WhatWeDo() {
 
         <div className="service-cards-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
           {features.map((f, i) => (
-            <div
+            <ServiceCard
               key={i}
-              className="service-card glass-card p-7 group hover:-translate-y-2 transition-all duration-300 border border-border hover:border-primary/30 hover:shadow-[0_0_30px_rgba(0,191,99,0.1)] cursor-default"
-            >
-              <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.2)] transition-all duration-300">
-                <f.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                {f.title}
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{f.description}</p>
-            </div>
+              icon={f.icon}
+              title={f.title}
+              description={f.description}
+            />
           ))}
         </div>
       </div>

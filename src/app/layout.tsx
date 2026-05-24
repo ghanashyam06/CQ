@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import ClientShell from "@/components/ClientShell";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -38,15 +39,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
+          <ClientShell>
+            <Navbar />
 
-          {/* z-10 so content sits above any background layers */}
-          <main className="relative z-10 min-h-screen">
-            {children}
-          </main>
+            {/* z-10 so content sits above any background layers */}
+            <main className="relative z-10 min-h-screen">
+              {children}
+            </main>
 
-          <Footer />
-          <ScrollToTop />
+            <Footer />
+            <ScrollToTop />
+          </ClientShell>
         </ThemeProvider>
       </body>
     </html>

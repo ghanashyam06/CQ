@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { use3DTilt } from "@/hooks/use3DTilt";
+
+import Threads from "@/components/ui/Threads";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -19,6 +22,8 @@ const struggles = [
 
 export function AboutSnapshot() {
   const sectionRef = useRef<HTMLElement>(null);
+  const strugglesCardRef = use3DTilt<HTMLDivElement>(8, 1000);
+  const solutionCardRef = use3DTilt<HTMLDivElement>(8, 1000);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -87,6 +92,9 @@ export function AboutSnapshot() {
 
   return (
     <section ref={sectionRef} id="about" className="py-24 relative overflow-hidden">
+      {/* Threads Canvas Background */}
+      <Threads color="rgba(0, 191, 99, 0.06)" count={6} speed={0.4} />
+
       {/* Subtle glow */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -119,7 +127,11 @@ export function AboutSnapshot() {
 
           {/* Right — struggles + solution */}
           <div className="about-right space-y-6">
-            <div className="glass-card p-6 border border-border">
+            <div
+              ref={strugglesCardRef}
+              className="glass-card p-6 border border-border"
+              style={{ willChange: "transform" }}
+            >
               <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
                 We saw students struggling with:
               </p>
@@ -136,7 +148,11 @@ export function AboutSnapshot() {
               </ul>
             </div>
 
-            <div className="about-solution glass-card p-6 border border-primary/20 bg-primary/5 neon-border">
+            <div
+              ref={solutionCardRef}
+              className="about-solution glass-card p-6 border border-primary/20 bg-primary/5 neon-border"
+              style={{ willChange: "transform" }}
+            >
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div>

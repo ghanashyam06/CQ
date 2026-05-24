@@ -3,15 +3,53 @@
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { FaDiscord, FaGithub, FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import { useMagnetic } from "@/hooks/useMagnetic";
+import { LucideIcon } from "lucide-react";
+import { IconType } from "react-icons";
+
+interface Platform {
+  name: string;
+  icon: LucideIcon | IconType;
+  color: string;
+  members: string;
+  delay: number;
+  href: string;
+}
+
+function PlatformCard({ platform }: { platform: Platform }) {
+  const cardRef = useMagnetic<HTMLAnchorElement>(0.3, 40);
+
+  return (
+    <motion.a
+      ref={cardRef}
+      href={platform.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: platform.delay }}
+      className="glass-card p-6 flex flex-col items-center justify-center gap-4 group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,99,0.3)] cursor-pointer"
+    >
+      <div className={`w-12 h-12 rounded-full ${platform.color} flex items-center justify-center text-white`}>
+        <platform.icon className="w-6 h-6" />
+      </div>
+      <div className="text-center">
+        <div className="font-bold text-foreground group-hover:text-primary transition-colors">{platform.name}</div>
+        <div className="text-sm text-muted-foreground font-medium">{platform.members}</div>
+      </div>
+    </motion.a>
+  );
+}
 
 export function CommunityEcosystem() {
-  const platforms = [
-    { name: "WhatsApp", icon: MessageCircle, color: "bg-green-500", members: "10K+", delay: 0.1 },
-    { name: "Discord", icon: FaDiscord, color: "bg-indigo-500", members: "8K+", delay: 0.2 },
-    { name: "LinkedIn", icon: FaLinkedin, color: "bg-blue-600", members: "15K+", delay: 0.3 },
-    { name: "Twitter/X", icon: FaXTwitter, color: "bg-neutral-800 dark:bg-neutral-200 dark:text-neutral-900", members: "5K+", delay: 0.4 },
-    { name: "GitHub", icon: FaGithub, color: "bg-slate-800", members: "1K+", delay: 0.5 },
-    { name: "YouTube", icon: FaYoutube, color: "bg-red-600", members: "12K+", delay: 0.6 },
+  const platforms: Platform[] = [
+    { name: "WhatsApp", icon: MessageCircle, color: "bg-green-500", members: "10K+", delay: 0.1, href: "https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I" },
+    { name: "Discord", icon: FaDiscord, color: "bg-indigo-500", members: "8K+", delay: 0.2, href: "https://discord.gg/cq" },
+    { name: "LinkedIn", icon: FaLinkedin, color: "bg-blue-600", members: "15K+", delay: 0.3, href: "https://www.linkedin.com/company/codequesters" },
+    { name: "Twitter/X", icon: FaXTwitter, color: "bg-neutral-800 dark:bg-neutral-200 dark:text-neutral-900", members: "5K+", delay: 0.4, href: "https://x.com/" },
+    { name: "GitHub", icon: FaGithub, color: "bg-slate-800", members: "1K+", delay: 0.5, href: "https://github.com/" },
+    { name: "YouTube", icon: FaYoutube, color: "bg-red-600", members: "12K+", delay: 0.6, href: "https://youtube.com/" },
   ];
 
   return (
@@ -39,23 +77,7 @@ export function CommunityEcosystem() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {platforms.map((platform, index) => (
-            <motion.a
-              key={index}
-              href="#"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: platform.delay }}
-              className={`glass-card p-6 flex flex-col items-center justify-center gap-4 group hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,191,99,0.3)]`}
-            >
-              <div className={`w-12 h-12 rounded-full ${platform.color} flex items-center justify-center text-white`}>
-                <platform.icon className="w-6 h-6" />
-              </div>
-              <div className="text-center">
-                <div className="font-bold text-foreground group-hover:text-primary transition-colors">{platform.name}</div>
-                <div className="text-sm text-muted-foreground font-medium">{platform.members}</div>
-              </div>
-            </motion.a>
+            <PlatformCard key={index} platform={platform} />
           ))}
         </div>
       </div>

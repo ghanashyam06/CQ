@@ -2,9 +2,46 @@
 
 import { motion } from "framer-motion";
 import { Laptop, Network, Target, Lightbulb, Globe, Award } from "lucide-react";
+import { use3DTilt } from "@/hooks/use3DTilt";
+import GlitchText from "@/components/ui/GlitchText";
+import { LucideIcon } from "lucide-react";
+
+interface Feature {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  color: string;
+  bg: string;
+}
+
+function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
+  const cardRef = use3DTilt<HTMLDivElement>(6, 1000);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="glass-card p-8 group transition-transform duration-300 flex flex-col h-full cursor-default"
+      style={{ willChange: "transform" }}
+    >
+      <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+        <feature.icon className={`w-7 h-7 ${feature.color}`} />
+      </div>
+      <h3 className="text-xl font-bold text-foreground mb-3">
+        <GlitchText text={feature.title} triggerOn="hover" className="font-bold text-foreground" />
+      </h3>
+      <p className="text-muted-foreground leading-relaxed">
+        {feature.description}
+      </p>
+    </motion.div>
+  );
+}
 
 export function WhyJoin() {
-  const features = [
+  const features: Feature[] = [
     {
       title: "Real-World Experience",
       description: "Build production-ready projects that go way beyond your standard college curriculum.",
@@ -74,22 +111,7 @@ export function WhyJoin() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="glass-card p-8 group hover:-translate-y-2 transition-transform duration-300"
-            >
-              <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <feature.icon className={`w-7 h-7 ${feature.color}`} />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </motion.div>
+            <FeatureCard key={index} feature={feature} index={index} />
           ))}
         </div>
       </div>
