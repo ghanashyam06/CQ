@@ -95,7 +95,7 @@ export function TrustedBy() {
         </h2>
         <p className="trusted-sub text-muted-foreground mt-3 max-w-xl mx-auto text-sm">
           CodeQuesters collaborates with hackathons, student communities, startups,
-          institutions, and industry professionals to create meaningful opportunities for builders.
+          institutions, and industry professionals to create meaningful opportunities for everyone.
         </p>
       </div>
 

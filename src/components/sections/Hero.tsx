@@ -165,14 +165,12 @@ export function Hero() {
 
         {/* Subheadline */}
         <p className="hero-sub text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-3 leading-relaxed px-2">
-          CodeQuesters is a builder-first ecosystem helping students, developers, founders,
-          and creators grow through hackathons, workshops, collaborations, networking,
-          and real-world opportunities.
+          CodeQuesters is a builder-first ecosystem where students grow, developers launch and founders get discovered.
         </p>
 
         {/* Highlight */}
         <p className="hero-highlight text-sm sm:text-base font-semibold text-primary mb-10 neon-text">
-          We don&apos;t just build communities. We build outcomes.
+          Be the game changer. Execute with CodeQuesters.
         </p>
 
         {/* CTAs */}

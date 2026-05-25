@@ -15,13 +15,13 @@ if (typeof window !== "undefined") {
 const principles = [
   {
     icon: Star,
-    title: "Best Experience",
+    title: "Meaningful Experiences",
     description:
       "Premium hackathons, workshops, networking, and builder experiences designed to create lasting impact.",
   },
   {
     icon: Telescope,
-    title: "Best Exposure",
+    title: "Real Exposure",
     description:
       "Connecting builders with founders, startups, mentors, and opportunities that accelerate real growth.",
   },
@@ -29,7 +29,7 @@ const principles = [
     icon: Zap,
     title: "Creating Impact",
     description:
-      "Building growth through execution, contribution, and innovation — not just content consumption.",
+      "Building growth through execution, contribution, and innovation not just content consumption.",
   },
 ];
 
