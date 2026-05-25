@@ -1,74 +1,154 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Mail, MessageCircle, Send, MapPin } from "lucide-react";
+import { Mail, MessageCircle, Send, MapPin, CheckCircle2, Loader2 } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaLinkedin, FaGithub, FaXTwitter } from "react-icons/fa6";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SpotlightCard from "@/components/ui/SpotlightCard";
-import BorderGlow from "@/components/ui/BorderGlow";
+import MagicBento, { type MagicBentoItem } from "@/components/ui/MagicBento";
+import SocialIconBtn from "@/components/ui/SocialIconBtn";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const socials = [
+  { icon: FaWhatsapp,  href: "https://whatsapp.com/channel/0029VbAjqOJFXUuja0h4G00j", label: "WhatsApp" },
+  { icon: FaInstagram, href: "https://www.instagram.com/codequesters",                label: "Instagram" },
+  { icon: FaLinkedin,  href: "https://www.linkedin.com/company/codequesters",         label: "LinkedIn" },
+  { icon: FaGithub,    href: "https://github.com/",                                   label: "GitHub" },
+  { icon: FaXTwitter,  href: "https://x.com/",                                        label: "Twitter/X" },
+];
+
+/* ── Animated input — glows green on focus ── */
+function FormField({
+  id, label, type = "text", value, onChange, placeholder, required, rows,
+}: {
+  id: string; label: string; type?: string; value: string;
+  onChange: (v: string) => void; placeholder: string; required?: boolean; rows?: number;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  const onFocus = () => {
+    if (!wrapRef.current) return;
+    gsap.to(wrapRef.current, {
+      boxShadow: "0 0 0 2px rgba(0,191,99,0.45), 0 0 20px rgba(0,191,99,0.15)",
+      borderColor: "rgba(0,191,99,0.6)",
+      duration: 0.25,
+      ease: "power2.out",
+    });
+  };
+
+  const onBlur = () => {
+    if (!wrapRef.current) return;
+    gsap.to(wrapRef.current, {
+      boxShadow: "0 0 0 0px rgba(0,191,99,0)",
+      borderColor: "var(--border)",
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  };
+
+  const baseClass =
+    "w-full px-4 py-3 bg-background text-foreground placeholder:text-muted-foreground/40 text-sm outline-none resize-none";
+
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-semibold text-foreground mb-2">
+        {label}
+      </label>
+      <div
+        ref={wrapRef}
+        className="rounded-xl border overflow-hidden transition-colors"
+        style={{ borderColor: "var(--border)" }}
+      >
+        {rows ? (
+          <textarea
+            id={id} rows={rows} value={value} placeholder={placeholder} required={required}
+            onChange={(e) => onChange(e.target.value)}
+            onFocus={onFocus} onBlur={onBlur}
+            className={baseClass}
+          />
+        ) : (
+          <input
+            id={id} type={type} value={value} placeholder={placeholder} required={required}
+            onChange={(e) => onChange(e.target.value)}
+            onFocus={onFocus} onBlur={onBlur}
+            className={baseClass}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
 
+  /* ── Entrance animations ── */
   useEffect(() => {
     if (!sectionRef.current) return;
-
     const ctx = gsap.context(() => {
-      gsap.from(".contact-label", {
-        opacity: 0, y: 20, duration: 0.5, ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".contact-heading", {
-        opacity: 0, y: 30, duration: 0.7, delay: 0.1, ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".contact-left", {
-        opacity: 0, x: -50, duration: 0.7, delay: 0.2, ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".contact-right", {
-        opacity: 0, x: 50, duration: 0.7, delay: 0.3, ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      const st = { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none reverse" };
+      gsap.from(".contact-label",   { opacity: 0, y: 20, duration: 0.5, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".contact-heading", { opacity: 0, y: 30, duration: 0.7, delay: 0.1, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".contact-left",    { opacity: 0, x: -50, duration: 0.7, delay: 0.2, ease: "power3.out", scrollTrigger: { ...st, start: "top 75%" } });
+      gsap.from(".contact-right",   { opacity: 0, x: 50,  duration: 0.7, delay: 0.3, ease: "power3.out", scrollTrigger: { ...st, start: "top 75%" } });
     }, sectionRef.current);
-
     return () => ctx.revert();
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission logic
-    const mailtoLink = `mailto:hello@codequesters.com?subject=Contact from ${formState.name}&body=${encodeURIComponent(formState.message)}%0A%0AFrom: ${formState.email}`;
-    window.open(mailtoLink, "_blank");
+    setStatus("sending");
+    // Simulate brief delay then open mailto
+    setTimeout(() => {
+      const mailtoLink = `mailto:hello@codequesters.com?subject=Contact from ${encodeURIComponent(formState.name)}&body=${encodeURIComponent(formState.message)}%0A%0AFrom: ${encodeURIComponent(formState.email)}`;
+      window.open(mailtoLink, "_blank");
+      setStatus("sent");
+      setTimeout(() => setStatus("idle"), 3000);
+    }, 600);
+  };
+
+  /* ── MagicBento item wrapping the form ── */
+  const formItem: MagicBentoItem = {
+    title: "",
+    description: "",
+    children: (
+      <form onSubmit={handleSubmit} className="space-y-5 py-2">
+        <FormField
+          id="contact-name" label="Your Name" value={formState.name}
+          onChange={(v) => setFormState((s) => ({ ...s, name: v }))}
+          placeholder="Enter your full name" required
+        />
+        <FormField
+          id="contact-email" label="Email Address" type="email" value={formState.email}
+          onChange={(v) => setFormState((s) => ({ ...s, email: v }))}
+          placeholder="Enter your email" required
+        />
+        <FormField
+          id="contact-message" label="Message" value={formState.message}
+          onChange={(v) => setFormState((s) => ({ ...s, message: v }))}
+          placeholder="Tell us what you're looking for..." required rows={5}
+        />
+
+        <button
+          type="submit"
+          disabled={status !== "idle"}
+          className="w-full px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm
+            hover:bg-primary/90 transition-all flex items-center justify-center gap-2
+            shadow-[0_0_20px_rgba(0,191,99,0.3)] hover:shadow-[0_0_30px_rgba(0,191,99,0.5)]
+            disabled:opacity-70 disabled:cursor-not-allowed"
+        >
+          {status === "sending" && <Loader2 className="w-4 h-4 animate-spin" />}
+          {status === "sent"    && <CheckCircle2 className="w-4 h-4" />}
+          {status === "idle"    && <Send className="w-4 h-4" />}
+          {status === "sending" ? "Sending…" : status === "sent" ? "Message Sent!" : "Send Message"}
+        </button>
+      </form>
+    ),
   };
 
   return (
@@ -77,6 +157,7 @@ export function ContactSection() {
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Heading */}
         <div className="text-center mb-16">
           <p className="contact-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
             Get In Touch
@@ -87,144 +168,96 @@ export function ContactSection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 max-w-6xl mx-auto">
-          {/* Left — Info */}
+
+          {/* ── Left — Info ── */}
           <div className="contact-left space-y-8">
             <div>
-              <h3 className="text-xl font-bold text-foreground mb-4">Reach Out To Us</h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <h3 className="text-xl font-bold text-foreground mb-3">Reach Out To Us</h3>
+              <p className="text-muted-foreground leading-relaxed text-sm">
                 Whether you&apos;re a student looking to join, a company wanting to partner,
                 or a creator exploring collaborations — we&apos;re always open to meaningful conversations.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <a
+            {/* Contact info rows — icon + text inline */}
+            <div className="space-y-3">
+              {/* Email */}
+              <SocialIconBtn
                 href="mailto:hello@codequesters.com"
-                className="block group"
+                label="Email Us"
+                newTab={false}
+                className="!w-full !h-auto !rounded-xl p-4 gap-4 border border-border bg-card
+                  hover:border-primary/30 hover:shadow-[0_0_16px_rgba(0,191,99,0.08)] group"
               >
-                <SpotlightCard className="flex items-center gap-4 border border-border hover:border-primary/30 transition-all p-4" spotlightColor="rgba(0, 191, 99, 0.1)">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all">
-                    <Mail className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Email Us</p>
-                    <p className="text-xs text-muted-foreground">hello@codequesters.com</p>
-                  </div>
-                </SpotlightCard>
-              </a>
+                <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0
+                  group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                  <Mail className="w-5 h-5 text-primary" />
+                </span>
+                <span className="flex items-center gap-3 min-w-0">
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">Email Us</span>
+                  <span className="text-border">·</span>
+                  <span className="text-sm text-muted-foreground truncate">hello@codequesters.com</span>
+                </span>
+              </SocialIconBtn>
 
-              <a
+              {/* WhatsApp */}
+              <SocialIconBtn
                 href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group"
+                label="WhatsApp Community"
+                className="!w-full !h-auto !rounded-xl p-4 gap-4 border border-border bg-card
+                  hover:border-primary/30 hover:shadow-[0_0_16px_rgba(0,191,99,0.08)] group"
               >
-                <SpotlightCard className="flex items-center gap-4 border border-border hover:border-primary/30 transition-all p-4" spotlightColor="rgba(0, 191, 99, 0.1)">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all">
-                    <MessageCircle className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">WhatsApp Community</p>
-                    <p className="text-xs text-muted-foreground">Join our active builder group</p>
-                  </div>
-                </SpotlightCard>
-              </a>
+                <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0
+                  group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                  <MessageCircle className="w-5 h-5 text-primary" />
+                </span>
+                <span className="flex items-center gap-3 min-w-0">
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">WhatsApp Community</span>
+                  <span className="text-border">·</span>
+                  <span className="text-sm text-muted-foreground truncate">Join our active builder group</span>
+                </span>
+              </SocialIconBtn>
 
-              <SpotlightCard className="flex items-center gap-4 border border-border p-4" spotlightColor="rgba(0, 191, 99, 0.1)">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              {/* Location — not clickable, plain row */}
+              <div className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Based in India</p>
-                  <p className="text-xs text-muted-foreground">Building globally 🌍</p>
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">Based in India</span>
+                  <span className="text-border">·</span>
+                  <span className="text-sm text-muted-foreground">Building globally 🌍</span>
                 </div>
-              </SpotlightCard>
+              </div>
             </div>
 
             {/* Social links */}
             <div>
               <p className="text-sm font-semibold text-foreground mb-3">Follow Us</p>
-              <div className="flex gap-3">
-                {[
-                  { icon: FaWhatsapp, href: "https://whatsapp.com/channel/0029VbAjqOJFXUuja0h4G00j", label: "WhatsApp" },
-                  { icon: FaInstagram, href: "https://www.instagram.com/codequesters", label: "Instagram" },
-                  { icon: FaLinkedin, href: "https://www.linkedin.com/company/codequesters", label: "LinkedIn" },
-                  { icon: FaGithub, href: "https://github.com/", label: "GitHub" },
-                  { icon: FaXTwitter, href: "https://x.com/", label: "Twitter/X" },
-                ].map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_12px_rgba(0,191,99,0.15)] transition-all"
-                  >
-                    <social.icon className="w-4 h-4" />
-                  </a>
+              <div className="flex gap-3 flex-wrap">
+                {socials.map((s) => (
+                  <SocialIconBtn key={s.label} href={s.href} label={s.label} size={40}>
+                    <s.icon className="w-4 h-4" />
+                  </SocialIconBtn>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right — Form */}
+          {/* ── Right — Form wrapped in MagicBento ── */}
           <div className="contact-right">
-            <BorderGlow borderRadius="1rem" glowColor="#00bf63" glowSize={180}>
-              <form onSubmit={handleSubmit} className="p-8 space-y-5">
-                <div>
-                  <label htmlFor="contact-name" className="block text-sm font-semibold text-foreground mb-2">
-                    Your Name
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    value={formState.name}
-                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    placeholder="Enter your full name"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="contact-email" className="block text-sm font-semibold text-foreground mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    value={formState.email}
-                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                    placeholder="Enter your email"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="contact-message" className="block text-sm font-semibold text-foreground mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="contact-message"
-                    rows={5}
-                    value={formState.message}
-                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                    placeholder="Tell us what you're looking for..."
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all text-sm resize-none"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,191,99,0.3)] hover:shadow-[0_0_30px_rgba(0,191,99,0.5)]"
-                >
-                  <Send className="w-4 h-4" />
-                  Send Message
-                </button>
-              </form>
-            </BorderGlow>
+            <MagicBento
+              items={[formItem]}
+              gridCols="1fr"
+              enableStars
+              enableSpotlight
+              enableBorderGlow
+              enableTilt={false}
+              enableMagnetism={false}
+              clickEffect={false}
+              spotlightRadius={350}
+              particleCount={10}
+            />
           </div>
         </div>
       </div>

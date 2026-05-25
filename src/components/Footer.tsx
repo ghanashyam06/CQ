@@ -8,6 +8,7 @@ import { Mail, MessageCircle } from "lucide-react";
 import { FaGithub, FaLinkedin, FaXTwitter, FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SocialIconBtn from "@/components/ui/SocialIconBtn";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -65,11 +66,11 @@ export function Footer() {
               opportunities, collaboration, innovation, and execution.
             </p>
             <div className="flex gap-3 pt-2">
-              <a href="https://whatsapp.com/channel/0029VbAjqOJFXUuja0h4G00j" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,191,99,0.15)] transition-all"><FaWhatsapp className="w-4 h-4" /></a>
-              <a href="https://www.instagram.com/codequesters" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,191,99,0.15)] transition-all"><FaInstagram className="w-4 h-4" /></a>
-              <a href="https://www.linkedin.com/company/codequesters" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,191,99,0.15)] transition-all"><FaLinkedin className="w-4 h-4" /></a>
-              <a href="https://github.com/" aria-label="GitHub" className="w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,191,99,0.15)] transition-all"><FaGithub className="w-4 h-4" /></a>
-              <a href="https://x.com/" aria-label="Twitter/X" className="w-9 h-9 rounded-lg bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,191,99,0.15)] transition-all"><FaXTwitter className="w-4 h-4" /></a>
+              <SocialIconBtn href="https://whatsapp.com/channel/0029VbAjqOJFXUuja0h4G00j" label="WhatsApp Channel" size={36}><FaWhatsapp className="w-4 h-4" /></SocialIconBtn>
+              <SocialIconBtn href="https://www.instagram.com/codequesters" label="Instagram" size={36}><FaInstagram className="w-4 h-4" /></SocialIconBtn>
+              <SocialIconBtn href="https://www.linkedin.com/company/codequesters" label="LinkedIn" size={36}><FaLinkedin className="w-4 h-4" /></SocialIconBtn>
+              <SocialIconBtn href="https://github.com/" label="GitHub" size={36}><FaGithub className="w-4 h-4" /></SocialIconBtn>
+              <SocialIconBtn href="https://x.com/" label="Twitter/X" size={36}><FaXTwitter className="w-4 h-4" /></SocialIconBtn>
             </div>
           </div>
 
@@ -112,16 +113,25 @@ export function Footer() {
             <h4 className="font-semibold text-foreground mb-6">Contact</h4>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:hello@codequesters.com" className="flex items-center gap-2 text-muted-foreground hover:text-primary text-sm transition-colors">
-                  <Mail className="w-4 h-4" />
-                  hello@codequesters.com
-                </a>
+                <SocialIconBtn
+                  href="mailto:hello@codequesters.com"
+                  label="Email"
+                  newTab={false}
+                  className="!w-auto !h-auto !rounded-none !bg-transparent !border-none !shadow-none px-0 py-0 gap-2 text-muted-foreground hover:!text-primary text-sm"
+                >
+                  <Mail className="w-4 h-4 shrink-0" />
+                  <span>hello@codequesters.com</span>
+                </SocialIconBtn>
               </li>
               <li>
-                <a href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-primary text-sm transition-colors">
-                  <MessageCircle className="w-4 h-4" />
-                  WhatsApp Community
-                </a>
+                <SocialIconBtn
+                  href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I"
+                  label="WhatsApp Community"
+                  className="!w-auto !h-auto !rounded-none !bg-transparent !border-none !shadow-none px-0 py-0 gap-2 text-muted-foreground hover:!text-primary text-sm"
+                >
+                  <MessageCircle className="w-4 h-4 shrink-0" />
+                  <span>WhatsApp Community</span>
+                </SocialIconBtn>
               </li>
             </ul>
           </div>

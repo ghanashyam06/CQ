@@ -4,75 +4,50 @@ import { useEffect, useRef } from "react";
 import { Trophy, BookOpen, Network, Briefcase, Users, Lightbulb } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { use3DTilt } from "@/hooks/use3DTilt";
-import StarBorder from "@/components/ui/StarBorder";
-import SpotlightCard from "@/components/ui/SpotlightCard";
+import MagicBento, { type MagicBentoItem } from "@/components/ui/MagicBento";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const features = [
+const features: MagicBentoItem[] = [
   {
-    icon: Trophy,
+    icon: <Trophy className="w-7 h-7 text-primary" />,
+    label: "Compete",
     title: "Hackathons",
     description: "Compete, collaborate, and solve real-world problems in high-energy builder competitions.",
   },
   {
-    icon: BookOpen,
+    icon: <BookOpen className="w-7 h-7 text-primary" />,
+    label: "Learn",
     title: "Workshops",
     description: "Practical execution-first learning experiences led by industry professionals.",
   },
   {
-    icon: Network,
+    icon: <Network className="w-7 h-7 text-primary" />,
+    label: "Connect",
     title: "Networking",
     description: "Connect with founders, mentors, creators, and builders who are building the future.",
   },
   {
-    icon: Briefcase,
+    icon: <Briefcase className="w-7 h-7 text-primary" />,
+    label: "Grow",
     title: "Opportunities",
     description: "Internships, collaborations, startup exposure, and real growth pathways.",
   },
   {
-    icon: Users,
+    icon: <Users className="w-7 h-7 text-primary" />,
+    label: "Together",
     title: "Community",
     description: "A support ecosystem where ambitious people grow together through execution.",
   },
   {
-    icon: Lightbulb,
+    icon: <Lightbulb className="w-7 h-7 text-primary" />,
+    label: "Create",
     title: "Innovation",
     description: "Building future-focused products, platforms, and tools that create real impact.",
   },
 ];
-
-interface ServiceCardProps {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
-}
-
-function ServiceCard({ icon: Icon, title, description }: ServiceCardProps) {
-  const cardRef = use3DTilt<HTMLDivElement>(10, 1000);
-
-  return (
-    <StarBorder speed="6s">
-      <SpotlightCard className="p-0 border-none bg-transparent rounded-none h-full" spotlightColor="rgba(0, 191, 99, 0.12)" spotlightSize={200}>
-        <div
-          ref={cardRef}
-          className="service-card p-7 group cursor-default h-full"
-        >
-          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.2)] transition-all duration-300">
-            <Icon className="w-6 h-6 text-primary" />
-          </div>
-          <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-            {title}
-          </h3>
-          <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
-        </div>
-      </SpotlightCard>
-    </StarBorder>
-  );
-}
 
 export function WhatWeDo() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -81,55 +56,24 @@ export function WhatWeDo() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Heading reveal
-      gsap.from(".services-label", {
-        opacity: 0,
-        y: 20,
-        duration: 0.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      const st = {
+        trigger: sectionRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      };
 
-      gsap.from(".services-heading", {
+      gsap.from(".services-label",   { opacity: 0, y: 20, duration: 0.5, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".services-heading", { opacity: 0, y: 30, duration: 0.7, delay: 0.1, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".services-sub",     { opacity: 0, y: 20, duration: 0.6, delay: 0.2, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".mb-card", {
         opacity: 0,
-        y: 30,
-        duration: 0.7,
-        delay: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".services-sub", {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        delay: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Cards stagger from bottom
-      gsap.from(".service-card", {
-        opacity: 0,
-        y: 50,
-        stagger: 0.1,
+        y: 40,
+        stagger: 0.08,
         duration: 0.6,
         delay: 0.3,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: ".service-cards-grid",
+          trigger: ".services-bento",
           start: "top 85%",
           toggleActions: "play none none reverse",
         },
@@ -155,15 +99,19 @@ export function WhatWeDo() {
           </p>
         </div>
 
-        <div className="service-cards-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
-          {features.map((f, i) => (
-            <ServiceCard
-              key={i}
-              icon={f.icon}
-              title={f.title}
-              description={f.description}
-            />
-          ))}
+        <div className="services-bento max-w-6xl mx-auto">
+          <MagicBento
+            items={features}
+            gridCols="repeat(auto-fit, minmax(280px, 1fr))"
+            enableStars
+            enableSpotlight
+            enableBorderGlow
+            enableTilt
+            enableMagnetism
+            clickEffect
+            spotlightRadius={320}
+            particleCount={10}
+          />
         </div>
       </div>
     </section>

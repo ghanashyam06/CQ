@@ -21,7 +21,7 @@ const stories: Story[] = [
   { image: "/joshitha-opt.jpg",        text: "Joshitha",        videoId: "1uv8gdNOsFljGz3PMQEAyw-FgDxtu3Eqh" },
   { image: "/omkar-raane-opt.jpg",     text: "Omkar Raane",     videoId: "1ZoO_kRBu5kbYIRZmTJ1A4-kuvqEeDCd4" },
   { image: "/shruthi-opt.jpg",         text: "Shruthi",         videoId: "1tmUez1kLm8ZceudbJeRUMtew2hQhNkEO" },
-  { image: "/manas-himay.png",     text: "Maanas & Himay",  videoId: "1k7LUOcJjcDDrmN7EcxVkHv9CVhCLRc-T" },
+  { image: "/manas-himay.png",         text: "Maanas & Himay",  videoId: "1k7LUOcJjcDDrmN7EcxVkHv9CVhCLRc-T" },
   { image: "/anamika-kumari-opt.jpg",  text: "Anamika Kumari",  videoId: "1u4zm-evr-VEYfmCadexF66BfLcg4iG8-" },
   { image: "/hassan-ahmed-opt.jpg",    text: "Hassan Ahmed",    videoId: "1DuAc0d-RYm80fY11Ln3kcE7mCyWBgdR-" },
 ];
