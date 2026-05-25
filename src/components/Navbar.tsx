@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { gsap } from "gsap";
@@ -12,16 +14,16 @@ if (typeof window !== "undefined") {
 }
 
 const navLinks = [
-  { name: "Home",    href: "#home" },
-  { name: "About",   href: "#about" },
-  { name: "Events",  href: "#events" },
-  { name: "Stories", href: "#stories" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home",    href: "/" },
+  { name: "About",   href: "/about" },
+  { name: "Events",  href: "/events" },
+  { name: "Stories", href: "/stories" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isMobileMenuOpen, setMobileMenu] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const navRef = useRef<HTMLElement>(null);
@@ -72,26 +74,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Active section tracking via IntersectionObserver
-  useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
   // Mobile menu GSAP animation
   useEffect(() => {
     if (!mobileMenuRef.current) return;
@@ -124,14 +106,6 @@ export function Navbar() {
     }
   }, [isMobileMenuOpen]);
 
-  const scrollTo = useCallback((href: string) => {
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-      setMobileMenu(false);
-    }
-  }, []);
-
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
   const isDark = !mounted || resolvedTheme === "dark";
 
@@ -145,8 +119,8 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16 gap-4">
 
           {/* ── Logo ── */}
-          <button
-            onClick={() => scrollTo("#home")}
+          <Link
+            href="/"
             className="flex items-center gap-2.5 group shrink-0"
             aria-label="Go to home"
           >
@@ -163,23 +137,26 @@ export function Navbar() {
             <span className="text-base sm:text-lg font-bold font-heading tracking-tight text-foreground leading-tight">
               Code<span className="text-primary">Questers</span>
             </span>
-          </button>
+          </Link>
 
           {/* ── Desktop Navigation (centered) ── */}
           <div className="hidden lg:flex flex-1 items-center justify-center gap-6">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => scrollTo(link.href)}
-                className={`nav-link px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
-                  activeSection === link.href.slice(1)
-                    ? "active text-primary"
-                    : "text-foreground/70 hover:text-foreground"
-                }`}
-              >
-                {link.name}
-              </button>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`nav-link px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                    isActive
+                      ? "active text-primary"
+                      : "text-foreground/70 hover:text-foreground"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </div>
 
           {/* ── Desktop: theme toggle + CTA ── */}
@@ -193,12 +170,12 @@ export function Navbar() {
                 ? <Sun className="w-4 h-4" />
                 : <Moon className="w-4 h-4" />}
             </button>
-            <button
-              onClick={() => scrollTo("#join")}
+            <Link
+              href="/contact"
               className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-[0_0_14px_rgba(0,191,99,0.3)] hover:shadow-[0_0_24px_rgba(0,191,99,0.5)] whitespace-nowrap"
             >
               Join Community
-            </button>
+            </Link>
           </div>
 
           {/* ── Mobile controls ── */}
@@ -236,26 +213,31 @@ export function Navbar() {
           boxShadow: "0 16px 40px rgba(0,0,0,0.15)",
         }}
       >
-        {navLinks.map((link) => (
-          <button
-            key={link.name}
-            onClick={() => scrollTo(link.href)}
-            className={`mobile-nav-item px-4 py-3 rounded-xl text-left text-base font-medium transition-all ${
-              activeSection === link.href.slice(1)
-                ? "text-primary bg-primary/10"
-                : "text-foreground/70 hover:text-foreground hover:bg-foreground/5"
-            }`}
-          >
-            {link.name}
-          </button>
-        ))}
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <Link
+              key={link.name}
+              href={link.href}
+              onClick={() => setMobileMenu(false)}
+              className={`mobile-nav-item px-4 py-3 rounded-xl text-left text-base font-medium transition-all ${
+                isActive
+                  ? "text-primary bg-primary/10"
+                  : "text-foreground/70 hover:text-foreground hover:bg-foreground/5"
+              }`}
+            >
+              {link.name}
+            </Link>
+          );
+        })}
         <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-border">
-          <button
-            onClick={() => scrollTo("#join")}
+          <Link
+            href="/contact"
+            onClick={() => setMobileMenu(false)}
             className="w-full text-center py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-[0_0_14px_rgba(0,191,99,0.3)]"
           >
             Join Community
-          </button>
+          </Link>
         </div>
       </div>
     </nav>

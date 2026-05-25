@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 
 const Preloader = dynamic(() => import("@/components/ui/Preloader"), {
   ssr: false,
@@ -15,11 +16,13 @@ export default function ClientShell({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
-  // Skip preloader on reload inside the same session
+  // Skip preloader on reload inside the same session (disabled to let reload animations play every time)
   useEffect(() => {
+    /*
     if (typeof window !== "undefined") {
       const hasLoaded = sessionStorage.getItem("cq-preloader-loaded") === "true";
       if (hasLoaded) {
@@ -27,18 +30,21 @@ export default function ClientShell({
         setShowContent(true);
       }
     }
+    */
   }, []);
 
   const handlePreloaderComplete = useCallback(() => {
     setLoading(false);
+    /*
     if (typeof window !== "undefined") {
       sessionStorage.setItem("cq-preloader-loaded", "true");
     }
+    */
     // Delay for exit animation to complete before showing content
     setTimeout(() => setShowContent(true), 200);
   }, []);
 
-  // Refresh GSAP ScrollTrigger once page transitions to visible
+  // Refresh GSAP ScrollTrigger once page transitions to visible or route changes
   useEffect(() => {
     if (showContent) {
       const timer = setTimeout(() => {
@@ -51,7 +57,7 @@ export default function ClientShell({
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [showContent]);
+  }, [showContent, pathname]);
 
   // Add custom cursor class to body
   useEffect(() => {
@@ -72,14 +78,14 @@ export default function ClientShell({
       {/* Preloader overlay */}
       {loading && <Preloader onComplete={handlePreloaderComplete} />}
 
-      {/* Main content — render immediately but fade in after preloader */}
+      {/* Main content — render after preloader is done to sync entrance animations */}
       <div
         style={{
           opacity: showContent ? 1 : 0,
           transition: "opacity 0.6s ease-out",
         }}
       >
-        {children}
+        {showContent && children}
       </div>
     </>
   );
