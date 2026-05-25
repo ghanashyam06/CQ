@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { StoriesPreview } from "@/components/sections/StoriesPreview";
+import StoriesBackground from "@/components/sections/StoriesBackground";
 
 export const metadata: Metadata = {
   title: "Builder Stories | CodeQuesters",
@@ -8,7 +9,10 @@ export const metadata: Metadata = {
 
 export default function StoriesPage() {
   return (
-    <div className="pt-20">
+    <div className="pt-20 relative">
+      {/* Full-page particle background */}
+      <StoriesBackground />
+
       <div className="text-center pt-12 pb-4">
         <h1 className="sr-only">CodeQuesters Builder Stories</h1>
       </div>
