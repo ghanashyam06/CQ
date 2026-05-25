@@ -104,13 +104,13 @@ export function Principles() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <p className="principles-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
             What We Stand For
           </p>
-          <h2 className="principles-heading text-3xl md:text-5xl font-bold font-heading">
+          <h2 className="principles-heading text-2xl sm:text-3xl md:text-5xl font-bold font-heading">
             Our <span className="text-gradient">Principles</span>
           </h2>
         </div>

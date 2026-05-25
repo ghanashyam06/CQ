@@ -89,19 +89,19 @@ export function Hackathons() {
   }));
 
   return (
-    <section id="hackathons" className="py-24 relative overflow-hidden border-y border-border">
+    <section id="hackathons" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden border-y border-border">
       {/* Background glows */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-1/2 h-full bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold font-heading mb-4"
+            className="text-2xl sm:text-3xl md:text-5xl font-bold font-heading mb-4"
           >
             Epic <span className="text-gradient">Hackathons</span>
           </motion.h2>
@@ -145,7 +145,7 @@ export function Hackathons() {
 
           <MagicBento
             items={pastItems}
-            gridCols="repeat(auto-fit, minmax(220px, 1fr))"
+            gridCols="repeat(auto-fit, minmax(min(100%, 220px), 1fr))"
             enableStars
             enableSpotlight
             enableBorderGlow

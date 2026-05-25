@@ -105,10 +105,9 @@ export function FinalCTA() {
   };
 
   return (
-    <section ref={sectionRef} id="join" className="py-24 relative overflow-hidden">
-      {/* Background glow */}
+    <section ref={sectionRef} id="join" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[700px] h-[700px] bg-primary/8 blur-[140px] rounded-full" />
+        <div className="w-[300px] sm:w-[500px] lg:w-[700px] h-[300px] sm:h-[500px] lg:h-[700px] bg-primary/8 blur-[140px] rounded-full" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

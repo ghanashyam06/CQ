@@ -123,21 +123,20 @@ export function ImpactStats() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 relative overflow-hidden">
-      {/* Magic Rings Animated Concentric Vector Rings Background */}
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <MagicRings count={5} primaryColor="rgba(0, 191, 99, 0.05)" secondaryColor="rgba(0, 240, 255, 0.02)" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <p className="stats-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
             The Ecosystem In Motion
           </p>
-          <h2 className="stats-heading text-3xl md:text-5xl font-bold font-heading">
+          <h2 className="stats-heading text-2xl sm:text-3xl md:text-5xl font-bold font-heading">
             Numbers That <span className="text-gradient">Speak</span>
           </h2>
         </div>
 
-        <div className="stats-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-5 max-w-5xl mx-auto">
+        <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5 max-w-5xl mx-auto">
           {stats.map((stat, i) => (
             <StatCard
               key={i}

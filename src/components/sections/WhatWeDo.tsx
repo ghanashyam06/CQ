@@ -84,13 +84,13 @@ export function WhatWeDo() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="events" className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} id="events" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <p className="services-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
             What We Do
           </p>
-          <h2 className="services-heading text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-4 leading-tight">
+          <h2 className="services-heading text-2xl sm:text-3xl md:text-5xl font-bold font-heading mb-4 leading-tight">
             Built Around{" "}
             <span className="text-gradient">Builder Growth</span>
           </h2>
@@ -102,7 +102,7 @@ export function WhatWeDo() {
         <div className="services-bento max-w-6xl mx-auto">
           <MagicBento
             items={features}
-            gridCols="repeat(auto-fit, minmax(280px, 1fr))"
+            gridCols="repeat(auto-fit, minmax(min(100%, 280px), 1fr))"
             enableStars
             enableSpotlight
             enableBorderGlow

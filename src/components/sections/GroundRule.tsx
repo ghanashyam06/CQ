@@ -90,13 +90,13 @@ export function GroundRule() {
   };
 
   return (
-    <section ref={sectionRef} className="py-16 relative overflow-hidden">
+    <section ref={sectionRef} className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={cardRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="ground-rule-card max-w-4xl mx-auto glass-card border border-primary/25 bg-primary/5 p-10 md:p-14 text-center relative overflow-hidden neon-border cursor-default"
+          className="ground-rule-card max-w-4xl mx-auto glass-card border border-primary/25 bg-primary/5 p-6 sm:p-8 md:p-10 lg:p-14 text-center relative overflow-hidden neon-border cursor-default"
           style={{ willChange: "transform" }}
         >
           {/* Glow */}

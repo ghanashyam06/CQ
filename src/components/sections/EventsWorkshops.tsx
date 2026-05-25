@@ -128,29 +128,29 @@ export function EventsWorkshops() {
   const filteredEvents = activeTab === "All" ? events : events.filter(e => e.category === activeTab);
 
   return (
-    <section id="events" className="py-24 relative">
+    <section id="events" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div>
-            <motion.h2
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold font-heading mb-4"
-            >
-              Upcoming <span className="text-gradient">Events</span>
-            </motion.h2>
-            <p className="text-muted-foreground max-w-xl">
-              Join our upcoming workshops, bootcamps, and sessions to learn from industry experts.
-            </p>
-          </div>
-
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex flex-wrap gap-2 p-1 rounded-2xl bg-card border border-border backdrop-blur-sm"
+            className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4"
           >
+            <div>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-heading mb-3">
+                Upcoming <span className="text-gradient">Events</span>
+              </h2>
+              <p className="text-muted-foreground max-w-xl text-sm sm:text-base">
+                Join our upcoming workshops, bootcamps, and sessions to learn from industry experts.
+              </p>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-wrap gap-2 p-1 rounded-2xl bg-card border border-border backdrop-blur-sm self-start sm:self-auto"
+            >
             {tabs.map((tab) => (
               <button
                 key={tab}
@@ -164,10 +164,10 @@ export function EventsWorkshops() {
                 {tab}
               </button>
             ))}
+            </motion.div>
           </motion.div>
-        </div>
 
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
           <AnimatePresence mode="popLayout">
             {filteredEvents.map((event) => (
               <EventCard key={event.id} event={event} />

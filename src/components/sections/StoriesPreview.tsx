@@ -96,7 +96,7 @@ export function StoriesPreview() {
   const textColor = mounted && resolvedTheme === "light" ? "#0a0a0a" : "#ffffff";
 
   return (
-    <section ref={sectionRef} id="stories" className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} id="stories" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
 
       {/* ── Heading ── */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-12">
@@ -122,8 +122,8 @@ export function StoriesPreview() {
         </div>
       </div>
 
-      {/* ── Gallery ── */}
-      <div className="stories-gallery w-full h-[560px] relative">
+      {/* ── Gallery — shorter on mobile ── */}
+      <div className="stories-gallery w-full h-[360px] sm:h-[460px] lg:h-[560px] relative">
         <CircularGallery
           items={stories}
           bend={3}

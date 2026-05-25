@@ -152,17 +152,17 @@ export function ContactSection() {
   };
 
   return (
-    <section ref={sectionRef} id="contact" className="py-24 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+    <section ref={sectionRef} id="contact" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+      {/* Background glow — capped width so it never overflows on mobile */}
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[200px] sm:w-[350px] lg:w-[500px] h-[200px] sm:h-[350px] lg:h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <p className="contact-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
             Get In Touch
           </p>
-          <h2 className="contact-heading text-3xl md:text-5xl font-bold font-heading">
+          <h2 className="contact-heading text-2xl sm:text-3xl md:text-5xl font-bold font-heading">
             Let&apos;s <span className="text-gradient">Connect</span>
           </h2>
         </div>

@@ -47,9 +47,9 @@ export function Footer() {
   }, [pathname]);
 
   return (
-    <footer ref={footerRef} className="relative z-10 bg-background border-t border-border pt-16 pb-8">
+    <footer ref={footerRef} className="relative z-10 bg-background border-t border-border pt-10 sm:pt-14 lg:pt-16 pb-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-10 sm:mb-14 lg:mb-16">
 
           {/* Brand */}
           <div className="footer-col space-y-4">

@@ -84,7 +84,7 @@ export function TrustedBy() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 relative border-y border-border overflow-hidden">
+    <section ref={sectionRef} className="py-10 sm:py-14 lg:py-20 relative border-y border-border overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
         <p className="trusted-label text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground mb-2">
           Trusted By

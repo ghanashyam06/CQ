@@ -136,7 +136,7 @@ export function Hero() {
 
       {/* Radial glow */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/8 blur-[160px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] lg:w-[700px] h-[300px] sm:h-[500px] lg:h-[700px] bg-primary/8 blur-[160px] rounded-full" />
       </div>
 
       <div

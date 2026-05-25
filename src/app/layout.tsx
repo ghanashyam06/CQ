@@ -30,6 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body
         className={`${poppins.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
       >
@@ -41,12 +44,9 @@ export default function RootLayout({
         >
           <ClientShell>
             <Navbar />
-
-            {/* z-10 so content sits above any background layers */}
             <main className="relative z-10 min-h-screen">
               {children}
             </main>
-
             <Footer />
             <ScrollToTop />
           </ClientShell>
