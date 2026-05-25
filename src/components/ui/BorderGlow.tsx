@@ -45,13 +45,13 @@ export default function BorderGlow({
         style={{
           background: isHovered
             ? `radial-gradient(${glowSize}px circle at ${coords.x}px ${coords.y}px, ${glowColor}, transparent 80%)`
-            : "rgba(255,255,255,0.06)",
+            : "var(--border)",
         }}
       />
       
       {/* Inner content box */}
       <div 
-        className="relative z-10 w-full h-full bg-[#060813] hover:bg-[#070b1b] transition-colors duration-300"
+        className="relative z-10 w-full h-full bg-card transition-colors duration-300"
         style={{ borderRadius: `calc(${borderRadius} - 1px)` }}
       >
         {children}

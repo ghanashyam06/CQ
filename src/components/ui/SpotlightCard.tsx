@@ -34,7 +34,7 @@ export default function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 transition-all duration-300 ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 ${className}`}
     >
       {/* Radial glow spotlight overlay */}
       {isHovered && (

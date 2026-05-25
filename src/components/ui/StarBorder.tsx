@@ -17,7 +17,7 @@ export default function StarBorder({
 }: StarBorderProps) {
   return (
     <div
-      className={`relative overflow-hidden p-[1px] rounded-2xl md:rounded-3xl bg-white/[0.04] ${className}`}
+      className={`relative overflow-hidden p-[1px] rounded-2xl md:rounded-3xl bg-border/40 ${className}`}
     >
       {/* Dynamic Animated Glow Segment */}
       <div
@@ -29,7 +29,7 @@ export default function StarBorder({
       />
 
       {/* Inner Content Backing */}
-      <div className="relative z-10 w-full h-full rounded-2xl md:rounded-3xl bg-[#0c0c0f] overflow-hidden">
+      <div className="relative z-10 w-full h-full rounded-2xl md:rounded-3xl bg-card overflow-hidden">
         {children}
       </div>
     </div>

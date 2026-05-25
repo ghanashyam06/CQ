@@ -66,7 +66,7 @@ export function FinalCTA() {
         <StarBorder speed="5s" className="max-w-5xl mx-auto">
           <div
             ref={cardRef}
-            className="cta-card p-12 md:p-20 text-center flex flex-col items-center cursor-default bg-[#0c0c0f]"
+            className="cta-card p-12 md:p-20 text-center flex flex-col items-center cursor-default bg-card"
             style={{ willChange: "transform" }}
           >
             <div className="cta-content w-full flex flex-col items-center">

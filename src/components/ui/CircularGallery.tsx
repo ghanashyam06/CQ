@@ -334,6 +334,7 @@ class App {
   viewport: any;
   isDown = false;
   start = 0;
+  startScrollCurrent = 0;
   raf: number = 0;
   
   boundOnResize: any;
@@ -341,6 +342,8 @@ class App {
   boundOnTouchDown: any;
   boundOnTouchMove: any;
   boundOnTouchUp: any;
+  boundOnClick: any;
+  onItemClick?: (href: string) => void;
 
   constructor(
     container: HTMLElement,
@@ -351,7 +354,8 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
+      onItemClick
     }: any = {}
   ) {
     document.documentElement.classList.remove('no-js');
@@ -359,6 +363,7 @@ class App {
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
+    this.onItemClick = onItemClick;
     
     this.createRenderer();
     this.createCamera();
@@ -433,6 +438,7 @@ class App {
   onTouchDown(e: any) {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
+    this.startScrollCurrent = this.scroll.current;
     this.start = e.touches ? e.touches[0].clientX : e.clientX;
   }
   onTouchMove(e: any) {
@@ -444,6 +450,38 @@ class App {
   onTouchUp() {
     this.isDown = false;
     this.onCheck();
+  }
+  onClick(e: any) {
+    if (!this.onItemClick || !this.medias || !this.medias[0]) return;
+    // Only treat as a click if the user didn't drag (scroll moved < 2px)
+    const dragDelta = Math.abs(this.scroll.current - this.startScrollCurrent);
+    if (dragDelta > 2) return;
+
+    const rect = this.container.getBoundingClientRect();
+    const clickX = (e.clientX - rect.left) / rect.width * 2 - 1;
+
+    // Find the media whose plane is closest to the click X in NDC space
+    let closest: Media | null = null;
+    let closestDist = Infinity;
+    const halfVP = this.viewport.width / 2;
+
+    this.medias.forEach(media => {
+      const posX = media.plane.position.x;
+      // Convert world X to a rough NDC-like value
+      const ndcX = posX / halfVP;
+      const dist = Math.abs(ndcX - clickX);
+      const halfPlane = (media.plane.scale.x / halfVP) / 2;
+      if (dist < halfPlane && dist < closestDist) {
+        closestDist = dist;
+        closest = media;
+      }
+    });
+
+    if (closest) {
+      const idx = (closest as Media).index % (this.mediasImages.length / 2);
+      const href = this.mediasImages[idx]?.href;
+      if (href) this.onItemClick(href);
+    }
   }
   onWheel(e: any) {
     const delta = e.deltaY || e.wheelDelta || e.detail;
@@ -490,6 +528,7 @@ class App {
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnClick = this.onClick.bind(this);
     window.addEventListener('resize', this.boundOnResize);
     window.addEventListener('mousewheel', this.boundOnWheel);
     window.addEventListener('wheel', this.boundOnWheel);
@@ -499,6 +538,7 @@ class App {
     window.addEventListener('touchstart', this.boundOnTouchDown);
     window.addEventListener('touchmove', this.boundOnTouchMove);
     window.addEventListener('touchend', this.boundOnTouchUp);
+    this.container.addEventListener('click', this.boundOnClick);
   }
   destroy() {
     window.cancelAnimationFrame(this.raf);
@@ -511,6 +551,7 @@ class App {
     window.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
+    this.container.removeEventListener('click', this.boundOnClick);
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }
@@ -518,13 +559,15 @@ class App {
 }
 
 export interface CircularGalleryProps {
-  items?: Array<{ image: string; text: string }>;
+  items?: Array<{ image: string; text: string; videoId?: string }>;
   bend?: number;
   textColor?: string;
   borderRadius?: number;
   font?: string;
   scrollSpeed?: number;
   scrollEase?: number;
+  /** Called with the item's videoId when a card is clicked (no drag) */
+  onItemClick?: (videoId: string) => void;
 }
 
 export default function CircularGallery({
@@ -534,15 +577,40 @@ export default function CircularGallery({
   borderRadius = 0.05,
   font = 'bold 30px Figtree',
   scrollSpeed = 2,
-  scrollEase = 0.05
+  scrollEase = 0.05,
+  onItemClick,
 }: CircularGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasClickable = !!(onItemClick && items?.some(i => i.videoId));
+
   useEffect(() => {
     if (!containerRef.current) return;
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
-    return () => {
-      app.destroy();
-    };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
-  return <div className="circular-gallery" ref={containerRef} />;
+
+    // Remap items so the App class receives `href` = videoId for its click logic
+    const mappedItems = items?.map(i => ({ ...i, href: i.videoId }));
+
+    const handleClick = onItemClick
+      ? (id: string) => onItemClick(id)
+      : undefined;
+
+    const app = new App(containerRef.current, {
+      items: mappedItems,
+      bend,
+      textColor,
+      borderRadius,
+      font,
+      scrollSpeed,
+      scrollEase,
+      onItemClick: handleClick,
+    });
+    return () => app.destroy();
+  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, onItemClick]);
+
+  return (
+    <div
+      className="circular-gallery"
+      ref={containerRef}
+      style={{ cursor: hasClickable ? 'pointer' : 'grab' }}
+    />
+  );
 }
