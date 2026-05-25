@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Mail, MessageCircle } from "lucide-react";
 import { FaGithub, FaLinkedin, FaXTwitter, FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import { gsap } from "gsap";
@@ -14,9 +15,14 @@ if (typeof window !== "undefined") {
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!footerRef.current) return;
+
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
 
     const ctx = gsap.context(() => {
       gsap.from(".footer-col", {
@@ -27,14 +33,17 @@ export function Footer() {
         ease: "power3.out",
         scrollTrigger: {
           trigger: footerRef.current,
-          start: "top 90%",
+          start: "top 95%",
           toggleActions: "play none none reverse",
         },
       });
     }, footerRef.current);
 
-    return () => ctx.revert();
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+    };
+  }, [pathname]);
 
   return (
     <footer ref={footerRef} className="relative z-10 bg-background border-t border-border pt-16 pb-8">
@@ -69,11 +78,11 @@ export function Footer() {
             <h4 className="font-semibold text-foreground mb-6">Sitemap</h4>
             <ul className="space-y-3">
               {[
-                { label: "Home",    href: "#home" },
-                { label: "About",   href: "#about" },
-                { label: "Events",  href: "#events" },
-                { label: "Stories", href: "#stories" },
-                { label: "Contact", href: "#contact" },
+                { label: "Home",    href: "/" },
+                { label: "About",   href: "/about" },
+                { label: "Events",  href: "/events" },
+                { label: "Stories", href: "/stories" },
+                { label: "Contact", href: "/contact" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className="text-muted-foreground hover:text-primary text-sm transition-colors">

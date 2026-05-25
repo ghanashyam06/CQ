@@ -5,6 +5,7 @@ import { Rocket, Handshake, ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useMagnetic } from "@/hooks/useMagnetic";
 
 if (typeof window !== "undefined") {
@@ -176,30 +177,30 @@ export function Hero() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-lg sm:max-w-none justify-center mb-14">
-          <a
+          <Link
             ref={cta1Ref}
-            href="#join"
+            href="/contact"
             className="hero-cta px-7 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)] animate-pulse-glow"
           >
             <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
             Join The Community
-          </a>
-          <a
+          </Link>
+          <Link
             ref={cta2Ref}
-            href="#contact"
+            href="/contact"
             className="hero-cta px-7 py-3.5 rounded-xl glass-card text-foreground font-bold text-sm sm:text-base hover:border-primary/40 transition-all flex items-center justify-center gap-2"
           >
             <Handshake className="w-4 h-4 sm:w-5 sm:h-5" />
             Partner With Us
-          </a>
-          <a
+          </Link>
+          <Link
             ref={cta3Ref}
-            href="#stories"
+            href="/stories"
             className="hero-cta px-7 py-3.5 rounded-xl text-primary font-bold text-sm sm:text-base hover:bg-primary/10 transition-all flex items-center justify-center gap-2 border border-primary/20"
           >
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             Builder Stories
-          </a>
+          </Link>
         </div>
 
         {/* Floating keywords */}
