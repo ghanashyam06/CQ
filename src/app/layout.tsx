@@ -3,7 +3,6 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import ClientShell from "@/components/ClientShell";
 
@@ -47,7 +46,6 @@ export default function RootLayout({
             <main className="relative z-10 min-h-screen">
               {children}
             </main>
-            <Footer />
             <ScrollToTop />
           </ClientShell>
         </ThemeProvider>

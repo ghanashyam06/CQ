@@ -4,8 +4,9 @@ import { useEffect, useRef } from "react";
 import { Rocket, Handshake, ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import dynamic from "next/dynamic";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
 import { useMagnetic } from "@/hooks/useMagnetic";
 
 if (typeof window !== "undefined") {
@@ -31,14 +32,22 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
 
   // Initialize magnetic buttons
   const cta1Ref = useMagnetic<HTMLAnchorElement>(0.25, 65);
   const cta2Ref = useMagnetic<HTMLAnchorElement>(0.2, 65);
   const cta3Ref = useMagnetic<HTMLAnchorElement>(0.2, 65);
 
+  const isDark = resolvedTheme !== "light";
+  const particleColors = isDark 
+    ? ["#00BF63", "#00ff88", "#ffffff"] 
+    : ["#00BF63", "#007a3d", "#555555"];
+
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current) return;
+
+    const section = sectionRef.current;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.3 });
@@ -117,7 +126,7 @@ export function Hero() {
         });
       });
 
-    }, sectionRef.current);
+    }, section);
 
     return () => ctx.revert();
   }, []);
@@ -131,7 +140,7 @@ export function Hero() {
     >
       {/* 3D Background */}
       <Scene3D camera={{ position: [0, 0, 6], fov: 60 }}>
-        <HeroScene />
+        <HeroScene isDark={isDark} />
       </Scene3D>
 
       {/* Radial glow */}

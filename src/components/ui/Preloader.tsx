@@ -450,28 +450,43 @@ export default function Preloader({ onComplete }: PreloaderProps) {
               <div className="flex-1 flex flex-col justify-center max-w-2xl mx-auto w-full space-y-8 my-8">
                 {/* Mini logo + title */}
                 <div className="flex flex-col items-center justify-center space-y-3">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      repeat: Infinity,
-                      duration: 4,
-                      ease: "linear",
-                    }}
-                    className="w-16 h-16 rounded-2xl border-2 border-dashed border-[#00bf63]/30 flex items-center justify-center relative"
-                    style={{
-                      boxShadow: "0 0 20px rgba(0, 191, 99, 0.05)",
-                    }}
-                  >
-                    <div className="w-10 h-10 rounded-xl overflow-hidden">
+                  <div className="w-16 h-16 flex items-center justify-center relative">
+                    {/* Rotating outer border representing system loading */}
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 5,
+                        ease: "linear",
+                      }}
+                      className="absolute inset-0 rounded-2xl border-2 border-dashed border-[#00bf63]/30"
+                      style={{
+                        boxShadow: "0 0 20px rgba(0, 191, 99, 0.05)",
+                      }}
+                    />
+                    
+                    {/* Premium floating/breathing upright logo */}
+                    <motion.div
+                      animate={{
+                        y: [-3, 3, -3],
+                        scale: [0.95, 1.05, 0.95],
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 3,
+                        ease: "easeInOut",
+                      }}
+                      className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center z-10"
+                    >
                       <Image
                         src="/logo-CQ-tech.png"
                         alt="CQ"
                         width={40}
                         height={40}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(0,191,99,0.4)]"
                       />
-                    </div>
-                  </motion.div>
+                    </motion.div>
+                  </div>
                   <h2 className="font-bold text-xl tracking-wider text-white uppercase mt-2">
                     Code<span className="text-[#00bf63]">Questers</span>
                   </h2>

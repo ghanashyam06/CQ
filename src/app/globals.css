@@ -17,30 +17,30 @@
 }
 
 /* ─── Theme Variables ─── */
-@layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #0a0a0a;
-    --primary: #00BF63;
-    --primary-foreground: #ffffff;
-    --card: rgba(255, 255, 255, 0.75);
-    --muted: #555555;
-    --border: rgba(0, 0, 0, 0.1);
-    --glow-color: rgba(0, 191, 99, 0.15);
-    --glow-strong: rgba(0, 191, 99, 0.35);
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --primary: #00BF63;
+  --primary-foreground: #ffffff;
+  --card: rgba(255, 255, 255, 0.75);
+  --muted: #555555;
+  --border: rgba(0, 0, 0, 0.1);
+  --glow-color: rgba(0, 191, 99, 0.15);
+  --glow-strong: rgba(0, 191, 99, 0.35);
+  --grid-line-color: rgba(0, 191, 99, 0.08);
+}
 
-  .dark {
-    --background: #050816;
-    --foreground: #ffffff;
-    --primary: #00BF63;
-    --primary-foreground: #ffffff;
-    --card: rgba(255, 255, 255, 0.05);
-    --muted: #888888;
-    --border: rgba(255, 255, 255, 0.1);
-    --glow-color: rgba(0, 191, 99, 0.12);
-    --glow-strong: rgba(0, 191, 99, 0.4);
-  }
+.dark {
+  --background: #050816;
+  --foreground: #ffffff;
+  --primary: #00BF63;
+  --primary-foreground: #ffffff;
+  --card: rgba(255, 255, 255, 0.05);
+  --muted: #888888;
+  --border: rgba(255, 255, 255, 0.1);
+  --glow-color: rgba(0, 191, 99, 0.12);
+  --glow-strong: rgba(0, 191, 99, 0.4);
+  --grid-line-color: rgba(0, 191, 99, 0.04);
 }
 
 /* ─── Base Resets ─── */
@@ -227,6 +227,11 @@
   50% { box-shadow: 0 0 40px rgba(0, 191, 99, 0.4), 0 0 60px rgba(0, 191, 99, 0.15); }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -317,4 +322,85 @@
   background-size: 200% auto;
   animation: gradient-sweep 8s linear infinite;
 }
+
+/* ─── Cyber Grid Perspective Background ─── */
+@keyframes scroll-grid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 40px;
+  }
+}
+
+.perspective-grid-container {
+  position: absolute;
+  inset: 0;
+  perspective: 450px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.perspective-grid-content {
+  position: absolute;
+  top: -30%;
+  left: -50%;
+  right: -50%;
+  bottom: -30%;
+  width: 200%;
+  height: 160%;
+  transform: rotateX(65deg) translateZ(0);
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, var(--grid-line-color) 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
+  animation: scroll-grid 20s linear infinite;
+  mask-image: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 75%);
+}
+
+.glow-bubble-1 {
+  animation: drift-glow-1 25s ease-in-out infinite alternate;
+}
+
+.glow-bubble-2 {
+  animation: drift-glow-2 30s ease-in-out infinite alternate;
+}
+
+@keyframes drift-glow-1 {
+  0% {
+    transform: translate(-10%, -10%) scale(1);
+    opacity: 0.07;
+  }
+  100% {
+    transform: translate(15%, 20%) scale(1.2);
+    opacity: 0.14;
+  }
+}
+
+@keyframes drift-glow-2 {
+  0% {
+    transform: translate(15%, 15%) scale(1.1);
+    opacity: 0.05;
+  }
+  100% {
+    transform: translate(-15%, -10%) scale(0.9);
+    opacity: 0.11;
+  }
+}
+
+/* ─── Floating Objects Spin Animation ─── */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 35s linear infinite;
+}
+
 

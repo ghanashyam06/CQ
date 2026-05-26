@@ -5,19 +5,49 @@ import { Users, Building2, CalendarDays, Network, Handshake } from "lucide-react
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/hooks/useMagnetic";
-
-import MagicRings from "@/components/ui/MagicRings";
+import BorderGlow from "@/components/ui/BorderGlow";
+import { NeuralNetworkBackground } from "@/components/ui/NeuralNetworkBackground";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 const stats = [
-  { icon: Users, value: "10,000+", target: 10000, label: "Builders Reached" },
-  { icon: Building2, value: "200+", target: 200, label: "Colleges Connected" },
-  { icon: CalendarDays, value: "50+", target: 50, label: "Events & Workshops" },
-  { icon: Network, value: "100+", target: 100, label: "Industry Connections" },
-  { icon: Handshake, value: "Countless", target: 0, label: "Collaborations Created" },
+  { 
+    icon: Users, 
+    value: "10,000+", 
+    target: 10000, 
+    label: "Builders Reached",
+    description: "Active developers learning and building in our programs."
+  },
+  { 
+    icon: Building2, 
+    value: "200+", 
+    target: 200, 
+    label: "Colleges Connected",
+    description: "Vibrant campus coding clubs established nationwide."
+  },
+  { 
+    icon: CalendarDays, 
+    value: "50+", 
+    target: 50, 
+    label: "Events & Workshops",
+    description: "Expert-led sessions, bootcamps and coding workshops."
+  },
+  { 
+    icon: Network, 
+    value: "100+", 
+    target: 100, 
+    label: "Industry Connections",
+    description: "Mentors from top global tech firms and platforms."
+  },
+  { 
+    icon: Handshake, 
+    value: "Countless", 
+    target: 0, 
+    label: "Collaborations Created",
+    description: "Hackathon groups, open source projects and startup teams."
+  },
 ];
 
 interface StatCardProps {
@@ -25,34 +55,53 @@ interface StatCardProps {
   value: string;
   target: number;
   label: string;
+  description: string;
   index: number;
   counterRefSetter: (el: HTMLSpanElement | null) => void;
 }
 
-function StatCard({ icon: Icon, value, label, counterRefSetter }: StatCardProps) {
-  const cardRef = useMagnetic<HTMLDivElement>(0.18, 60);
+function StatCard({ icon: Icon, value, label, description, counterRefSetter }: StatCardProps) {
+  const cardRef = useMagnetic<HTMLDivElement>(0.12, 140);
 
   return (
     <div
       ref={cardRef}
-      className="stat-card glass-card p-4 sm:p-6 flex flex-col items-center text-center group border border-border hover:border-primary/30 hover:shadow-[0_0_25px_rgba(0,191,99,0.1)] cursor-default"
+      className="stat-card w-full h-full"
       style={{ willChange: "transform" }}
     >
-      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(0,191,99,0.2)] transition-all duration-300">
-        <Icon className="w-5 h-5 text-primary" />
-      </div>
-      <span
-        ref={counterRefSetter}
-        className="text-xl sm:text-2xl md:text-3xl font-black text-foreground mb-1"
+      <BorderGlow
+        glowColor="rgba(0, 255, 136, 0.25)"
+        glowSize={160}
+        borderRadius="1.25rem"
+        className="w-full h-full"
       >
-        {value}
-      </span>
-      <span className="text-xs font-medium text-muted-foreground leading-tight">
-        {label}
-      </span>
+        <div
+          className="relative z-10 w-full h-full bg-[#070908]/90 backdrop-blur-xl p-5 sm:p-6 flex flex-col justify-between items-center min-h-[240px] text-center group border border-white/[0.03] rounded-[1.2rem] hover:shadow-[0_0_35px_rgba(0,191,99,0.08)] transition-all duration-300"
+        >
+          <div className="flex flex-col items-center w-full">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 border border-primary/20 group-hover:bg-primary/20 group-hover:scale-110 group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.25)] transition-all duration-300">
+              <Icon className="w-5 h-5 text-primary group-hover:rotate-6 transition-transform duration-300" />
+            </div>
+            <span
+              ref={counterRefSetter}
+              className="text-2xl sm:text-3xl md:text-4xl font-black bg-clip-text bg-gradient-to-b from-white via-neutral-100 to-neutral-400 group-hover:from-[#00ff88] group-hover:to-[#73ffb9] mb-2 leading-none font-mono drop-shadow-[0_0_12px_rgba(255,255,255,0.05)] transition-colors duration-500"
+            >
+              {value}
+            </span>
+            <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+              {label}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed mt-3 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+            {description}
+          </p>
+        </div>
+      </BorderGlow>
     </div>
   );
 }
+
+// AnimatedBackground has been replaced by HTML5 Canvas-based NeuralNetworkBackground
 
 export function ImpactStats() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -62,7 +111,6 @@ export function ImpactStats() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Heading
       gsap.from(".stats-label", {
         opacity: 0, y: 20, duration: 0.5, ease: "power3.out",
         scrollTrigger: {
@@ -81,7 +129,6 @@ export function ImpactStats() {
         },
       });
 
-      // Stat cards stagger
       gsap.from(".stat-card", {
         opacity: 0,
         y: 40,
@@ -95,24 +142,36 @@ export function ImpactStats() {
         },
       });
 
-      // Counter animations
       counterRefs.current.forEach((ref, i) => {
-        if (!ref || stats[i].target === 0) return;
+        if (!ref) return;
+
+        if (stats[i].target === 0) {
+          gsap.fromTo(
+            ref,
+            { scale: 0.7, opacity: 0, filter: "blur(4px)" },
+            {
+              scale: 1, opacity: 1, filter: "blur(0px)",
+              duration: 1.5, ease: "back.out(1.5)",
+              scrollTrigger: {
+                trigger: ref, start: "top 90%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+          return;
+        }
 
         const counter = { value: 0 };
-        gsap.to(counter, {
+        gsap.fromTo(counter, { value: 0 }, {
           value: stats[i].target,
-          duration: 2,
-          ease: "power2.out",
+          duration: 2.2, ease: "power2.out",
           scrollTrigger: {
-            trigger: ref,
-            start: "top 90%",
+            trigger: ref, start: "top 90%",
             toggleActions: "play none none reverse",
           },
           onUpdate: () => {
             if (ref) {
-              const val = Math.round(counter.value);
-              ref.textContent = val.toLocaleString() + "+";
+              ref.textContent = Math.round(counter.value).toLocaleString() + "+";
             }
           },
         });
@@ -123,20 +182,21 @@ export function ImpactStats() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
-      <MagicRings count={5} primaryColor="rgba(0, 191, 99, 0.05)" secondaryColor="rgba(0, 240, 255, 0.02)" />
+    <section ref={sectionRef} className="py-16 sm:py-20 lg:py-28 relative overflow-hidden bg-background">
+      {/* Interactive HTML5 Canvas Neural Network Background */}
+      <NeuralNetworkBackground />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-10 sm:mb-16">
-          <p className="stats-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">
+        <div className="text-center mb-12 sm:mb-20">
+          <p className="stats-label text-xs font-bold tracking-[0.25em] uppercase text-primary mb-3">
             The Ecosystem In Motion
           </p>
-          <h2 className="stats-heading text-2xl sm:text-3xl md:text-5xl font-bold font-heading">
+          <h2 className="stats-heading text-3xl sm:text-4xl md:text-6xl font-bold font-heading tracking-tight leading-none text-foreground">
             Numbers That <span className="text-gradient">Speak</span>
           </h2>
         </div>
 
-        <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5 max-w-5xl mx-auto">
+        <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 max-w-7xl mx-auto">
           {stats.map((stat, i) => (
             <StatCard
               key={i}
@@ -144,6 +204,7 @@ export function ImpactStats() {
               value={stat.value}
               target={stat.target}
               label={stat.label}
+              description={stat.description}
               index={i}
               counterRefSetter={(el) => { counterRefs.current[i] = el; }}
             />
