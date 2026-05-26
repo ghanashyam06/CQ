@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { EventsWorkshops } from "@/components/sections/EventsWorkshops";
-import { Hackathons }      from "@/components/sections/Hackathons";
-import { JourneyRoadmap }  from "@/components/sections/JourneyRoadmap";
-import MagnetLines         from "@/components/ui/MagnetLines";
+import { EventsClient } from "./EventsClient";
 
 export const metadata: Metadata = {
   title: "Events & Hackathons | CodeQuesters",
@@ -15,15 +12,7 @@ export default function EventsPage() {
       <div className="pt-4 sm:pt-8 pb-2">
         <h1 className="sr-only">CodeQuesters Events & Hackathons</h1>
       </div>
-      <EventsWorkshops />
-      <div className="my-8">
-        <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
-      </div>
-      <Hackathons />
-      <div className="my-8">
-        <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
-      </div>
-      <JourneyRoadmap />
+      <EventsClient />
     </div>
   );
 }

@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import { AboutSnapshot }  from "@/components/sections/AboutSnapshot";
-import { Principles }     from "@/components/sections/Principles";
-import { GroundRule }      from "@/components/sections/GroundRule";
-import { ImpactStats }    from "@/components/sections/ImpactStats";
-import MagnetLines        from "@/components/ui/MagnetLines";
+import { AboutClient } from "./AboutClient";
 
 export const metadata: Metadata = {
   title: "About Us | CodeQuesters Builder Ecosystem",
@@ -16,13 +12,7 @@ export default function AboutPage() {
       <div className="pt-4 sm:pt-8 pb-2">
         <h1 className="sr-only">About CodeQuesters</h1>
       </div>
-      <AboutSnapshot />
-      <Principles />
-      <GroundRule />
-      <div className="my-8">
-        <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
-      </div>
-      <ImpactStats />
+      <AboutClient />
     </div>
   );
 }

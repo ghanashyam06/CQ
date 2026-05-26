@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Contact Us | CodeQuesters",
@@ -13,6 +14,7 @@ export default function ContactPage() {
         <h1 className="sr-only">Contact CodeQuesters</h1>
       </div>
       <ContactSection />
+      <Footer />
     </div>
   );
 }

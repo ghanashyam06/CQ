@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { StoriesPreview } from "@/components/sections/StoriesPreview";
 import StoriesBackground from "@/components/sections/StoriesBackground";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Builder Stories | CodeQuesters",
@@ -17,6 +18,7 @@ export default function StoriesPage() {
         <h1 className="sr-only">CodeQuesters Builder Stories</h1>
       </div>
       <StoriesPreview />
+      <Footer />
     </div>
   );
 }

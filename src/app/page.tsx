@@ -1,27 +1,39 @@
+"use client";
+
 import { Hero }        from "@/components/sections/Hero";
 import { TrustedBy }   from "@/components/sections/TrustedBy";
 import { ImpactStats } from "@/components/sections/ImpactStats";
 import { WhatWeDo }    from "@/components/sections/WhatWeDo";
 import { FinalCTA }    from "@/components/sections/FinalCTA";
-import MagnetLines     from "@/components/ui/MagnetLines";
+import { Footer }      from "@/components/Footer";
+import { SwipeSlider } from "@/components/ui/SwipeSlider";
 
 export default function Home() {
   return (
-    <>
+    <SwipeSlider>
+      {/* Slide 1: Hero Section */}
       <Hero />
-      <TrustedBy />
-      <div className="my-8">
-        <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
+
+      {/* Slide 2: Partners & Features */}
+      <div className="w-full min-h-screen py-16 sm:py-24 flex flex-col justify-center">
+        <TrustedBy />
+        <div className="mt-8">
+          <WhatWeDo />
+        </div>
       </div>
-      <WhatWeDo />
-      <div className="my-8">
-        <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
+
+      {/* Slide 3: Growth Stats & Metrics */}
+      <div className="w-full min-h-screen flex items-center justify-center py-16 sm:py-24">
+        <ImpactStats />
       </div>
-      <ImpactStats />
-      <div className="my-8">
-        <MagnetLines columns={32} rows={1} lineColor="rgba(0, 191, 99, 0.15)" activeLineColor="#00bf63" />
+
+      {/* Slide 4: Call to Action & Footer */}
+      <div className="w-full min-h-screen flex flex-col justify-between pt-16 sm:pt-24">
+        <div className="flex-1 flex items-center justify-center">
+          <FinalCTA />
+        </div>
+        <Footer />
       </div>
-      <FinalCTA />
-    </>
+    </SwipeSlider>
   );
 }
