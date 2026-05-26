@@ -193,10 +193,10 @@ export function ContactSection() {
                   group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
                   <Mail className="w-5 h-5 text-primary" />
                 </span>
-                <span className="flex items-center gap-3 min-w-0">
-                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">Email Us</span>
-                  <span className="text-border">·</span>
-                  <span className="text-sm text-muted-foreground truncate">hello@codequesters.com</span>
+                <span className="flex flex-col sm:flex-row sm:items-center sm:gap-3 min-w-0">
+                  <span className="text-sm font-semibold text-foreground">Email Us</span>
+                  <span className="hidden sm:inline text-border">·</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground truncate">hello@codequesters.com</span>
                 </span>
               </SocialIconBtn>
 
@@ -211,10 +211,10 @@ export function ContactSection() {
                   group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
                   <MessageCircle className="w-5 h-5 text-primary" />
                 </span>
-                <span className="flex items-center gap-3 min-w-0">
-                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">WhatsApp Community</span>
-                  <span className="text-border">·</span>
-                  <span className="text-sm text-muted-foreground truncate">Join our active builder group</span>
+                <span className="flex flex-col sm:flex-row sm:items-center sm:gap-3 min-w-0">
+                  <span className="text-sm font-semibold text-foreground">WhatsApp Community</span>
+                  <span className="hidden sm:inline text-border">·</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Join our active builder group</span>
                 </span>
               </SocialIconBtn>
 
@@ -223,10 +223,10 @@ export function ContactSection() {
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">Based in India</span>
-                  <span className="text-border">·</span>
-                  <span className="text-sm text-muted-foreground">Building globally 🌍</span>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 min-w-0">
+                  <span className="text-sm font-semibold text-foreground">Based in India</span>
+                  <span className="hidden sm:inline text-border">·</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Building globally 🌍</span>
                 </div>
               </div>
             </div>

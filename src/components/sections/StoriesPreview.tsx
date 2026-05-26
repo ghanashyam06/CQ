@@ -31,12 +31,21 @@ export function StoriesPreview() {
   const overlayRef   = useRef<HTMLDivElement>(null);
   const cardRef      = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted]       = useState(false);
+  const [mounted, setMounted]         = useState(false);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [isMobile, setIsMobile]       = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(t);
+  }, []);
+
+  /* ── Detect mobile to disable bend ── */
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   /* ── Section entrance animations ── */
@@ -122,11 +131,11 @@ export function StoriesPreview() {
         </div>
       </div>
 
-      {/* ── Gallery — shorter on mobile ── */}
-      <div className="stories-gallery w-full h-[360px] sm:h-[460px] lg:h-[560px] relative">
+      {/* ── Gallery — no bend on mobile to prevent card overlap ── */}
+      <div className="stories-gallery w-full h-[360px] sm:h-[460px] lg:h-[560px] relative overflow-hidden">
         <CircularGallery
           items={stories}
-          bend={3}
+          bend={isMobile ? 0 : 3}
           textColor={textColor}
           borderRadius={0.05}
           scrollEase={0.02}

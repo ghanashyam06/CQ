@@ -13,7 +13,7 @@ export default function StoriesPage() {
       {/* Full-page particle background */}
       <StoriesBackground />
 
-      <div className="text-center pt-12 pb-4">
+      <div className="pt-4 sm:pt-8 pb-2">
         <h1 className="sr-only">CodeQuesters Builder Stories</h1>
       </div>
       <StoriesPreview />

@@ -62,7 +62,7 @@ export function FinalCTA() {
           Ready To Build?
         </p>
 
-        <h2 className="text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-foreground">
+        <h2 className="text-2xl sm:text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-foreground">
           Ready To Build{" "}
           <span className="text-gradient">Something Bigger?</span>
         </h2>

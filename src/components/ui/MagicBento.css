@@ -18,7 +18,7 @@
   justify-content: space-between;
   position: relative;
   width: 100%;
-  padding: 1.5em;
+  padding: 1em;
   border-radius: 1rem;
   border: 1px solid var(--mb-border-color);
   background: var(--mb-bg);
@@ -29,6 +29,12 @@
   --glow-y: 50%;
   --glow-intensity: 0;
   --glow-radius: 300px;
+}
+
+@media (min-width: 640px) {
+  .mb-card {
+    padding: 1.5em;
+  }
 }
 
 .mb-card:hover {

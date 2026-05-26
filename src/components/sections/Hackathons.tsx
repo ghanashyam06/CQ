@@ -15,14 +15,14 @@ export function Hackathons() {
     description: "",
     className: "lg:col-span-2",
     children: (
-      <div className="flex flex-col h-full min-h-[420px]">
+      <div className="flex flex-col h-full min-h-[280px] sm:min-h-[420px]">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-6 uppercase tracking-wider">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             Upcoming Event
           </div>
 
-          <h3 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
             CodeQuesters <br />Hackathon 4.0
           </h3>
           <p className="text-muted-foreground text-lg mb-8 max-w-lg">
