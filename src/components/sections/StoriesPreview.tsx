@@ -14,16 +14,21 @@ if (typeof window !== "undefined") {
 interface Story {
   image: string;
   text: string;
+  /** YouTube video ID — e.g. "dQw4w9WgXcQ" from youtu.be/dQw4w9WgXcQ */
   videoId: string;
 }
 
+// ── Replace each videoId with the YouTube video ID for that person ──
+// YouTube video ID is the part after "v=" in the URL, e.g.:
+//   https://www.youtube.com/watch?v=ABC123  →  videoId: "ABC123"
+//   https://youtu.be/ABC123                 →  videoId: "ABC123"
 const stories: Story[] = [
-  { image: "/joshitha-opt.jpg",        text: "Joshitha",        videoId: "1uv8gdNOsFljGz3PMQEAyw-FgDxtu3Eqh" },
-  { image: "/omkar-raane-opt.jpg",     text: "Omkar Raane",     videoId: "1ZoO_kRBu5kbYIRZmTJ1A4-kuvqEeDCd4" },
-  { image: "/shruthi-opt.jpg",         text: "Shruthi",         videoId: "1tmUez1kLm8ZceudbJeRUMtew2hQhNkEO" },
-  { image: "/manas-himay.png",         text: "Maanas & Himay",  videoId: "1k7LUOcJjcDDrmN7EcxVkHv9CVhCLRc-T" },
-  { image: "/anamika-kumari-opt.jpg",  text: "Anamika Kumari",  videoId: "1u4zm-evr-VEYfmCadexF66BfLcg4iG8-" },
-  { image: "/hassan-ahmed-opt.jpg",    text: "Hassan Ahmed",    videoId: "1DuAc0d-RYm80fY11Ln3kcE7mCyWBgdR-" },
+  { image: "/joshitha-opt.jpg",        text: "Joshitha",        videoId: "9-cy16B7qro" },
+  { image: "/omkar-raane-opt.jpg",     text: "Omkar Raane",     videoId: "9-cy16B7qro" },
+  { image: "/shruthi-opt.jpg",         text: "Shruthi",         videoId: "9-cy16B7qro" },
+  { image: "/manas-himay.png",         text: "Maanas & Himay",  videoId: "9-cy16B7qro" },
+  { image: "/anamika-kumari-opt.jpg",  text: "Anamika Kumari",  videoId: "9-cy16B7qro" },
+  { image: "/hassan-ahmed-opt.jpg",    text: "Hassan Ahmed",    videoId: "9-cy16B7qro" },
 ];
 
 export function StoriesPreview() {
@@ -147,33 +152,40 @@ export function StoriesPreview() {
       {activeVideo && (
         <div
           ref={overlayRef}
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8"
-          style={{ backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)" }}
+          className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-8"
+          style={{ backgroundColor: "rgba(0,0,0,0.9)", backdropFilter: "blur(12px)" }}
           onClick={(e) => { if (e.target === overlayRef.current) closeVideo(); }}
         >
+          {/* Single close button — fixed top-right, always visible */}
+          <button
+            onClick={closeVideo}
+            aria-label="Close video"
+            className="fixed top-4 right-4 z-[210] w-11 h-11 rounded-full bg-black/90 hover:bg-primary border-2 border-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 shadow-xl"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
           <div
             ref={cardRef}
-            className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,191,99,0.25)] border border-primary/20"
-            style={{ aspectRatio: "16/9" }}
+            className="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,191,99,0.25)] border border-primary/20 bg-black"
+            style={{ aspectRatio: "9/16", maxHeight: "85vh" }}
           >
-            {/* Close button */}
-            <button
-              onClick={closeVideo}
-              aria-label="Close video"
-              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/60 hover:bg-primary/80 border border-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
             {/* Green glow ring */}
-            <div className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{ boxShadow: "inset 0 0 40px rgba(0,191,99,0.08)" }} />
+            <div
+              className="absolute inset-0 rounded-2xl pointer-events-none z-10"
+              style={{ boxShadow: "inset 0 0 40px rgba(0,191,99,0.08)" }}
+            />
 
-            {/* Drive embed — /preview renders the native player inline */}
+            {/*
+              YouTube Shorts embed — vertical 9:16 format.
+              Uses /shorts/ path for correct Shorts player.
+              autoplay=1 starts immediately, rel=0 hides related videos.
+            */}
             <iframe
-              src={`https://drive.google.com/file/d/${activeVideo}/preview`}
+              key={activeVideo}
+              src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
               className="w-full h-full"
-              allow="autoplay; fullscreen"
+              allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
               title="Builder Story Video"
               style={{ border: "none", display: "block" }}
