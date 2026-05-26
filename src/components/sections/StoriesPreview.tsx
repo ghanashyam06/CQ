@@ -156,40 +156,40 @@ export function StoriesPreview() {
           style={{ backgroundColor: "rgba(0,0,0,0.9)", backdropFilter: "blur(12px)" }}
           onClick={(e) => { if (e.target === overlayRef.current) closeVideo(); }}
         >
-          {/* Single close button — fixed top-right, always visible */}
-          <button
-            onClick={closeVideo}
-            aria-label="Close video"
-            className="fixed top-4 right-4 z-[210] w-11 h-11 rounded-full bg-black/90 hover:bg-primary border-2 border-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 shadow-xl"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          {/* Card + close button wrapper — positioned together so X never overlaps navbar */}
+          <div className="relative flex flex-col items-end gap-2 w-full max-w-sm">
 
-          <div
-            ref={cardRef}
-            className="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,191,99,0.25)] border border-primary/20 bg-black"
-            style={{ aspectRatio: "9/16", maxHeight: "85vh" }}
-          >
-            {/* Green glow ring */}
+            {/* Close button — sits just above the video card */}
+            <button
+              onClick={closeVideo}
+              aria-label="Close video"
+              className="w-10 h-10 rounded-full bg-black/80 hover:bg-primary border border-white/20 flex items-center justify-center text-white transition-all duration-200 hover:scale-110 shadow-xl shrink-0"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Video card — 9:16 portrait for Shorts */}
             <div
-              className="absolute inset-0 rounded-2xl pointer-events-none z-10"
-              style={{ boxShadow: "inset 0 0 40px rgba(0,191,99,0.08)" }}
-            />
+              ref={cardRef}
+              className="relative w-full rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,191,99,0.25)] border border-primary/20 bg-black"
+              style={{ aspectRatio: "9/16", maxHeight: "80vh" }}
+            >
+              {/* Green glow ring */}
+              <div
+                className="absolute inset-0 rounded-2xl pointer-events-none z-10"
+                style={{ boxShadow: "inset 0 0 40px rgba(0,191,99,0.08)" }}
+              />
 
-            {/*
-              YouTube Shorts embed — vertical 9:16 format.
-              Uses /shorts/ path for correct Shorts player.
-              autoplay=1 starts immediately, rel=0 hides related videos.
-            */}
-            <iframe
-              key={activeVideo}
-              src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-              className="w-full h-full"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              title="Builder Story Video"
-              style={{ border: "none", display: "block" }}
-            />
+              <iframe
+                key={activeVideo}
+                src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                className="w-full h-full"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Builder Story Video"
+                style={{ border: "none", display: "block" }}
+              />
+            </div>
           </div>
         </div>
       )}
