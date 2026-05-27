@@ -190,7 +190,7 @@ export function EventsWorkshops() {
                 >
                   {/* Upcoming badge on card */}
                   <div className="relative">
-                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-primary/20 border border-primary/40 text-primary text-xs font-semibold backdrop-blur-md">
+                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-primary/15 dark:bg-primary/20 border border-primary/30 dark:border-primary/40 text-primary text-xs font-semibold backdrop-blur-md">
                       <Clock className="w-3 h-3" /> Upcoming
                     </div>
                     <EventCard event={event} />
@@ -232,7 +232,7 @@ export function EventsWorkshops() {
                 >
                   {/* Completed badge on card */}
                   <div className="relative">
-                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-500/20 border border-green-500/40 text-green-400 text-xs font-semibold backdrop-blur-md">
+                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-100/90 dark:bg-green-500/20 border border-green-200/60 dark:border-green-500/40 text-green-800 dark:text-green-400 text-xs font-semibold backdrop-blur-md">
                       <CheckCircle2 className="w-3 h-3" /> Completed
                     </div>
                     <EventCard event={event} />

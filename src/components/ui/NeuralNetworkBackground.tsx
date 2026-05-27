@@ -54,23 +54,28 @@ export function NeuralNetworkBackground() {
     const mouseRadius = 180;
     const mousePull = 0.08;
 
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+
     // Resize handler
     const handleResize = () => {
-      if (!canvas || !containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      dpr = window.devicePixelRatio || 1;
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (!canvas || !containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+        dpr = window.devicePixelRatio || 1;
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
 
-      ctx.scale(dpr, dpr);
+        ctx.scale(dpr, dpr);
 
-      // Re-initialize nodes based on the new size
-      initNodes();
+        // Re-initialize nodes based on the new size
+        initNodes();
+      }, 150);
     };
 
     // Initialize nodes
@@ -359,6 +364,7 @@ export function NeuralNetworkBackground() {
 
     // Cleanup
     return () => {
+      clearTimeout(resizeTimeout);
       window.removeEventListener("resize", handleResize);
       if (container) {
         container.removeEventListener("mousemove", handleMouseMove);
@@ -380,11 +386,11 @@ export function NeuralNetworkBackground() {
       />
       {/* Soft gradient backdrop overlays to blend canvas neatly with dark/light context */}
       <div 
-        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0)_40%,rgba(255,255,255,0.7)_100%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(4,10,6,0)_40%,rgba(4,10,6,0.7)_100%)]"
+        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(243,247,245,0)_40%,rgba(243,247,245,0.7)_100%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(5,8,22,0)_40%,rgba(5,8,22,0.85)_100%)]"
       />
       {/* Top & bottom fading edges */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-white dark:from-[#040a06] to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white dark:from-[#040a06] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#f3f7f5] dark:from-[#050816] to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f3f7f5] dark:from-[#050816] to-transparent" />
     </div>
   );
 }

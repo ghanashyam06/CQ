@@ -143,9 +143,15 @@ export function Hero() {
         <HeroScene isDark={isDark} />
       </Scene3D>
 
-      {/* Radial glow */}
+      {/* Radial glow — animated aurora */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] lg:w-[700px] h-[300px] sm:h-[500px] lg:h-[700px] bg-primary/8 blur-[160px] rounded-full" />
+        <div
+          className="absolute top-1/2 left-1/2 w-[300px] sm:w-[500px] lg:w-[700px] h-[300px] sm:h-[500px] lg:h-[700px] bg-primary/8 blur-[160px] rounded-full"
+          style={{ animation: "breathe 6s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute top-[40%] left-[30%] w-[150px] sm:w-[250px] lg:w-[350px] h-[150px] sm:h-[250px] lg:h-[350px] bg-[#00d4aa]/[0.06] blur-[120px] rounded-full animate-float"
+        />
       </div>
 
       <div
@@ -153,7 +159,7 @@ export function Hero() {
         className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
       >
         {/* Tagline pill */}
-        <div className="hero-tagline inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs sm:text-sm font-semibold mb-8 tracking-widest uppercase neon-border">
+        <div className="hero-tagline inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs sm:text-sm font-semibold mb-8 tracking-widest uppercase shadow-[0_0_8px_rgba(0,168,82,0.08)] dark:shadow-none dark:neon-border">
           EXPLORE &nbsp;·&nbsp; LEARN &nbsp;·&nbsp; BUILD
         </div>
 
@@ -167,9 +173,9 @@ export function Hero() {
           <span className="hero-headline-word inline-block">for&nbsp;</span>
           <span className="hero-headline-word inline-block">Students.</span>
           <br />
-          <span className="hero-headline-word inline-block text-gradient">Powered&nbsp;</span>
-          <span className="hero-headline-word inline-block text-gradient">by&nbsp;</span>
-          <span className="hero-headline-word inline-block text-gradient">Builders.</span>
+          <span className="hero-headline-word inline-block text-gradient-shimmer">Powered&nbsp;</span>
+          <span className="hero-headline-word inline-block text-gradient-shimmer">by&nbsp;</span>
+          <span className="hero-headline-word inline-block text-gradient-shimmer">Builders.</span>
         </h1>
 
         {/* Subheadline */}
@@ -215,7 +221,7 @@ export function Hero() {
           {floatingKeywords.map((word) => (
             <span
               key={word}
-              className="hero-keyword px-3 py-1.5 rounded-full text-xs font-semibold border border-primary/20 text-primary/70 bg-primary/5 hover:bg-primary/15 hover:text-primary hover:border-primary/40 hover:shadow-[0_0_12px_rgba(0,191,99,0.2)] transition-all cursor-default"
+              className="hero-keyword px-3 py-1.5 rounded-full text-xs font-semibold border border-primary/20 text-primary/70 bg-primary/10 dark:bg-primary/5 hover:bg-primary/15 hover:text-primary hover:border-primary/40 hover:shadow-[0_0_12px_rgba(0,191,99,0.2)] transition-all cursor-default"
             >
               {word}
             </span>

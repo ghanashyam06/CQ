@@ -27,28 +27,6 @@ function FormField({
   id: string; label: string; type?: string; value: string;
   onChange: (v: string) => void; placeholder: string; required?: boolean; rows?: number;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  const onFocus = () => {
-    if (!wrapRef.current) return;
-    gsap.to(wrapRef.current, {
-      boxShadow: "0 0 0 2px rgba(0,191,99,0.45), 0 0 20px rgba(0,191,99,0.15)",
-      borderColor: "rgba(0,191,99,0.6)",
-      duration: 0.25,
-      ease: "power2.out",
-    });
-  };
-
-  const onBlur = () => {
-    if (!wrapRef.current) return;
-    gsap.to(wrapRef.current, {
-      boxShadow: "0 0 0 0px rgba(0,191,99,0)",
-      borderColor: "var(--border)",
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
-
   const baseClass =
     "w-full px-4 py-3 bg-background text-foreground placeholder:text-muted-foreground/40 text-sm outline-none resize-none";
 
@@ -58,22 +36,18 @@ function FormField({
         {label}
       </label>
       <div
-        ref={wrapRef}
-        className="rounded-xl border overflow-hidden transition-colors"
-        style={{ borderColor: "var(--border)" }}
+        className="rounded-xl border border-border overflow-hidden transition-all duration-300 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 focus-within:shadow-[0_0_15px_rgba(0,168,82,0.06)] dark:focus-within:shadow-[0_0_20px_rgba(0,191,99,0.15)]"
       >
         {rows ? (
           <textarea
             id={id} rows={rows} value={value} placeholder={placeholder} required={required}
             onChange={(e) => onChange(e.target.value)}
-            onFocus={onFocus} onBlur={onBlur}
             className={baseClass}
           />
         ) : (
           <input
             id={id} type={type} value={value} placeholder={placeholder} required={required}
             onChange={(e) => onChange(e.target.value)}
-            onFocus={onFocus} onBlur={onBlur}
             className={baseClass}
           />
         )}

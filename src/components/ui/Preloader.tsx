@@ -182,7 +182,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] },
           }}
           onMouseMove={handleMouseMove}
-          className="fixed inset-0 z-[10000] flex flex-col justify-between bg-[#060608] font-mono text-xs text-gray-500 overflow-hidden"
+          className="dark fixed inset-0 z-[10000] flex flex-col justify-between bg-[#060608] font-mono text-xs text-gray-500 overflow-hidden"
         >
           {/* --- Shared background layers --- */}
           {/* Grid */}

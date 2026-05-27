@@ -72,7 +72,7 @@ function RoadmapStep({ step, index }: { step: Step; index: number }) {
           ease: "easeInOut"
         }}
         className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 shrink-0 transition-all duration-300
-          bg-background border-2 border-primary cursor-pointer
+          bg-background border-2 border-primary cursor-pointer shadow-[0_2px_12px_rgba(0,80,40,0.06)] dark:shadow-none
           group-hover:scale-110 group-hover:bg-primary/10"
       >
         <step.icon
@@ -84,7 +84,7 @@ function RoadmapStep({ step, index }: { step: Step; index: number }) {
       <div className="glass-card p-5 w-full relative overflow-hidden
         border border-border hover:border-primary/30 transition-colors duration-300">
         {/* Faint step number watermark */}
-        <span className="absolute top-1 right-3 text-6xl font-black text-foreground/[0.04] select-none pointer-events-none leading-none">
+        <span className="absolute top-1 right-3 text-6xl font-black text-foreground/[0.06] dark:text-foreground/[0.04] select-none pointer-events-none leading-none">
           0{index + 1}
         </span>
 
@@ -131,7 +131,7 @@ export function JourneyRoadmap() {
             className="text-2xl sm:text-3xl md:text-5xl font-bold font-heading mb-4"
           >
             Your Complete Tech{" "}
-            <span className="text-gradient">Growth Journey</span>
+            <span className="text-gradient-shimmer">Growth Journey</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

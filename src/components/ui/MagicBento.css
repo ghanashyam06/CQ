@@ -21,6 +21,7 @@
   padding: 1em;
   border-radius: 1rem;
   border: 1px solid var(--mb-border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
   background: var(--mb-bg);
   overflow: hidden;
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
@@ -39,10 +40,25 @@
 
 .mb-card:hover {
   border-color: rgba(0, 191, 99, 0.35);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 12px 32px rgba(0, 40, 20, 0.05), 0 0 15px rgba(0, 191, 99, 0.04);
 }
 
-/* ── Border glow mask ── */
+.dark .mb-card {
+  border-top: 1px solid var(--mb-border-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.dark .mb-card:hover {
+  border-color: rgba(0, 191, 99, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 191, 99, 0.12);
+}
+
+.mb-bento-section {
+  position: relative;
+  user-select: none;
+}
+
 .mb-card--border-glow::after {
   content: '';
   position: absolute;
@@ -83,7 +99,7 @@
 
 /* ── Global spotlight ── */
 .mb-global-spotlight {
-  mix-blend-mode: screen;
+  mix-blend-mode: normal;
   will-change: transform, opacity;
   z-index: 200 !important;
   pointer-events: none;
@@ -92,7 +108,7 @@
   transform: translate(-50%, -50%);
 }
 
-.mb-bento-section {
-  position: relative;
-  user-select: none;
+.dark .mb-global-spotlight {
+  mix-blend-mode: screen;
 }
+

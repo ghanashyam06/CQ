@@ -25,6 +25,9 @@ export default function StarBorder({
         style={{
           background: `conic-gradient(from 0deg, transparent 60%, ${color} 85%, transparent 100%)`,
           animation: `spin-border ${speed} linear infinite`,
+          willChange: "transform",
+          transform: "translate3d(0, 0, 0)",
+          backfaceVisibility: "hidden",
         }}
       />
 

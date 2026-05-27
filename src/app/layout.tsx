@@ -31,9 +31,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* Force dark background before first paint so preloader never flashes light */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){document.documentElement.style.backgroundColor='#060608';document.addEventListener('DOMContentLoaded',function(){document.body.style.backgroundColor='#060608'})})()`,
+          }}
+        />
       </head>
       <body
         className={`${poppins.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
+        data-preloading="true"
+        style={{ backgroundColor: '#060608' }}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"

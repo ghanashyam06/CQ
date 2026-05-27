@@ -212,7 +212,7 @@ export function SwipeSlider({ children, onSlideChange }: SwipeSliderProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-[#060608]"
+      className="relative w-full h-screen overflow-hidden bg-background"
     >
       {React.Children.map(children, (child, idx) => (
         <div
