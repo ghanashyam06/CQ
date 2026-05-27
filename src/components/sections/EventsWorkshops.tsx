@@ -55,7 +55,7 @@ const RAW_EVENTS: Event[] = [
     mode: "CS Coworking Spaces, Raidurg, Hyderabad + Virtual",
     speaker: "GradSkills × CodeQuesters",
     tags: ["Internship", "AI"],
-    image: "/supervity-ai-workshop.avif",
+    image: "/summership-2026.png",
     registerUrl: "https://chat.whatsapp.com/Caytnn7oWsrKI68W3hJDYC",
   },
 ];
