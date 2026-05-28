@@ -74,16 +74,37 @@ export function ContactSection() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const SHEET_URL =
+    "https://script.google.com/macros/s/AKfycbxXFj3Mz38IBXlwKiop7x8RoX_FUa10xtiNpnl9r-C7_PMEiqr1LzC97_qAhZeXicmJXQ/exec";
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    // Simulate brief delay then open mailto
-    setTimeout(() => {
-      const mailtoLink = `mailto:hello@codequesters.com?subject=Contact from ${encodeURIComponent(formState.name)}&body=${encodeURIComponent(formState.message)}%0A%0AFrom: ${encodeURIComponent(formState.email)}`;
-      window.open(mailtoLink, "_blank");
+
+    try {
+      const body = new URLSearchParams({
+        name:      formState.name,
+        email:     formState.email,
+        message:   formState.message,
+        timestamp: new Date().toISOString(),
+      });
+
+      // no-cors: response is opaque but the Apps Script still receives and stores the data
+      await fetch(SHEET_URL, {
+        method: "POST",
+        mode:   "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body:   body.toString(),
+      });
+
       setStatus("sent");
-      setTimeout(() => setStatus("idle"), 3000);
-    }, 600);
+      setFormState({ name: "", email: "", message: "" });
+    } catch {
+      // network error — very rare with no-cors
+      setStatus("idle");
+    } finally {
+      setTimeout(() => setStatus("idle"), 4000);
+    }
   };
 
   /* ── MagicBento item wrapping the form ── */
