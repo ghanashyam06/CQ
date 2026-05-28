@@ -12,111 +12,78 @@ if (typeof window !== "undefined") {
 
 const partners = [
   {
-    label: "GreatHire",
-    color: "#1a1a1a",
-    bg: "#f5f5f5",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">GreatHire</span>
-      </div>
-    ),
-  },
-  {
-    label: "Supervity",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <span className="text-lg font-black text-foreground leading-none">&amp;</span>
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">Supervity</span>
-      </div>
-    ),
-  },
-  {
-    label: "GradSkills",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <span className="text-sm font-bold whitespace-nowrap tracking-tight">
-          <span className="text-orange-500">Grad</span><span className="text-foreground">Skills</span>
-        </span>
-      </div>
-    ),
-  },
-  {
     label: "CS CoWorking Spaces",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <div className="grid grid-cols-2 gap-0.5 w-4 h-4 shrink-0">
-          <div className="w-1.5 h-1.5 rounded-sm bg-red-500" />
-          <div className="w-1.5 h-1.5 rounded-sm bg-red-500" />
-          <div className="w-1.5 h-1.5 rounded-sm bg-red-500" />
-          <div className="w-1.5 h-1.5 rounded-sm bg-red-500" />
-        </div>
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">CS CoWorking Spaces</span>
-      </div>
-    ),
+    src: "/partners/coworking.png",
   },
   {
     label: "DEOREL Squad",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <span className="text-sm font-black text-foreground whitespace-nowrap tracking-widest uppercase">DEOREL<span className="text-primary">®</span> SQUAD</span>
-      </div>
-    ),
+    src: "/partners/devrel.png",
   },
   {
-    label: "Rocket",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <svg className="w-4 h-4 text-foreground shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L8 8H4l4 4-2 10 6-4 6 4-2-10 4-4h-4L12 2z"/></svg>
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">rocket</span>
-      </div>
-    ),
+    label: "GreatHire",
+    src: "/partners/gh.png",
   },
   {
-    label: "OSEN",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shrink-0">
-          <span className="text-white text-[8px] font-black">O</span>
-        </div>
-        <span className="text-sm font-bold text-blue-400 whitespace-nowrap tracking-wider">OSEN</span>
-      </div>
-    ),
-  },
-  {
-    label: "GitHub",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <FaGithub className="w-5 h-5 text-foreground shrink-0" />
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">GitHub</span>
-      </div>
-    ),
-  },
-  {
-    label: "MeDo",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 shrink-0" />
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">MeDo</span>
-      </div>
-    ),
+    label: "GradSkills",
+    src: "/partners/grandskills.png",
   },
   {
     label: "ICS",
-    node: (
-      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/10 hover:border-primary/40 transition-all">
-        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-400 to-sky-300 flex items-center justify-center shrink-0">
-          <span className="text-white text-[7px] font-black">ICS</span>
-        </div>
-        <span className="text-sm font-bold text-foreground whitespace-nowrap tracking-tight">ICS</span>
-      </div>
-    ),
+    src: "/partners/ics.png",
+  },
+  {
+    label: "MeDo",
+    src: "/partners/medo.png",
+  },
+  {
+    label: "OSEN",
+    src: "/partners/osen.png",
+  },
+  {
+    label: "Rocket",
+    src: "/partners/rocket.png",
+  },
+  {
+    label: "Supervity",
+    src: "/partners/supervity.png",
   },
 ];
 
-const logos = partners.map((p) => ({
-  node: p.node,
+const githubLogo = {
+  node: (
+    <div className="flex items-center justify-center px-6 py-3">
+      <FaGithub
+        className="transition-[filter] duration-300 dark:brightness-0 dark:invert"
+        style={{ width: "auto", height: "80px", display: "block" }}
+        aria-label="GitHub"
+      />
+    </div>
+  ),
+  title: "GitHub",
+};
+
+const logos = [...partners.map((p) => ({
+  node: (
+    <div className="flex items-center justify-center px-6 py-3">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={p.src}
+        alt={p.label}
+        title={p.label}
+        draggable={false}
+        className="transition-[filter] duration-300 dark:brightness-0 dark:invert"
+        style={{
+          height: "80px",
+          width: "auto",
+          maxWidth: "200px",
+          objectFit: "contain",
+          display: "block",
+        }}
+      />
+    </div>
+  ),
   title: p.label,
-}));
+})), githubLogo];
 
 export function TrustedBy() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -186,8 +153,8 @@ export function TrustedBy() {
           logos={logos}
           speed={100}
           direction="left"
-          logoHeight={40}
-          gap={60}
+          logoHeight={110}
+          gap={80}
           hoverSpeed={0}
           scaleOnHover
           fadeOut
@@ -197,8 +164,8 @@ export function TrustedBy() {
           logos={[...logos].reverse()}
           speed={80}
           direction="right"
-          logoHeight={40}
-          gap={60}
+          logoHeight={110}
+          gap={80}
           hoverSpeed={0}
           scaleOnHover
           fadeOut
