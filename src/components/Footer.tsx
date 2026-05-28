@@ -47,7 +47,7 @@ export function Footer() {
   }, [pathname]);
 
   return (
-    <footer ref={footerRef} className="relative z-10 bg-background border-t border-border pt-10 sm:pt-14 lg:pt-16 pb-8">
+    <footer ref={footerRef} className="relative z-10 bg-[#eaf1ec] dark:bg-background border-t border-border/80 pt-10 sm:pt-14 lg:pt-16 pb-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-10 sm:mb-14 lg:mb-16">
 
@@ -136,8 +136,10 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        {/* Glow Line Divider */}
+        <div className="glow-line mb-8" />
 
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-border gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">Made with ❤️ in India</p>
           <p className="text-sm font-semibold text-primary neon-text">
             EXPLORE · LEARN · BUILD

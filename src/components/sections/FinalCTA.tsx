@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/hooks/useMagnetic";
 import MagicBento, { type MagicBentoItem } from "@/components/ui/MagicBento";
+import MagicRings from "@/components/ui/MagicRings";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -64,7 +65,7 @@ export function FinalCTA() {
 
         <h2 className="text-2xl sm:text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-foreground">
           Ready To Build{" "}
-          <span className="text-gradient">Something Bigger?</span>
+          <span className="text-gradient-shimmer">Something Bigger?</span>
         </h2>
 
         <p className="text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed">
@@ -109,6 +110,13 @@ export function FinalCTA() {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[300px] sm:w-[500px] lg:w-[700px] h-[300px] sm:h-[500px] lg:h-[700px] bg-primary/8 blur-[140px] rounded-full" />
       </div>
+
+      {/* Concentric rotating rings */}
+      <MagicRings
+        count={5}
+        primaryColor="rgba(0, 168, 82, 0.06)"
+        secondaryColor="rgba(0, 212, 170, 0.04)"
+      />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="cta-bento max-w-5xl mx-auto">

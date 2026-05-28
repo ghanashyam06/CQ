@@ -19,11 +19,11 @@ export function AboutSnapshot() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from(".about-left", {
-        opacity: 0, x: -60, duration: 0.8, ease: "power3.out",
+        opacity: 0, x: -60, rotateY: -5, duration: 0.8, ease: "power3.out",
         scrollTrigger: { trigger: sectionRef.current, start: "top 75%", toggleActions: "play none none reverse" },
       });
       gsap.from(".about-right", {
-        opacity: 0, x: 60, duration: 0.8, delay: 0.15, ease: "power3.out",
+        opacity: 0, x: 60, rotateY: 5, duration: 0.8, delay: 0.15, ease: "power3.out",
         scrollTrigger: { trigger: sectionRef.current, start: "top 75%", toggleActions: "play none none reverse" },
       });
       gsap.from(".about-solution", {
@@ -49,7 +49,7 @@ export function AboutSnapshot() {
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">About Us</p>
             <h2 className="text-3xl md:text-5xl font-bold font-heading mb-6 leading-tight">
               More Than a Community.{" "}
-              <span className="text-gradient">A Builder Ecosystem.</span>
+              <span className="text-gradient-shimmer">A Builder Ecosystem.</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
               CodeQuesters was started with one mission: To bridge the gap between learning and real-world opportunities.
@@ -57,7 +57,10 @@ export function AboutSnapshot() {
             <p className="text-muted-foreground leading-relaxed mb-8">
               We built a space where builders don&apos;t just consume content — they collaborate, execute ideas, gain exposure, and grow through real experiences together.
             </p>
-            <div className="border-l-2 border-primary pl-4 py-1">
+            <div 
+              className="border-l-2 pl-4 py-1"
+              style={{ borderImage: "linear-gradient(to bottom, var(--primary), #00c49a) 1" }}
+            >
               <p className="text-foreground font-semibold italic">
                 &ldquo;Most communities share content. CodeQuesters creates outcomes.&rdquo;
               </p>
@@ -68,7 +71,7 @@ export function AboutSnapshot() {
           <div className="about-right">
             <div
               ref={solutionCardRef}
-              className="about-solution glass-card p-6 sm:p-8 border border-primary/20 bg-primary/5 neon-border"
+              className="about-solution glass-card p-6 sm:p-8 border border-primary/15 bg-primary/5 shadow-[0_2px_12px_rgba(0,80,40,0.06)] dark:border-primary/20 dark:shadow-none dark:neon-border"
               style={{ willChange: "transform" }}
             >
               <div className="flex items-start gap-4">

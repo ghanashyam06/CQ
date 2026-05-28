@@ -38,6 +38,8 @@ export default function MagicRings({
                 borderColor: color,
                 borderWidth: isEven ? "1px" : "1.5px",
                 borderStyle: isEven ? "dashed" : "solid",
+                willChange: "transform",
+                backfaceVisibility: "hidden",
               }}
               animate={{
                 rotate: rotationDirection,

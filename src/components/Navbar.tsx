@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import StarBorder from "@/components/ui/StarBorder";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -49,12 +50,12 @@ export function Navbar() {
 
       if (scrolled) {
         gsap.to(nav, {
-          backgroundColor: isDark ? "rgba(5,8,22,0.85)" : "rgba(255,255,255,0.90)",
+          backgroundColor: isDark ? "rgba(5,8,22,0.85)" : "rgba(240,245,242,0.88)",
           backdropFilter: "blur(20px)",
-          borderBottomColor: isDark ? "rgba(0,191,99,0.2)" : "rgba(0,0,0,0.1)",
+          borderBottomColor: isDark ? "rgba(0,191,99,0.2)" : "rgba(0,80,40,0.08)",
           boxShadow: isDark
             ? "0 4px 30px rgba(0,0,0,0.3), 0 1px 0 rgba(0,191,99,0.15)"
-            : "0 4px 20px rgba(0,0,0,0.08), 0 1px 0 rgba(0,0,0,0.05)",
+            : "0 8px 30px rgba(0,40,20,0.04), 0 1px 0 rgba(255,255,255,0.8) inset",
           duration: 0.4,
           ease: "power2.out",
         });
@@ -106,7 +107,52 @@ export function Navbar() {
     }
   }, [isMobileMenuOpen]);
 
-  const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  const handleThemeToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const targetTheme = resolvedTheme === "dark" ? "light" : "dark";
+
+    // Capture button center or click coordinates
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX ?? (rect.left + rect.width / 2);
+    const y = e.clientY ?? (rect.top + rect.height / 2);
+
+    // Create temporary theme transition circular wipe overlay
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.inset = "0";
+    overlay.style.zIndex = "99999";
+    overlay.style.pointerEvents = "none";
+
+    const bgColor = targetTheme === "dark" ? "#050816" : "#f3f7f5";
+    overlay.style.backgroundColor = bgColor;
+
+    // Start with 0 radius circle
+    overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
+    document.body.appendChild(overlay);
+
+    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 1.25;
+
+    // Animate the clipPath using GSAP
+    gsap.to(overlay, {
+      clipPath: `circle(${maxRadius}px at ${x}px ${y}px)`,
+      duration: 0.8,
+      ease: "power2.inOut",
+      onComplete: () => {
+        // Toggle the Next-Themes context classes
+        setTheme(targetTheme);
+
+        // Softly fade out the overlay card
+        gsap.to(overlay, {
+          opacity: 0,
+          duration: 0.25,
+          ease: "power1.out",
+          onComplete: () => {
+            overlay.remove();
+          },
+        });
+      },
+    });
+  };
+
   const isDark = !mounted || resolvedTheme === "dark";
 
   return (
@@ -159,10 +205,11 @@ export function Navbar() {
             })}
           </div>
 
-          {/* ── Desktop: theme toggle + CTA ── */}
+          {/* ── Desktop: theme toggle + audio controls + CTA ── */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
+            {/* Theme Toggle */}
             <button
-              onClick={toggleTheme}
+              onClick={handleThemeToggle}
               className="p-2 rounded-full text-foreground/60 hover:text-primary hover:bg-primary/10 transition-all duration-200"
               aria-label="Toggle theme"
             >
@@ -170,18 +217,22 @@ export function Navbar() {
                 ? <Sun className="w-4 h-4" />
                 : <Moon className="w-4 h-4" />}
             </button>
-            <Link
-              href="/contact"
-              className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-[0_0_14px_rgba(0,191,99,0.3)] hover:shadow-[0_0_24px_rgba(0,191,99,0.5)] whitespace-nowrap"
-            >
-              Join Community
-            </Link>
+            
+            <StarBorder className="!rounded-lg !p-[1.5px]" color="#00bf63" speed="3s">
+              <Link
+                href="/contact"
+                className="block px-5 py-2 rounded-[calc(0.5rem-1.5px)] bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all whitespace-nowrap"
+              >
+                Join Community
+              </Link>
+            </StarBorder>
           </div>
 
           {/* ── Mobile controls ── */}
           <div className="lg:hidden flex items-center gap-2">
+            {/* Mobile Theme Toggle */}
             <button
-              onClick={toggleTheme}
+              onClick={handleThemeToggle}
               className="p-2 rounded-full text-foreground/60 hover:text-primary hover:bg-primary/10 transition-all"
               aria-label="Toggle theme"
             >
@@ -189,6 +240,7 @@ export function Navbar() {
                 ? <Sun className="w-4 h-4" />
                 : <Moon className="w-4 h-4" />}
             </button>
+            
             <button
               onClick={() => setMobileMenu(!isMobileMenuOpen)}
               className="p-2 rounded-lg text-foreground/70 hover:text-foreground hover:bg-foreground/10 transition-all"
@@ -206,7 +258,7 @@ export function Navbar() {
         className="absolute top-16 left-0 right-0 lg:hidden flex-col gap-1 p-4"
         style={{
           display: "none",
-          background: isDark ? "rgba(5,8,22,0.97)" : "rgba(255,255,255,0.97)",
+          background: isDark ? "rgba(5,8,22,0.97)" : "rgba(243,247,245,0.97)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           borderBottom: `1px solid ${isDark ? "rgba(0,191,99,0.15)" : "rgba(0,0,0,0.1)"}`,

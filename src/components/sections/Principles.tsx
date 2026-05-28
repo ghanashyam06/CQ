@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { use3DTilt } from "@/hooks/use3DTilt";
 
 import SpotlightCard from "@/components/ui/SpotlightCard";
+import MagicRings from "@/components/ui/MagicRings";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -105,6 +106,12 @@ export function Principles() {
 
   return (
     <section ref={sectionRef} className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+      {/* Ambient rotating rings */}
+      <MagicRings
+        count={4}
+        primaryColor="rgba(0, 168, 82, 0.04)"
+        secondaryColor="rgba(0, 212, 170, 0.03)"
+      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-16">
           <p className="principles-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3">

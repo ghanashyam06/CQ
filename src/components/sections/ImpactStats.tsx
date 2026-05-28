@@ -76,15 +76,15 @@ function StatCard({ icon: Icon, value, label, description, counterRefSetter }: S
         className="w-full h-full"
       >
         <div
-          className="relative z-10 w-full h-full bg-[#070908]/90 backdrop-blur-xl p-5 sm:p-6 flex flex-col justify-between items-center min-h-[240px] text-center group border border-white/[0.03] rounded-[1.2rem] hover:shadow-[0_0_35px_rgba(0,191,99,0.08)] transition-all duration-300"
+          className="relative z-10 w-full h-full bg-card backdrop-blur-xl p-5 sm:p-6 flex flex-col justify-between items-center min-h-[240px] text-center group border border-border rounded-[1.2rem] shadow-sm hover:border-primary/20 dark:hover:border-border dark:shadow-none hover:shadow-[0_0_35px_rgba(0,191,99,0.08)] transition-all duration-300"
         >
           <div className="flex flex-col items-center w-full">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 border border-primary/20 group-hover:bg-primary/20 group-hover:scale-110 group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.25)] transition-all duration-300">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 border border-primary/20 shadow-[inset_0_0_8px_rgba(0,168,82,0.06)] dark:shadow-none group-hover:bg-primary/20 group-hover:scale-110 group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.25)] transition-all duration-300">
               <Icon className="w-5 h-5 text-primary group-hover:rotate-6 transition-transform duration-300" />
             </div>
             <span
               ref={counterRefSetter}
-              className="text-2xl sm:text-3xl md:text-4xl font-black bg-clip-text bg-gradient-to-b from-white via-neutral-100 to-neutral-400 group-hover:from-[#00ff88] group-hover:to-[#73ffb9] mb-2 leading-none font-mono drop-shadow-[0_0_12px_rgba(255,255,255,0.05)] transition-colors duration-500"
+              className="text-2xl sm:text-3xl md:text-4xl font-black bg-clip-text bg-gradient-to-b dark:from-white dark:via-neutral-100 dark:to-neutral-400 from-[#091e12] via-[#1a3826] to-[#3e5145] dark:group-hover:from-[#00ff88] dark:group-hover:to-[#73ffb9] group-hover:from-[#00bf63] group-hover:to-[#007a3d] mb-2 leading-none font-mono transition-colors duration-500"
             >
               {value}
             </span>
@@ -174,6 +174,12 @@ export function ImpactStats() {
               ref.textContent = Math.round(counter.value).toLocaleString() + "+";
             }
           },
+          onComplete: () => {
+            if (ref) {
+              ref.classList.add("counter-flash");
+              setTimeout(() => ref.classList.remove("counter-flash"), 900);
+            }
+          },
         });
       });
     }, sectionRef.current);
@@ -192,7 +198,7 @@ export function ImpactStats() {
             The Ecosystem In Motion
           </p>
           <h2 className="stats-heading text-3xl sm:text-4xl md:text-6xl font-bold font-heading tracking-tight leading-none text-foreground">
-            Numbers That <span className="text-gradient">Speak</span>
+            Numbers That <span className="text-gradient-shimmer">Speak</span>
           </h2>
         </div>
 

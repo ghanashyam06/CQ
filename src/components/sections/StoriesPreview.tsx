@@ -107,7 +107,7 @@ export function StoriesPreview() {
     return () => window.removeEventListener("keydown", onKey);
   }, [closeVideo]);
 
-  const textColor = mounted && resolvedTheme === "light" ? "#0a0a0a" : "#ffffff";
+  const textColor = mounted && resolvedTheme === "light" ? "#091e12" : "#ffffff";
 
   return (
     <section ref={sectionRef} id="stories" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
