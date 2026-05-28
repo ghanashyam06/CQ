@@ -188,11 +188,11 @@ function LogoModel({ isDark }: { isDark: boolean }) {
       <mesh position={[0, 0, -0.1]} rotation={[0, 0, 0]}>
         <torusGeometry args={[1.55, 0.012, 8, 128]} />
         <meshStandardMaterial
-          color={isDark ? "#00ff88" : "#00bf63"}
-          emissive={isDark ? "#00ff88" : "#00bf63"}
-          emissiveIntensity={isDark ? 1.8 : 1.2}
+          color={isDark ? "#00ff88" : "#005e2c"}
+          emissive={isDark ? "#00ff88" : "#005e2c"}
+          emissiveIntensity={isDark ? 1.8 : 3.0}
           transparent
-          opacity={0.75}
+          opacity={isDark ? 0.75 : 1.0}
         />
       </mesh>
     </group>
@@ -227,9 +227,9 @@ function OrbitRing({
       <meshStandardMaterial
         color={color}
         emissive={color}
-        emissiveIntensity={isDark ? 0.8 : 0.5}
+        emissiveIntensity={isDark ? 0.8 : 2.5}
         transparent
-        opacity={isDark ? 0.35 : 0.25}
+        opacity={isDark ? 0.35 : 0.75}
       />
     </mesh>
   );
@@ -247,13 +247,13 @@ function GlowDisk({ isDark }: { isDark: boolean }) {
     <mesh ref={meshRef} position={[0, 0, -1.5]}>
       <ringGeometry args={[3.8, 4.0, 128]} />
       <meshStandardMaterial
-        color={isDark ? "#00ff88" : "#00bf63"}
-        emissive={isDark ? "#00ff88" : "#00bf63"}
-        emissiveIntensity={isDark ? 1.2 : 0.8}
+        color={isDark ? "#00ff88" : "#005e2c"}
+        emissive={isDark ? "#00ff88" : "#005e2c"}
+        emissiveIntensity={isDark ? 1.2 : 2.5}
         transparent
-        opacity={isDark ? 0.12 : 0.09}
+        opacity={isDark ? 0.12 : 0.5}
         side={THREE.DoubleSide}
-        blending={THREE.AdditiveBlending}
+        blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
         depthWrite={false}
       />
     </mesh>
@@ -265,9 +265,10 @@ export function HeroScene({ isDark = true }: { isDark?: boolean }) {
   const masterGroupRef = useRef<THREE.Group>(null!);
   const { viewport } = useThree();
 
-  const primary = isDark ? "#00ff88" : "#00bf63";
-  const secondary = isDark ? "#00d4aa" : "#007a3d";
-  const cyan = isDark ? "#00e5ff" : "#0088cc";
+  // Light mode uses deep, saturated greens for high contrast on the pale background
+  const primary   = isDark ? "#00ff88" : "#005e2c";
+  const secondary = isDark ? "#00d4aa" : "#003d1e";
+  const cyan      = isDark ? "#00e5ff" : "#006b5a";
 
   // Network node positions arranged in a circular orbit
   const networkNodes = useMemo(() => {
@@ -306,12 +307,14 @@ export function HeroScene({ isDark = true }: { isDark?: boolean }) {
   return (
     <>
       {/* ── Lighting ── */}
-      <ambientLight intensity={isDark ? 0.3 : 0.55} />
-      <pointLight position={[0, 0, 3]} intensity={isDark ? 3.5 : 2.0} color={primary} decay={1.2} />
-      <pointLight position={[5, 4, 2]} intensity={isDark ? 2.0 : 1.2} color={primary} decay={1.5} />
-      <pointLight position={[-5, -3, 1]} intensity={isDark ? 1.5 : 0.9} color={secondary} decay={1.5} />
-      <pointLight position={[0, -4, -2]} intensity={isDark ? 1.2 : 0.7} color={cyan} decay={2} />
-      <directionalLight position={[0, 5, 5]} intensity={isDark ? 0.6 : 1.0} />
+      <ambientLight intensity={isDark ? 0.3 : 0.7} />
+      <pointLight position={[0, 0, 3]}  intensity={isDark ? 3.5 : 4.5} color={primary}   decay={1.2} />
+      <pointLight position={[5, 4, 2]}  intensity={isDark ? 2.0 : 3.0} color={primary}   decay={1.5} />
+      <pointLight position={[-5, -3, 1]} intensity={isDark ? 1.5 : 2.5} color={secondary} decay={1.5} />
+      <pointLight position={[0, -4, -2]} intensity={isDark ? 1.2 : 2.0} color={cyan}      decay={2}   />
+      {/* Extra fill light for day mode — punches shadows */}
+      {!isDark && <pointLight position={[0, 0, -4]} intensity={3.0} color="#00ff88" decay={1.5} />}
+      <directionalLight position={[0, 5, 5]} intensity={isDark ? 0.6 : 1.4} />
 
       <group ref={masterGroupRef} scale={scale}>
         {/* ── CQ Logo (central hero) ── */}
@@ -359,7 +362,11 @@ export function HeroScene({ isDark = true }: { isDark?: boolean }) {
         <Satellite radius={4.3} speed={0.22} offset={Math.PI / 6} size={0.14} color={secondary}  emissive={secondary} />
 
         {/* ── Particle nebula ── */}
-        <ParticleField count={420} spread={7.5} color={isDark ? "#00BF63" : "#007a3d"} />
+        <ParticleField
+          count={isDark ? 420 : 600}
+          spread={7.5}
+          color={isDark ? "#00BF63" : "#004a22"}
+        />
       </group>
     </>
   );
