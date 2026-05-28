@@ -17,6 +17,18 @@ interface Event {
   speaker: string;
   tags: string[];
   image: string;
+  /**
+   * CSS aspect-ratio value for the image container, e.g. "1/1", "16/9", "9/16".
+   * Lets each event poster display at its natural proportions.
+   * @default "16/9"
+   */
+  imageAspectRatio?: string;
+  /**
+   * CSS object-fit for the image: "contain" shows the full image (no crop),
+   * "cover" fills the container (may crop).
+   * @default "contain"
+   */
+  imageFit?: "contain" | "cover";
   registerUrl?: string;
 }
 
@@ -33,7 +45,9 @@ const RAW_EVENTS: Event[] = [
     mode: "Virtual",
     speaker: "T Rishik Goud · Supervity",
     tags: ["AI Agents", "No-Code"],
-    image: "/supervity-ai-workshop.avif",
+    image: "/supervity-workshop.png",
+    imageAspectRatio: "1/1",       // 696×700 — nearly square
+    imageFit: "contain",
   },
   {
     id: 2,
@@ -44,19 +58,37 @@ const RAW_EVENTS: Event[] = [
     mode: "Hybrid",
     speaker: "CodeQuesters",
     tags: ["GenAI", "Hackathon"],
-    image: "/1st Winner.JPG",
+    image: "/CodeQuest-2026.jpg",
+    imageAspectRatio: "1/1",       // 2880×2880 — square
+    imageFit: "contain",
   },
   {
     id: 3,
     title: "Compete & Win: Summer Internship Challenge 2026",
     category: "Internship",
     date: "May 31, 2026 · 9:00 AM – 5:00 PM IST",
-    endDate: "2026-06-01",   // flips to "completed" automatically after June 1
+    endDate: "2026-05-31",   // flips to "completed" automatically on June 1
     mode: "CS Coworking Spaces, Raidurg, Hyderabad + Virtual",
     speaker: "GradSkills × CodeQuesters",
     tags: ["Internship", "AI"],
-    image: "/summership-2026.png",
-    registerUrl: "https://chat.whatsapp.com/Caytnn7oWsrKI68W3hJDYC",
+    image: "/summership-2026.jpg",
+    imageAspectRatio: "9/16",      // 3456×6912 — tall portrait
+    imageFit: "contain",
+    registerUrl: "https://luma.com/goekfv3b?tk=xTmxzL",
+  },
+  {
+    id: 4,
+    title: "GitHub to Income: Building Real Opportunities Through Open Source",
+    category: "Workshops",
+    date: "May 30, 2026 · 5:00 PM – 7:00 PM IST",
+    endDate: "2026-05-30",
+    mode: "Virtual",
+    speaker: "CodeQuesters × CDN IGNOU",
+    tags: ["GitHub", "Open Source"],
+    image: "/github_speaker_post.jpg",
+    imageAspectRatio: "1587/2245",  // 1587×2245 — portrait poster
+    imageFit: "contain",
+    registerUrl: "https://luma.com/7igei972?tk=4QSEVV",
   },
 ];
 
@@ -73,15 +105,24 @@ function EventCard({ event }: { event: EventWithStatus }) {
       className="glass-card overflow-hidden group flex flex-col h-full cursor-default"
       style={{ willChange: "transform" }}
     >
-      {/* Thumbnail */}
-      <div className="relative h-44 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+      {/* Thumbnail — aspect ratio + fit are per-event so nothing gets cropped */}
+      <div
+        className="relative w-full overflow-hidden bg-black/40 rounded-t-[inherit]"
+        style={{
+          aspectRatio: event.imageAspectRatio ?? "16/9",
+          maxHeight: "24rem",           /* safety cap for very tall posters */
+        }}
+      >
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10" />
         <Image
           src={event.image}
           alt={event.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          className={`${(event.imageFit ?? "contain") === "contain"
+            ? "object-contain"
+            : "object-cover"
+            } group-hover:scale-105 transition-transform duration-500`}
         />
         {/* Tags */}
         <div className="absolute top-3 right-3 z-20 flex flex-wrap gap-1.5 justify-end">
