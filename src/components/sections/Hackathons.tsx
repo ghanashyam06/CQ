@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Trophy, Users, Star, Clock, MapPin } from "lucide-react";
+import { ArrowRight, Trophy, Users, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useMagnetic } from "@/hooks/useMagnetic";
 import MagicBento, { type MagicBentoItem } from "@/components/ui/MagicBento";
+import { MobileSwipeCarousel } from "@/components/ui/MobileSwipeCarousel";
 
 export function Hackathons() {
   const registerRef = useMagnetic<HTMLAnchorElement>(0.22, 60);
@@ -86,6 +87,7 @@ export function Hackathons() {
       name: "Vivek Goud Adula",
       prize: "₹12,000",
       image: "/1st Winner.JPG",
+      aspectRatio: "3/2",   // 6048×4032
       color: "text-amber-400",
       bg: "bg-amber-500/10",
       border: "border-amber-500/30",
@@ -95,6 +97,7 @@ export function Hackathons() {
       name: "Y. Joshitha",
       prize: "₹8,000",
       image: "/2nd winner.JPG",
+      aspectRatio: "3/2",   // 6048×4032
       color: "text-slate-300",
       bg: "bg-slate-500/10",
       border: "border-slate-500/30",
@@ -104,6 +107,7 @@ export function Hackathons() {
       name: "Prathmesh Waikar",
       prize: "₹5,000",
       image: "/3rd winner 1.JPG",
+      aspectRatio: "3/2",   // 6192×4128
       color: "text-orange-400",
       bg: "bg-orange-500/10",
       border: "border-orange-500/30",
@@ -203,18 +207,60 @@ export function Hackathons() {
             </span>
           </div>
 
-          <MagicBento
-            items={pastItems}
-            gridCols="repeat(auto-fit, minmax(min(100%, 220px), 1fr))"
-            enableStars
-            enableSpotlight
-            enableBorderGlow
-            enableTilt
-            enableMagnetism
-            clickEffect
-            spotlightRadius={260}
-            particleCount={8}
-          />
+          {/* ── Mobile: swipe carousel ── */}
+          <div className="block md:hidden">
+            <MobileSwipeCarousel
+              hint="Swipe to see winners"
+              desktopGridClass="grid-cols-3"
+              items={winners.map((w) => (
+                <div key={w.rank} className="glass-card p-4 border border-border flex flex-col gap-3">
+                  {/* Rank badge */}
+                  <div className="flex items-center justify-between">
+                    <div className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${w.bg} ${w.border} border ${w.color}`}>
+                      <Trophy className="w-3 h-3" /> {w.rank} Place
+                    </div>
+                    <span className="text-xs text-muted-foreground">CODEQUEST 2026</span>
+                  </div>
+                  {/* Full photo */}
+                  <div
+                    className="w-full rounded-xl overflow-hidden border border-border"
+                    style={{ aspectRatio: w.aspectRatio }}
+                  >
+                    <Image
+                      src={w.image}
+                      alt={w.name}
+                      width={600}
+                      height={400}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  {/* Name + prize */}
+                  <div>
+                    <p className="font-bold text-foreground">{w.name}</p>
+                    <div className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full mt-1.5 ${w.bg} ${w.border} border ${w.color}`}>
+                      <Trophy className="w-3 h-3" /> {w.prize} Cash Prize
+                    </div>
+                  </div>
+                </div>
+              ))}
+            />
+          </div>
+
+          {/* ── Desktop: MagicBento grid ── */}
+          <div className="hidden md:block">
+            <MagicBento
+              items={pastItems}
+              gridCols="repeat(auto-fit, minmax(min(100%, 220px), 1fr))"
+              enableStars
+              enableSpotlight
+              enableBorderGlow
+              enableTilt
+              enableMagnetism
+              clickEffect
+              spotlightRadius={260}
+              particleCount={8}
+            />
+          </div>
         </div>
       </div>
     </section>

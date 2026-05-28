@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin, ExternalLink, CheckCircle2, Clock } from "lucide-react";
 import { use3DTilt } from "@/hooks/use3DTilt";
 import Image from "next/image";
+import { MobileSwipeCarousel } from "@/components/ui/MobileSwipeCarousel";
 
 interface Event {
   id: number;
@@ -220,8 +221,10 @@ export function EventsWorkshops() {
               </span>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-              {upcoming.map((event, i) => (
+            <MobileSwipeCarousel
+              desktopGridClass="sm:grid-cols-2 xl:grid-cols-3"
+              hint="Swipe to see all events"
+              items={upcoming.map((event, i) => (
                 <motion.div
                   key={event.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -238,7 +241,7 @@ export function EventsWorkshops() {
                   </div>
                 </motion.div>
               ))}
-            </div>
+            />
           </div>
         )}
 
@@ -262,8 +265,10 @@ export function EventsWorkshops() {
               </span>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-              {past.map((event, i) => (
+            <MobileSwipeCarousel
+              desktopGridClass="sm:grid-cols-2 xl:grid-cols-3"
+              hint="Swipe to see past events"
+              items={past.map((event, i) => (
                 <motion.div
                   key={event.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -280,7 +285,7 @@ export function EventsWorkshops() {
                   </div>
                 </motion.div>
               ))}
-            </div>
+            />
           </div>
         )}
 
