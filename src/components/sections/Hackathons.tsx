@@ -250,7 +250,7 @@ export function Hackathons() {
           <div className="hidden md:block">
             <MagicBento
               items={pastItems}
-              gridCols="repeat(auto-fit, minmax(min(100%, 220px), 1fr))"
+              gridCols="repeat(3, 1fr)"
               enableStars
               enableSpotlight
               enableBorderGlow
