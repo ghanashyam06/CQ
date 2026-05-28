@@ -581,7 +581,12 @@
   animation: spin-slow 35s linear infinite;
 }
 
-
-
-
+/* ─── Hide Scrollbar Utility (used by SwipeCarousel) ─── */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 

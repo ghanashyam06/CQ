@@ -86,7 +86,7 @@ export function FinalCTA() {
           </a>
           <a
             ref={link2Ref}
-            href="#contact"
+            href="/contact"
             className="px-8 py-4 w-full sm:w-auto rounded-xl glass-card text-foreground font-bold text-base hover:border-primary/40 transition-all flex items-center justify-center gap-2"
           >
             <Handshake className="w-5 h-5" />
@@ -94,7 +94,7 @@ export function FinalCTA() {
           </a>
           <a
             ref={link3Ref}
-            href="#contact"
+            href="/contact"
             className="px-8 py-4 w-full sm:w-auto rounded-xl text-primary font-bold text-base hover:bg-primary/10 transition-all flex items-center justify-center gap-2 border border-primary/20"
           >
             <Mail className="w-5 h-5" />

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Users, Building2, CalendarDays, Network, Handshake } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/hooks/useMagnetic";
 import BorderGlow from "@/components/ui/BorderGlow";
 import { NeuralNetworkBackground } from "@/components/ui/NeuralNetworkBackground";
+import SwipeCarousel from "@/components/ui/SwipeCarousel";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -101,11 +102,17 @@ function StatCard({ icon: Icon, value, label, description, counterRefSetter }: S
   );
 }
 
-// AnimatedBackground has been replaced by HTML5 Canvas-based NeuralNetworkBackground
-
 export function ImpactStats() {
   const sectionRef = useRef<HTMLElement>(null);
   const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -202,20 +209,39 @@ export function ImpactStats() {
           </h2>
         </div>
 
-        <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 max-w-7xl mx-auto">
-          {stats.map((stat, i) => (
-            <StatCard
-              key={i}
-              icon={stat.icon}
-              value={stat.value}
-              target={stat.target}
-              label={stat.label}
-              description={stat.description}
-              index={i}
-              counterRefSetter={(el) => { counterRefs.current[i] = el; }}
-            />
-          ))}
-        </div>
+        {/* Mobile: swipe carousel */}
+        {isMobile ? (
+          <SwipeCarousel cardWidth="78vw" gap={16} showDots showArrows className="stats-grid -mx-4">
+            {stats.map((stat, i) => (
+              <StatCard
+                key={i}
+                icon={stat.icon}
+                value={stat.value}
+                target={stat.target}
+                label={stat.label}
+                description={stat.description}
+                index={i}
+                counterRefSetter={(el) => { counterRefs.current[i] = el; }}
+              />
+            ))}
+          </SwipeCarousel>
+        ) : (
+          /* Desktop: 5-column grid */
+          <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 max-w-7xl mx-auto">
+            {stats.map((stat, i) => (
+              <StatCard
+                key={i}
+                icon={stat.icon}
+                value={stat.value}
+                target={stat.target}
+                label={stat.label}
+                description={stat.description}
+                index={i}
+                counterRefSetter={(el) => { counterRefs.current[i] = el; }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Star, Telescope, Zap } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,6 +8,7 @@ import { use3DTilt } from "@/hooks/use3DTilt";
 
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import MagicRings from "@/components/ui/MagicRings";
+import SwipeCarousel from "@/components/ui/SwipeCarousel";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -63,6 +64,14 @@ function PrincipleCard({ icon: Icon, title, description }: PrincipleCardProps) {
 
 export function Principles() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -122,16 +131,31 @@ export function Principles() {
           </h2>
         </div>
 
-        <div className="principles-grid grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {principles.map((p, i) => (
-            <PrincipleCard
-              key={i}
-              icon={p.icon}
-              title={p.title}
-              description={p.description}
-            />
-          ))}
-        </div>
+        {/* Mobile: swipe carousel */}
+        {isMobile ? (
+          <SwipeCarousel cardWidth="82vw" gap={16} showDots showArrows className="principles-grid -mx-4">
+            {principles.map((p, i) => (
+              <PrincipleCard
+                key={i}
+                icon={p.icon}
+                title={p.title}
+                description={p.description}
+              />
+            ))}
+          </SwipeCarousel>
+        ) : (
+          /* Desktop: 3-column grid */
+          <div className="principles-grid grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {principles.map((p, i) => (
+              <PrincipleCard
+                key={i}
+                icon={p.icon}
+                title={p.title}
+                description={p.description}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

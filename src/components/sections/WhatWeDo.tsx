@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Trophy, BookOpen, Network, Briefcase, Users, Lightbulb } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagicBento, { type MagicBentoItem } from "@/components/ui/MagicBento";
+import SwipeCarousel from "@/components/ui/SwipeCarousel";
+import SpotlightCard from "@/components/ui/SpotlightCard";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -51,6 +53,14 @@ const features: MagicBentoItem[] = [
 
 export function WhatWeDo() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -99,20 +109,46 @@ export function WhatWeDo() {
           </p>
         </div>
 
-        <div className="services-bento max-w-6xl mx-auto">
-          <MagicBento
-            items={features}
-            gridCols="repeat(auto-fit, minmax(min(100%, 280px), 1fr))"
-            enableStars
-            enableSpotlight
-            enableBorderGlow
-            enableTilt
-            enableMagnetism
-            clickEffect
-            spotlightRadius={320}
-            particleCount={10}
-          />
-        </div>
+        {/* Mobile: swipe carousel */}
+        {isMobile ? (
+          <SwipeCarousel cardWidth="82vw" gap={16} showDots showArrows className="services-bento -mx-4">
+            {features.map((item, i) => (
+              <SpotlightCard
+                key={i}
+                className="border border-border hover:border-primary/30 p-6 rounded-2xl bg-card h-full min-h-[200px]"
+                spotlightColor="rgba(0, 191, 99, 0.12)"
+                spotlightSize={220}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  {item.icon && <div className="shrink-0">{item.icon}</div>}
+                  {item.label && (
+                    <span className="text-xs font-bold tracking-widest uppercase text-primary/70 ml-auto">
+                      {item.label}
+                    </span>
+                  )}
+                </div>
+                <h3 className="font-bold text-foreground text-lg mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+              </SpotlightCard>
+            ))}
+          </SwipeCarousel>
+        ) : (
+          /* Desktop: MagicBento grid */
+          <div className="services-bento max-w-6xl mx-auto">
+            <MagicBento
+              items={features}
+              gridCols="repeat(auto-fit, minmax(min(100%, 280px), 1fr))"
+              enableStars
+              enableSpotlight
+              enableBorderGlow
+              enableTilt
+              enableMagnetism
+              clickEffect
+              spotlightRadius={320}
+              particleCount={10}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
