@@ -20,26 +20,9 @@ export default function ClientShell({
   const [loading, setLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
-  // Skip preloader on reload inside the same session (disabled to let reload animations play every time)
-  useEffect(() => {
-    /*
-    if (typeof window !== "undefined") {
-      const hasLoaded = sessionStorage.getItem("cq-preloader-loaded") === "true";
-      if (hasLoaded) {
-        setLoading(false);
-        setShowContent(true);
-      }
-    }
-    */
-  }, []);
 
   const handlePreloaderComplete = useCallback(() => {
     setLoading(false);
-    /*
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("cq-preloader-loaded", "true");
-    }
-    */
 
     // Remove the forced dark background — let the user's theme take over
     if (typeof window !== "undefined") {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, X, Play } from "lucide-react";
 import { useTheme } from "next-themes";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,41 +11,79 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const CLOUD = "dihm1rwgk";
+
+// Build an optimised Cloudinary video URL
+function cldVideo(publicId: string, format: string) {
+  return `https://res.cloudinary.com/${CLOUD}/video/upload/f_auto,q_auto:good/${publicId}.${format}`;
+}
+
+// Generate a poster (thumbnail) from the video at 0 s
+function cldPoster(publicId: string) {
+  return `https://res.cloudinary.com/${CLOUD}/video/upload/so_0,f_jpg,q_auto:good,w_640/${publicId}.jpg`;
+}
+
 interface Story {
   image: string;
   text: string;
-  /** YouTube video ID — e.g. "dQw4w9WgXcQ" from youtu.be/dQw4w9WgXcQ */
-  videoId: string;
+  /** Cloudinary public ID of the testimonial video */
+  videoPublicId: string;
+  /** Original upload format so we can build the right URL */
+  format: "mp4" | "mov";
+  /** Short subtitle shown in the gallery card */
+  role: string;
 }
 
-// ── Replace each videoId with the YouTube video ID for that person ──
-// YouTube video ID is the part after "v=" in the URL, e.g.:
-//   https://www.youtube.com/watch?v=ABC123  →  videoId: "ABC123"
-//   https://youtu.be/ABC123                 →  videoId: "ABC123"
+// ── 4 real Cloudinary testimonial videos ──────────────────────────────────────
 const stories: Story[] = [
-  { image: "/joshitha-opt.jpg",        text: "Joshitha",        videoId: "9-cy16B7qro" },
-  { image: "/omkar-raane-opt.jpg",     text: "Omkar Raane",     videoId: "9-cy16B7qro" },
-  { image: "/shruthi-opt.jpg",         text: "Shruthi",         videoId: "9-cy16B7qro" },
-  { image: "/manas-himay.png",         text: "Maanas & Himay",  videoId: "9-cy16B7qro" },
-  { image: "/anamika-kumari-opt.jpg",  text: "Anamika Kumari",  videoId: "9-cy16B7qro" },
-  { image: "/hassan-ahmed-opt.jpg",    text: "Hassan Ahmed",    videoId: "9-cy16B7qro" },
+  {
+    image: "/omkar-raane-opt.jpg",
+    text: "Omkar Rane",
+    role: "Builder • Hackathon Winner",
+    videoPublicId: "Omkar_rane_vva0ct",
+    format: "mp4",
+  },
+  {
+    image: "/joshitha-opt.jpg",
+    text: "@all",
+    role: "Overall Experience",
+    videoPublicId: "Experience_h9jl1m",
+    format: "mov",
+  },
+  {
+    image: "/hassan-ahmed-opt.jpg",
+    text: "Laksh",
+    role: "Developer • Open-Source",
+    videoPublicId: "Laksh_rzwrd5",
+    format: "mp4",
+  },
+  {
+    image: "/anamika-kumari-opt.jpg",
+    text: "Event Story",
+    role: "CodeQuesters Events",
+    videoPublicId: "Eventcrazy_f0n3mf",
+    format: "mov",
+  },
 ];
 
 export function StoriesPreview() {
-  const sectionRef   = useRef<HTMLElement>(null);
-  const overlayRef   = useRef<HTMLDivElement>(null);
-  const cardRef      = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted]         = useState(false);
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [isMobile, setIsMobile]       = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [activeStory, setActiveStory] = useState<Story | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(t);
   }, []);
 
-  /* ── Detect mobile to disable bend ── */
+  /* ── Detect mobile ── */
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
     check();
@@ -60,9 +98,10 @@ export function StoriesPreview() {
       const st = { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none reverse" };
       gsap.from(".stories-label", { opacity: 0, y: 20, duration: 0.5, ease: "power3.out", scrollTrigger: st });
       gsap.from(".stories-heading", { opacity: 0, y: 30, duration: 0.7, delay: 0.1, ease: "power3.out", scrollTrigger: st });
-      gsap.from(".stories-sub",    { opacity: 0, y: 20, duration: 0.6, delay: 0.15, ease: "power3.out", scrollTrigger: st });
-      gsap.from(".stories-link",   { opacity: 0, y: 15, duration: 0.5, delay: 0.2,  ease: "power3.out", scrollTrigger: st });
-      gsap.from(".stories-gallery",{ opacity: 0, scale: 0.95, duration: 0.8, delay: 0.3, ease: "power3.out",
+      gsap.from(".stories-sub", { opacity: 0, y: 20, duration: 0.6, delay: 0.15, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".stories-link", { opacity: 0, y: 15, duration: 0.5, delay: 0.2, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".stories-gallery", {
+        opacity: 0, scale: 0.95, duration: 0.8, delay: 0.3, ease: "power3.out",
         scrollTrigger: { trigger: ".stories-gallery", start: "top 90%", toggleActions: "play none none reverse" },
       });
     }, sectionRef.current);
@@ -70,9 +109,10 @@ export function StoriesPreview() {
   }, []);
 
   /* ── Open modal ── */
-  const openVideo = useCallback((videoId: string) => {
-    setActiveVideo(videoId);
-    // Animate in after the iframe is mounted (next frame)
+  const openVideo = useCallback((videoPublicId: string) => {
+    const story = stories.find((s) => s.videoPublicId === videoPublicId) ?? stories[0];
+    setVideoReady(false);
+    setActiveStory(story);
     requestAnimationFrame(() => {
       if (!overlayRef.current || !cardRef.current) return;
       gsap.fromTo(overlayRef.current,
@@ -90,11 +130,14 @@ export function StoriesPreview() {
   /* ── Close modal ── */
   const closeVideo = useCallback(() => {
     if (!overlayRef.current || !cardRef.current) return;
-    gsap.to(cardRef.current,   { opacity: 0, scale: 0.9, y: 30, duration: 0.3, ease: "power2.in" });
+    // Pause the video immediately
+    videoRef.current?.pause();
+    gsap.to(cardRef.current, { opacity: 0, scale: 0.9, y: 30, duration: 0.3, ease: "power2.in" });
     gsap.to(overlayRef.current, {
       opacity: 0, duration: 0.35, ease: "power2.in", delay: 0.05,
       onComplete: () => {
-        setActiveVideo(null);
+        setActiveStory(null);
+        setVideoReady(false);
         document.body.style.overflow = "";
       },
     });
@@ -106,6 +149,16 @@ export function StoriesPreview() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [closeVideo]);
+
+  // CircularGallery passes the videoPublicId as the "videoId" key — keep compat
+  const handleItemClick = useCallback((id: string) => openVideo(id), [openVideo]);
+
+  // Build gallery items that CircularGallery expects
+  const galleryItems = stories.map((s) => ({
+    image: s.image,
+    text: s.text,
+    videoId: s.videoPublicId, // CircularGallery calls onItemClick(videoId)
+  }));
 
   const textColor = mounted && resolvedTheme === "light" ? "#091e12" : "#ffffff";
 
@@ -128,7 +181,7 @@ export function StoriesPreview() {
             collaborations, and confidence.
           </p>
           <button
-            onClick={() => stories[0] && openVideo(stories[0].videoId)}
+            onClick={() => stories[0] && openVideo(stories[0].videoPublicId)}
             className="stories-link inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
           >
             Watch Builder Stories <ArrowRight className="w-4 h-4" />
@@ -136,30 +189,30 @@ export function StoriesPreview() {
         </div>
       </div>
 
-      {/* ── Gallery — no bend on mobile to prevent card overlap ── */}
+      {/* ── Gallery ── */}
       <div className="stories-gallery w-full h-[360px] sm:h-[460px] lg:h-[560px] relative overflow-hidden">
         <CircularGallery
-          items={stories}
+          items={galleryItems}
           bend={isMobile ? 0 : 3}
           textColor={textColor}
           borderRadius={0.05}
           scrollEase={0.02}
-          onItemClick={openVideo}
+          onItemClick={handleItemClick}
         />
       </div>
 
       {/* ── Video Modal ── */}
-      {activeVideo && (
+      {activeStory && (
         <div
           ref={overlayRef}
           className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-8"
-          style={{ backgroundColor: "rgba(0,0,0,0.9)", backdropFilter: "blur(12px)" }}
+          style={{ backgroundColor: "rgba(0,0,0,0.92)", backdropFilter: "blur(14px)" }}
           onClick={(e) => { if (e.target === overlayRef.current) closeVideo(); }}
         >
-          {/* Card + close button wrapper — positioned together so X never overlaps navbar */}
+          {/* Card + close wrapper */}
           <div className="relative flex flex-col items-end gap-2 w-full max-w-sm">
 
-            {/* Close button — sits just above the video card */}
+            {/* Close button */}
             <button
               onClick={closeVideo}
               aria-label="Close video"
@@ -168,7 +221,15 @@ export function StoriesPreview() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Video card — 9:16 portrait for Shorts */}
+            {/* Name + role badge */}
+            <div className="w-full flex items-center gap-3 px-1 mb-1">
+              <div>
+                <p className="text-white font-bold text-sm leading-tight">{activeStory.text}</p>
+                <p className="text-primary text-xs">{activeStory.role}</p>
+              </div>
+            </div>
+
+            {/* 9:16 video card */}
             <div
               ref={cardRef}
               className="relative w-full rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,191,99,0.25)] border border-primary/20 bg-black"
@@ -180,15 +241,41 @@ export function StoriesPreview() {
                 style={{ boxShadow: "inset 0 0 40px rgba(0,191,99,0.08)" }}
               />
 
-              <iframe
-                key={activeVideo}
-                src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                className="w-full h-full"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                title="Builder Story Video"
-                style={{ border: "none", display: "block" }}
+              {/* Loading spinner until video can play */}
+              {!videoReady && (
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60">
+                  <div className="w-12 h-12 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                </div>
+              )}
+
+              <video
+                ref={videoRef}
+                key={activeStory.videoPublicId}
+                src={cldVideo(activeStory.videoPublicId, activeStory.format)}
+                poster={cldPoster(activeStory.videoPublicId)}
+                className="w-full h-full object-cover"
+                autoPlay
+                playsInline
+                controls
+                controlsList="nodownload"
+                onCanPlay={() => setVideoReady(true)}
+                style={{ display: "block" }}
               />
+            </div>
+
+            {/* Story navigation dots */}
+            <div className="flex items-center justify-center gap-2 w-full mt-2">
+              {stories.map((s, i) => (
+                <button
+                  key={s.videoPublicId}
+                  onClick={() => openVideo(s.videoPublicId)}
+                  aria-label={`Watch ${s.text}`}
+                  className={`transition-all duration-200 rounded-full ${activeStory.videoPublicId === s.videoPublicId
+                      ? "w-6 h-2 bg-primary"
+                      : "w-2 h-2 bg-white/30 hover:bg-white/60"
+                    }`}
+                />
+              ))}
             </div>
           </div>
         </div>
