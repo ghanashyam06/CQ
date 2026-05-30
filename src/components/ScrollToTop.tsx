@@ -15,8 +15,8 @@ export function ScrollToTop() {
 
   const scrollToTop = () => {
     const hero = document.querySelector("#home");
-    if (hero) hero.scrollIntoView({ behavior: "smooth" });
-    else window.scrollTo({ top: 0, behavior: "smooth" });
+    if (hero) hero.scrollIntoView();
+    else window.scrollTo({ top: 0 });
   };
 
   return (
