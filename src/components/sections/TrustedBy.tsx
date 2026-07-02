@@ -53,7 +53,7 @@ const githubLogo = {
   node: (
     <div className="flex items-center justify-center px-6 py-3">
       <FaGithub
-        className="transition-[filter] duration-300 dark:brightness-0 dark:invert"
+        className="transition-colors duration-300 text-foreground"
         style={{ width: "auto", height: "80px", display: "block" }}
         aria-label="GitHub"
       />
@@ -71,7 +71,7 @@ const logos = [...partners.map((p) => ({
         alt={p.label}
         title={p.label}
         draggable={false}
-        className="transition-[filter] duration-300 dark:brightness-0 dark:invert"
+        className="transition-[filter] duration-300 logo-dark-invert"
         style={{
           height: "80px",
           width: "auto",
@@ -119,12 +119,25 @@ export function TrustedBy() {
         },
       });
 
-      gsap.from(".trusted-loop", {
-        opacity: 0, duration: 0.8, delay: 0.3, ease: "power2.out",
+      gsap.to(".trusted-row-1", {
+        x: -400,
+        ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.5,
+        },
+      });
+
+      gsap.to(".trusted-row-2", {
+        x: 400,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.5,
         },
       });
     }, sectionRef.current);
@@ -148,29 +161,23 @@ export function TrustedBy() {
         </p>
       </div>
 
-      <div className="trusted-loop relative w-full overflow-hidden flex flex-col gap-6">
-        <LogoLoop
-          logos={logos}
-          speed={100}
-          direction="left"
-          logoHeight={110}
-          gap={80}
-          hoverSpeed={0}
-          scaleOnHover
-          fadeOut
-          fadeOutColor="var(--background)"
-        />
-        <LogoLoop
-          logos={[...logos].reverse()}
-          speed={80}
-          direction="right"
-          logoHeight={110}
-          gap={80}
-          hoverSpeed={0}
-          scaleOnHover
-          fadeOut
-          fadeOutColor="var(--background)"
-        />
+      <div className="trusted-loop relative w-full overflow-hidden flex flex-col gap-10 py-4">
+        {/* Row 1 moving left */}
+        <div className="trusted-row-1 flex items-center gap-16 min-w-max -ml-[200px]">
+          {[...logos, ...logos, ...logos, ...logos, ...logos].map((logo, i) => (
+            <div key={i} className="flex-shrink-0">
+              {logo.node}
+            </div>
+          ))}
+        </div>
+        {/* Row 2 moving right */}
+        <div className="trusted-row-2 flex items-center gap-16 min-w-max -ml-[800px]">
+          {[...logos, ...logos, ...logos, ...logos, ...logos].reverse().map((logo, i) => (
+            <div key={i} className="flex-shrink-0">
+              {logo.node}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

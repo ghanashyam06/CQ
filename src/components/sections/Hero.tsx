@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Rocket, Handshake, ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -33,15 +33,20 @@ export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // Initialize magnetic buttons
   const cta1Ref = useMagnetic<HTMLAnchorElement>(0.25, 65);
   const cta2Ref = useMagnetic<HTMLAnchorElement>(0.2, 65);
   const cta3Ref = useMagnetic<HTMLAnchorElement>(0.2, 65);
 
-  const isDark = resolvedTheme !== "light";
-  const particleColors = isDark 
-    ? ["#00BF63", "#00ff88", "#ffffff"] 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted ? resolvedTheme !== "light" : true;
+  const particleColors = isDark
+    ? ["#00BF63", "#00ff88", "#ffffff"]
     : ["#00BF63", "#007a3d", "#555555"];
 
   useEffect(() => {
@@ -60,14 +65,13 @@ export function Hero() {
         ease: "power3.out",
       });
 
-      // Headline characters
-      tl.from(".hero-headline-word", {
-        opacity: 0,
-        y: 50,
-        rotateX: -40,
-        duration: 0.8,
-        stagger: 0.08,
-        ease: "power3.out",
+      // Headline lines cinematic reveal
+      tl.from(".hero-headline-line", {
+        y: 80,
+        clipPath: "inset(100% 0 0 0)",
+        duration: 1.2,
+        stagger: 0.1,
+        ease: "power4.out",
       }, "-=0.3");
 
       // Subheadline
@@ -126,6 +130,29 @@ export function Hero() {
         });
       });
 
+      // Scroll scrub parallax for ambient/bg elements
+      gsap.to(".hero-parallax-bg", {
+        yPercent: 30,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+      gsap.to(".hero-parallax-scene", {
+        yPercent: 15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
     }, section);
 
     return () => ctx.revert();
@@ -140,46 +167,22 @@ export function Hero() {
     >
       {/* ── Background — theme-aware ── */}
       <div className="absolute inset-0 z-0">
-        {/* Base gradient */}
-        <div
-          className="absolute inset-0 transition-colors duration-500"
-          style={{
-            background: isDark
-              ? "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,191,99,0.13) 0%, rgba(0,100,50,0.06) 35%, transparent 70%), radial-gradient(ellipse 60% 80% at 20% 70%, rgba(0,212,170,0.08) 0%, transparent 55%), linear-gradient(135deg, #030b06 0%, #060e09 40%, #050d08 70%, #030b06 100%)"
-              : "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,191,99,0.12) 0%, rgba(0,140,60,0.05) 35%, transparent 70%), radial-gradient(ellipse 60% 80% at 20% 70%, rgba(0,212,170,0.07) 0%, transparent 55%), linear-gradient(135deg, #edf7f1 0%, #f0f5f2 40%, #eaf3ee 70%, #edf7f1 100%)",
-          }}
-        />
-        {/* Subtle grid */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: isDark
-              ? "linear-gradient(rgba(0,191,99,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(0,191,99,0.8) 1px, transparent 1px)"
-              : "linear-gradient(rgba(0,100,40,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(0,100,40,0.25) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            opacity: isDark ? 0.04 : 0.06,
-          }}
-        />
-        {/* Aurora sweep */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[55%]"
-          style={{
-            background: isDark
-              ? "linear-gradient(180deg, rgba(0,191,99,0.2) 0%, transparent 100%)"
-              : "linear-gradient(180deg, rgba(0,191,99,0.12) 0%, transparent 100%)",
-            maskImage: "radial-gradient(ellipse 70% 100% at 55% 0%, black 0%, transparent 80%)",
-            WebkitMaskImage: "radial-gradient(ellipse 70% 100% at 55% 0%, black 0%, transparent 80%)",
-            opacity: isDark ? 0.25 : 0.5,
-          }}
-        />
+        {/* Spotlight glow for atmosphere */}
+        <div className="spotlight-glow" />
+        {/* Subtle grid - dark mode only */}
+        {isDark && (
+          <div
+            className="absolute inset-0 bg-grid"
+          />
+        )}
       </div>
 
       {/* ── 3D Canvas — right half desktop, full-bleed mobile ── */}
-      <div className="absolute inset-0 z-[1] pointer-events-none md:left-[45%]">
+      <div className="hero-parallax-scene absolute inset-0 z-[1] pointer-events-none md:left-[45%]">
         {/* Mobile dim overlay — darker in dark mode, lighter in light mode */}
         <div
           className="absolute inset-0 md:hidden z-[2] pointer-events-none"
-          style={{ background: isDark ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.45)" }}
+          style={{ background: isDark ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,0.5)" }}
         />
         <Scene3D camera={{ position: [0, 0, 7], fov: 52 }}>
           <HeroScene isDark={isDark} />
@@ -187,13 +190,13 @@ export function Hero() {
       </div>
 
       {/* ── Ambient glow orbs ── */}
-      <div className="absolute inset-0 z-[2] pointer-events-none">
+      <div className="hero-parallax-bg absolute inset-0 z-[2] pointer-events-none">
         <div
           className="absolute top-[15%] left-[50%] w-[320px] sm:w-[460px] h-[320px] sm:h-[460px] rounded-full"
           style={{
             background: isDark
-              ? "radial-gradient(circle, rgba(0,191,99,0.11) 0%, transparent 70%)"
-              : "radial-gradient(circle, rgba(0,191,99,0.08) 0%, transparent 70%)",
+              ? "radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%)"
+              : "radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%)",
             filter: "blur(70px)",
             animation: "breathe 7s ease-in-out infinite",
           }}
@@ -202,8 +205,8 @@ export function Hero() {
           className="absolute bottom-[10%] left-[3%] w-[180px] sm:w-[280px] h-[180px] sm:h-[280px] rounded-full"
           style={{
             background: isDark
-              ? "radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%)"
-              : "radial-gradient(circle, rgba(0,168,82,0.07) 0%, transparent 70%)",
+              ? "radial-gradient(circle, rgba(255,255,255,0.01) 0%, transparent 70%)"
+              : "radial-gradient(circle, rgba(0,0,0,0.02) 0%, transparent 70%)",
             filter: "blur(80px)",
             animation: "float 9s ease-in-out infinite",
           }}
@@ -216,25 +219,24 @@ export function Hero() {
         className="relative z-10 w-full md:max-w-[600px] lg:max-w-[680px] flex flex-col items-center text-center md:items-start md:text-left justify-center min-h-screen px-6 sm:px-10 md:px-0 md:pl-12 lg:pl-20 xl:pl-28 pt-20 pb-28"
       >
         {/* Tagline pill */}
-        <div className="hero-tagline inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-semibold mb-2 tracking-widest uppercase w-fit">
-          EXPLORE &nbsp;·&nbsp; LEARN &nbsp;·&nbsp; BUILD
+        <div className="hero-tagline inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-background/50 backdrop-blur-md mb-8">
+          <span className="w-2 h-2 rounded-full bg-muted-foreground animate-pulse" />
+          <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+            Explore · Learn · Build
+          </span>
         </div>
 
         {/* Headline */}
         <h1
           ref={headlineRef}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tight leading-tight mb-2"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-[-0.03em] leading-tight mb-2"
           style={{ perspective: "600px", color: isDark ? "#ffffff" : "#091e12" }}
         >
-          <span className="block whitespace-nowrap">
-            <span className="hero-headline-word inline-block">Built&nbsp;</span>
-            <span className="hero-headline-word inline-block">for&nbsp;</span>
-            <span className="hero-headline-word inline-block">Students.</span>
+          <span className="hero-headline-line block whitespace-nowrap text-foreground/90">
+            Built for Students.
           </span>
-          <span className="block" style={{ color: isDark ? "#00ff88" : "#00693a" }}>
-            <span className="hero-headline-word inline-block">Powered&nbsp;</span>
-            <span className="hero-headline-word inline-block">by&nbsp;</span>
-            <span className="hero-headline-word inline-block">Builders.</span>
+          <span className="hero-headline-line block whitespace-nowrap text-primary neon-text mt-1 md:mt-2">
+            Powered by Builders.
           </span>
         </h1>
 
@@ -256,7 +258,7 @@ export function Hero() {
           <Link
             ref={cta1Ref}
             href="/contact"
-            className="hero-cta w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)] animate-pulse-glow whitespace-nowrap"
+            className="hero-cta w-full sm:w-auto px-6 py-3.5 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(34,193,122,0.3)] hover:shadow-[0_0_25px_rgba(52,211,153,0.5)] whitespace-nowrap"
           >
             <Rocket className="w-4 h-4 shrink-0" />
             Join The Community
@@ -266,9 +268,9 @@ export function Hero() {
             href="/contact"
             className="hero-cta w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 whitespace-nowrap"
             style={{
-              border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,80,40,0.25)",
-              background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,80,40,0.06)",
-              color: isDark ? "#ffffff" : "#091e12",
+              border: "1px solid var(--border)",
+              background: "transparent",
+              color: "var(--foreground)",
             }}
           >
             <Handshake className="w-4 h-4 shrink-0" />

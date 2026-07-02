@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import ClientShell from "@/components/ClientShell";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+import { ScrollProvider } from "@/components/ScrollProvider";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -39,7 +45,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${poppins.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased selection:bg-primary selection:text-primary-foreground`}
         data-preloading="true"
         style={{ backgroundColor: '#060608' }}
         suppressHydrationWarning
@@ -50,13 +56,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientShell>
-            <Navbar />
-            <main className="relative z-10 min-h-screen">
-              {children}
-            </main>
-            <ScrollToTop />
-          </ClientShell>
+          <ScrollProvider>
+            <ClientShell>
+              <Navbar />
+              <main className="relative z-10 min-h-screen">
+                {children}
+              </main>
+              <ScrollToTop />
+            </ClientShell>
+          </ScrollProvider>
         </ThemeProvider>
       </body>
     </html>

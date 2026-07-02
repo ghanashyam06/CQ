@@ -36,6 +36,8 @@ export function useMagnetic<T extends HTMLElement>(
         gsap.to(el, {
           x: deltaX * magneticStrength,
           y: deltaY * magneticStrength,
+          scale: 1.05,
+          boxShadow: "0 10px 30px -10px rgba(34,193,122,0.4)",
           duration: 0.3,
           ease: "power2.out",
           overwrite: "auto",
@@ -45,6 +47,8 @@ export function useMagnetic<T extends HTMLElement>(
         gsap.to(el, {
           x: 0,
           y: 0,
+          scale: 1,
+          boxShadow: "none",
           duration: 0.6,
           ease: "elastic.out(1, 0.4)",
           overwrite: "auto",
@@ -56,6 +60,8 @@ export function useMagnetic<T extends HTMLElement>(
       gsap.to(el, {
         x: 0,
         y: 0,
+        scale: 1,
+        boxShadow: "none",
         duration: 0.6,
         ease: "elastic.out(1, 0.4)",
         overwrite: "auto",

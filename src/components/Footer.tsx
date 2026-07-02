@@ -47,7 +47,7 @@ export function Footer() {
   }, [pathname]);
 
   return (
-    <footer ref={footerRef} className="relative z-10 bg-[#eaf1ec] dark:bg-background border-t border-border/80 pt-10 sm:pt-14 lg:pt-16 pb-8">
+    <footer ref={footerRef} className="relative z-10 bg-background border-t border-border/80 pt-10 sm:pt-14 lg:pt-16 pb-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 mb-10 sm:mb-14 lg:mb-16">
 
@@ -120,13 +120,13 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <SocialIconBtn
-                  href="mailto:hello@codequesters.com"
+                  href="mailto:contact@codequesters.dev"
                   label="Email"
                   newTab={false}
                   className="!w-auto !h-auto !rounded-none !bg-transparent !border-none !shadow-none px-0 py-0 gap-2 text-muted-foreground hover:!text-primary text-sm"
                 >
                   <Mail className="w-4 h-4 shrink-0" />
-                  <span>hello@codequesters.com</span>
+                  <span>contact@codequesters.dev</span>
                 </SocialIconBtn>
               </li>
               <li>
