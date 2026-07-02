@@ -26,26 +26,42 @@ export function FinalCTA() {
     const ctx = gsap.context(() => {
       gsap.from(".cta-bento", {
         opacity: 0,
-        scale: 0.93,
-        y: 40,
-        duration: 0.8,
-        ease: "power3.out",
+        scale: 0.95,
+        y: 60,
+        duration: 1,
+        ease: "expo.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 80%",
           toggleActions: "play none none reverse",
         },
       });
-      gsap.from(".cta-inner > *", {
+
+      // Cinematic scale-reveal for headline
+      gsap.from(".cta-headline", {
         opacity: 0,
-        y: 25,
+        scale: 0.8,
+        y: 40,
+        duration: 1.2,
+        delay: 0.2,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      gsap.from(".cta-fade-in", {
+        opacity: 0,
+        y: 20,
         stagger: 0.1,
-        duration: 0.6,
-        delay: 0.25,
+        duration: 0.8,
+        delay: 0.4,
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 80%",
           toggleActions: "play none none reverse",
         },
       });
@@ -59,21 +75,21 @@ export function FinalCTA() {
     description: "",
     children: (
       <div className="cta-inner flex flex-col items-center text-center w-full py-8 md:py-12 px-4">
-        <p className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
+        <p className="cta-fade-in text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
           Ready To Build?
         </p>
 
-        <h2 className="text-2xl sm:text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-foreground">
+        <h2 className="cta-headline text-2xl sm:text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-foreground">
           Ready To Build{" "}
           <span className="text-gradient-shimmer">Something Bigger?</span>
         </h2>
 
-        <p className="text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed">
+        <p className="cta-fade-in text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed">
           Whether you&apos;re a student, builder, founder, mentor, or organization —
           CodeQuesters is built for people who grow through execution.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
+        <div className="cta-fade-in flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
           <a
             ref={link1Ref}
             href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I"

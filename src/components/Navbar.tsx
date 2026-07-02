@@ -46,28 +46,10 @@ export function Navbar() {
       if (scrolled === hasScrolled.current) return;
       hasScrolled.current = scrolled;
 
-      const isDark = document.documentElement.classList.contains("dark");
-
       if (scrolled) {
-        gsap.to(nav, {
-          backgroundColor: isDark ? "rgba(5,8,22,0.85)" : "rgba(240,245,242,0.88)",
-          backdropFilter: "blur(20px)",
-          borderBottomColor: isDark ? "rgba(0,191,99,0.2)" : "rgba(0,80,40,0.08)",
-          boxShadow: isDark
-            ? "0 4px 30px rgba(0,0,0,0.3), 0 1px 0 rgba(0,191,99,0.15)"
-            : "0 8px 30px rgba(0,40,20,0.04), 0 1px 0 rgba(255,255,255,0.8) inset",
-          duration: 0.4,
-          ease: "power2.out",
-        });
+        nav.classList.add("glass-nav--scrolled");
       } else {
-        gsap.to(nav, {
-          backgroundColor: "transparent",
-          backdropFilter: "blur(0px)",
-          borderBottomColor: "transparent",
-          boxShadow: "none",
-          duration: 0.4,
-          ease: "power2.out",
-        });
+        nav.classList.remove("glass-nav--scrolled");
       }
     };
 
@@ -218,14 +200,12 @@ export function Navbar() {
                 : <Moon className="w-4 h-4" />}
             </button>
             
-            <StarBorder className="!rounded-lg !p-[1.5px]" color="#00bf63" speed="3s">
-              <Link
-                href="/contact"
-                className="block px-5 py-2 rounded-[calc(0.5rem-1.5px)] bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all whitespace-nowrap"
-              >
-                Join Community
-              </Link>
-            </StarBorder>
+            <Link
+              href="/contact"
+              className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all whitespace-nowrap hover:scale-105 hover:shadow-[0_0_20px_rgba(0,191,99,0.5)] animate-pulse-slow"
+            >
+              Join Community
+            </Link>
           </div>
 
           {/* ── Mobile controls ── */}
@@ -258,10 +238,10 @@ export function Navbar() {
         className="absolute top-16 left-0 right-0 lg:hidden flex-col gap-1 p-4"
         style={{
           display: "none",
-          background: isDark ? "rgba(5,8,22,0.97)" : "rgba(243,247,245,0.97)",
+          background: "rgba(5,8,22,0.97)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
-          borderBottom: `1px solid ${isDark ? "rgba(0,191,99,0.15)" : "rgba(0,0,0,0.1)"}`,
+          borderBottom: "1px solid rgba(0,191,99,0.15)",
           boxShadow: "0 16px 40px rgba(0,0,0,0.15)",
         }}
       >

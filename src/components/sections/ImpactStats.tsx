@@ -5,8 +5,6 @@ import { Users, Building2, CalendarDays, Network, Handshake } from "lucide-react
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/hooks/useMagnetic";
-import BorderGlow from "@/components/ui/BorderGlow";
-import { NeuralNetworkBackground } from "@/components/ui/NeuralNetworkBackground";
 import SwipeCarousel from "@/components/ui/SwipeCarousel";
 
 if (typeof window !== "undefined") {
@@ -70,34 +68,27 @@ function StatCard({ icon: Icon, value, label, description, counterRefSetter }: S
       className="stat-card w-full h-full"
       style={{ willChange: "transform" }}
     >
-      <BorderGlow
-        glowColor="rgba(0, 255, 136, 0.25)"
-        glowSize={160}
-        borderRadius="1.25rem"
-        className="w-full h-full"
+      <div
+        className="relative z-10 w-full h-full bg-background/80 backdrop-blur-sm p-6 flex flex-col justify-between items-center min-h-[220px] text-center group border border-border/50 rounded-2xl hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
       >
-        <div
-          className="relative z-10 w-full h-full bg-card backdrop-blur-xl p-5 sm:p-6 flex flex-col justify-between items-center min-h-[240px] text-center group border border-border rounded-[1.2rem] shadow-sm hover:border-primary/20 dark:hover:border-border dark:shadow-none hover:shadow-[0_0_35px_rgba(0,191,99,0.08)] transition-all duration-300"
-        >
-          <div className="flex flex-col items-center w-full">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 border border-primary/20 shadow-[inset_0_0_8px_rgba(0,168,82,0.06)] dark:shadow-none group-hover:bg-primary/20 group-hover:scale-110 group-hover:border-primary/40 group-hover:shadow-[0_0_15px_rgba(0,191,99,0.25)] transition-all duration-300">
-              <Icon className="w-5 h-5 text-primary group-hover:rotate-6 transition-transform duration-300" />
-            </div>
-            <span
-              ref={counterRefSetter}
-              className="text-2xl sm:text-3xl md:text-4xl font-black bg-clip-text bg-gradient-to-b dark:from-white dark:via-neutral-100 dark:to-neutral-400 from-[#091e12] via-[#1a3826] to-[#3e5145] dark:group-hover:from-[#00ff88] dark:group-hover:to-[#73ffb9] group-hover:from-[#00bf63] group-hover:to-[#007a3d] mb-2 leading-none font-mono transition-colors duration-500"
-            >
-              {value}
-            </span>
-            <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-              {label}
-            </span>
+        <div className="flex flex-col items-center w-full">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-105 transition-all duration-300">
+            <Icon className="w-6 h-6 text-primary" />
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed mt-3 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
-            {description}
-          </p>
+          <span
+            ref={counterRefSetter}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-2 leading-none font-mono"
+          >
+            {value}
+          </span>
+          <span className="text-sm font-semibold text-foreground/80 group-hover:text-primary transition-colors duration-300">
+            {label}
+          </span>
         </div>
-      </BorderGlow>
+        <p className="text-sm text-muted-foreground leading-relaxed mt-4">
+          {description}
+        </p>
+      </div>
     </div>
   );
 }
@@ -136,6 +127,7 @@ export function ImpactStats() {
         },
       });
 
+
       gsap.from(".stat-card", {
         opacity: 0,
         y: 40,
@@ -171,7 +163,7 @@ export function ImpactStats() {
         const counter = { value: 0 };
         gsap.fromTo(counter, { value: 0 }, {
           value: stats[i].target,
-          duration: 2.2, ease: "power2.out",
+          duration: 2.5, ease: "expo.out",
           scrollTrigger: {
             trigger: ref, start: "top 90%",
             toggleActions: "play none none reverse",
@@ -195,23 +187,20 @@ export function ImpactStats() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 sm:py-20 lg:py-28 relative overflow-hidden bg-background">
-      {/* Interactive HTML5 Canvas Neural Network Background */}
-      <NeuralNetworkBackground />
-
+    <section ref={sectionRef} className="py-16 sm:py-24 lg:py-32 relative overflow-hidden bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12 sm:mb-20">
-          <p className="stats-label text-xs font-bold tracking-[0.25em] uppercase text-primary mb-3">
-            The Ecosystem In Motion
+        <div className="text-center mb-12 sm:mb-16">
+          <p className="stats-label text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
+            Impact
           </p>
-          <h2 className="stats-heading text-3xl sm:text-4xl md:text-6xl font-bold font-heading tracking-tight leading-none text-foreground">
-            Numbers That <span className="text-gradient-shimmer">Speak</span>
+          <h2 className="stats-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight text-foreground">
+            Numbers That <span className="text-primary">Speak</span>
           </h2>
         </div>
 
         {/* Mobile: swipe carousel */}
         {isMobile ? (
-          <SwipeCarousel cardWidth="78vw" gap={16} showDots showArrows className="stats-grid -mx-4">
+          <SwipeCarousel cardWidth="85vw" gap={16} showDots showArrows className="stats-grid -mx-4">
             {stats.map((stat, i) => (
               <StatCard
                 key={i}
@@ -226,8 +215,8 @@ export function ImpactStats() {
             ))}
           </SwipeCarousel>
         ) : (
-          /* Desktop: 5-column grid */
-          <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 max-w-7xl mx-auto">
+          /* Desktop: grid layout */
+          <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 max-w-6xl mx-auto">
             {stats.map((stat, i) => (
               <StatCard
                 key={i}

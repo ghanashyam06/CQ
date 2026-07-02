@@ -14,6 +14,12 @@ if (typeof window !== "undefined") {
 
 const features: MagicBentoItem[] = [
   {
+    icon: <Briefcase className="w-7 h-7 text-primary" />,
+    label: "Grow",
+    title: "Opportunities",
+    description: "Internships, collaborations, startup exposure, and real growth pathways.",
+  },
+  {
     icon: <Trophy className="w-7 h-7 text-primary" />,
     label: "Compete",
     title: "Hackathons",
@@ -26,22 +32,16 @@ const features: MagicBentoItem[] = [
     description: "Practical execution-first learning experiences led by industry professionals.",
   },
   {
-    icon: <Network className="w-7 h-7 text-primary" />,
-    label: "Connect",
-    title: "Networking",
-    description: "Connect with founders, mentors, creators, and builders who are building the future.",
-  },
-  {
-    icon: <Briefcase className="w-7 h-7 text-primary" />,
-    label: "Grow",
-    title: "Opportunities",
-    description: "Internships, collaborations, startup exposure, and real growth pathways.",
-  },
-  {
     icon: <Users className="w-7 h-7 text-primary" />,
     label: "Together",
     title: "Community",
     description: "A support ecosystem where ambitious people grow together through execution.",
+  },
+  {
+    icon: <Network className="w-7 h-7 text-primary" />,
+    label: "Connect",
+    title: "Networking",
+    description: "Connect with founders, mentors, creators, and builders who are building the future.",
   },
   {
     icon: <Lightbulb className="w-7 h-7 text-primary" />,
@@ -75,12 +75,13 @@ export function WhatWeDo() {
       gsap.from(".services-label",   { opacity: 0, y: 20, duration: 0.5, ease: "power3.out", scrollTrigger: st });
       gsap.from(".services-heading", { opacity: 0, y: 30, duration: 0.7, delay: 0.1, ease: "power3.out", scrollTrigger: st });
       gsap.from(".services-sub",     { opacity: 0, y: 20, duration: 0.6, delay: 0.2, ease: "power3.out", scrollTrigger: st });
+
+      // Simple scroll entrance for cards (no pin/scrub)
       gsap.from(".mb-card", {
         opacity: 0,
         y: 40,
         stagger: 0.08,
         duration: 0.6,
-        delay: 0.3,
         ease: "power3.out",
         scrollTrigger: {
           trigger: ".services-bento",
@@ -115,8 +116,8 @@ export function WhatWeDo() {
             {features.map((item, i) => (
               <SpotlightCard
                 key={i}
-                className="border border-border hover:border-primary/30 p-6 rounded-2xl bg-card h-full min-h-[200px]"
-                spotlightColor="rgba(0, 191, 99, 0.12)"
+                className="border border-border hover:border-primary/30 p-6 rounded-2xl bg-card h-full min-h-[200px] shadow-[inset_0_0_20px_rgba(34,193,122,0.05)]"
+                spotlightColor="rgba(34, 193, 122, 0.12)"
                 spotlightSize={220}
               >
                 <div className="flex items-start justify-between mb-4">
@@ -137,7 +138,7 @@ export function WhatWeDo() {
           <div className="services-bento max-w-6xl mx-auto">
             <MagicBento
               items={features}
-              gridCols="repeat(auto-fit, minmax(min(100%, 280px), 1fr))"
+              className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"
               enableStars
               enableSpotlight
               enableBorderGlow

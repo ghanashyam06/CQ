@@ -4,6 +4,7 @@ import { useRef, useMemo } from "react";
 import { useFrame, useThree, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { TextureLoader } from "three";
+import { MeshTransmissionMaterial } from "@react-three/drei";
 
 /* ─── Floating orbiting satellite ─── */
 function Satellite({
@@ -59,12 +60,19 @@ function NetworkNode({
   return (
     <mesh position={position}>
       <sphereGeometry args={[size, 10, 10]} />
-      <meshStandardMaterial
+      {/* 
+        Limit MeshTransmissionMaterial usage for performance.
+        Using a fallback if the device needs performance, but since we limit to focal, we can use it.
+      */}
+      <MeshTransmissionMaterial
+        buffer={null as any}
         color={color}
+        transmission={0.95}
+        roughness={0.15}
+        thickness={0.2}
         emissive={color}
-        emissiveIntensity={1.8}
-        transparent
-        opacity={0.95}
+        emissiveIntensity={0.6}
+        ior={1.2}
       />
     </mesh>
   );
@@ -265,10 +273,10 @@ export function HeroScene({ isDark = true }: { isDark?: boolean }) {
   const masterGroupRef = useRef<THREE.Group>(null!);
   const { viewport } = useThree();
 
-  // Light mode uses deep, saturated greens for high contrast on the pale background
-  const primary   = isDark ? "#00ff88" : "#005e2c";
-  const secondary = isDark ? "#00d4aa" : "#003d1e";
-  const cyan      = isDark ? "#00e5ff" : "#006b5a";
+  // Muted, premium tones so it doesn't compete with the hero text
+  const primary   = isDark ? "#1a9d63" : "#005e2c";
+  const secondary = isDark ? "#157d4f" : "#003d1e";
+  const cyan      = isDark ? "#0d4d31" : "#006b5a";
 
   // Network node positions arranged in a circular orbit
   const networkNodes = useMemo(() => {
@@ -303,18 +311,19 @@ export function HeroScene({ isDark = true }: { isDark?: boolean }) {
   });
 
   const scale = viewport.width > 10 ? 1.0 : 0.75;
+  const isMobile = viewport.width < 5;
 
   return (
     <>
       {/* ── Lighting ── */}
-      <ambientLight intensity={isDark ? 0.3 : 0.7} />
-      <pointLight position={[0, 0, 3]}  intensity={isDark ? 3.5 : 4.5} color={primary}   decay={1.2} />
-      <pointLight position={[5, 4, 2]}  intensity={isDark ? 2.0 : 3.0} color={primary}   decay={1.5} />
-      <pointLight position={[-5, -3, 1]} intensity={isDark ? 1.5 : 2.5} color={secondary} decay={1.5} />
-      <pointLight position={[0, -4, -2]} intensity={isDark ? 1.2 : 2.0} color={cyan}      decay={2}   />
+      <ambientLight intensity={isDark ? 0.2 : 0.7} />
+      <pointLight position={[0, 0, 3]}  intensity={isDark ? 1.5 : 4.5} color={primary}   decay={1.2} />
+      <pointLight position={[5, 4, 2]}  intensity={isDark ? 1.0 : 3.0} color={primary}   decay={1.5} />
+      <pointLight position={[-5, -3, 1]} intensity={isDark ? 0.8 : 2.5} color={secondary} decay={1.5} />
+      <pointLight position={[0, -4, -2]} intensity={isDark ? 0.6 : 2.0} color={cyan}      decay={2}   />
       {/* Extra fill light for day mode — punches shadows */}
-      {!isDark && <pointLight position={[0, 0, -4]} intensity={3.0} color="#00ff88" decay={1.5} />}
-      <directionalLight position={[0, 5, 5]} intensity={isDark ? 0.6 : 1.4} />
+      {!isDark && <pointLight position={[0, 0, -4]} intensity={3.0} color="#1a9d63" decay={1.5} />}
+      <directionalLight position={[0, 5, 5]} intensity={isDark ? 0.4 : 1.4} />
 
       <group ref={masterGroupRef} scale={scale}>
         {/* ── CQ Logo (central hero) ── */}
@@ -363,9 +372,9 @@ export function HeroScene({ isDark = true }: { isDark?: boolean }) {
 
         {/* ── Particle nebula ── */}
         <ParticleField
-          count={isDark ? 420 : 600}
+          count={isMobile ? 200 : (isDark ? 420 : 600)}
           spread={7.5}
-          color={isDark ? "#00BF63" : "#004a22"}
+          color={isDark ? "#22c17a" : "#004a22"}
         />
       </group>
     </>

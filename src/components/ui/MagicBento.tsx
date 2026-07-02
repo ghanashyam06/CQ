@@ -7,7 +7,7 @@ import "./MagicBento.css";
 /* ─────────────────────────────────────────────
    Constants
 ───────────────────────────────────────────── */
-const GLOW_COLOR = "0, 191, 99"; // CQ green
+const GLOW_COLOR = "34, 193, 122"; // Updated CQ green
 const MOBILE_BREAKPOINT = 768;
 
 /* ─────────────────────────────────────────────
