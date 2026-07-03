@@ -6,13 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Moon, Sun, Menu, X } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import StarBorder from "@/components/ui/StarBorder";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import gsap from "gsap";
 
 const navLinks = [
   { name: "Home",    href: "/" },
@@ -26,159 +20,104 @@ export function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setMobileMenu] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
   const navRef = useRef<HTMLElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const hasScrolled = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
-  // GSAP glassmorphism on scroll
   useEffect(() => {
-    if (!navRef.current) return;
-    const nav = navRef.current;
-
-    const onScroll = () => {
-      const scrolled = window.scrollY > 50;
-      if (scrolled === hasScrolled.current) return;
-      hasScrolled.current = scrolled;
-
-      if (scrolled) {
-        nav.classList.add("glass-nav--scrolled");
-      } else {
-        nav.classList.remove("glass-nav--scrolled");
-      }
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Mobile menu GSAP animation
-  useEffect(() => {
-    if (!mobileMenuRef.current) return;
+  useEffect(() => { setMobileMenu(false); }, [pathname]);
 
-    if (isMobileMenuOpen) {
-      gsap.fromTo(
-        mobileMenuRef.current,
-        { opacity: 0, y: -20, display: "none" },
-        { opacity: 1, y: 0, display: "flex", duration: 0.3, ease: "power3.out" }
-      );
-      // Stagger children
-      const items = mobileMenuRef.current.querySelectorAll(".mobile-nav-item");
-      gsap.fromTo(
-        items,
-        { opacity: 0, x: -20 },
-        { opacity: 1, x: 0, stagger: 0.05, duration: 0.3, delay: 0.1, ease: "power3.out" }
-      );
-    } else {
-      gsap.to(mobileMenuRef.current, {
-        opacity: 0,
-        y: -10,
-        duration: 0.2,
-        ease: "power2.in",
-        onComplete: () => {
-          if (mobileMenuRef.current) {
-            mobileMenuRef.current.style.display = "none";
-          }
-        },
-      });
-    }
-  }, [isMobileMenuOpen]);
-
-  const handleThemeToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const targetTheme = resolvedTheme === "dark" ? "light" : "dark";
-
-    // Capture button center or click coordinates
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX ?? (rect.left + rect.width / 2);
-    const y = e.clientY ?? (rect.top + rect.height / 2);
-
-    // Create temporary theme transition circular wipe overlay
+  const handleThemeToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    
+    // Create overlay for circular wipe animation
     const overlay = document.createElement("div");
     overlay.style.position = "fixed";
-    overlay.style.inset = "0";
-    overlay.style.zIndex = "99999";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
     overlay.style.pointerEvents = "none";
-
-    const bgColor = targetTheme === "dark" ? "#050816" : "#f3f7f5";
-    overlay.style.backgroundColor = bgColor;
-
-    // Start with 0 radius circle
+    overlay.style.zIndex = "9999";
+    overlay.style.backgroundColor = newTheme === "dark" ? "#0a0f0c" : "#f4f5f3";
+    
+    // Calculate circle origin from button click position
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    
+    // Calculate max radius to cover entire screen
+    const maxRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+    
+    // Set initial clip-path at click position
     overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
     document.body.appendChild(overlay);
-
-    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 1.25;
-
-    // Animate the clipPath using GSAP
-    gsap.to(overlay, {
+    
+    // Animate the circular wipe
+    gsap.to(overlay.style, {
       clipPath: `circle(${maxRadius}px at ${x}px ${y}px)`,
-      duration: 0.8,
+      duration: 0.7,
       ease: "power2.inOut",
       onComplete: () => {
-        // Toggle the Next-Themes context classes
-        setTheme(targetTheme);
-
-        // Softly fade out the overlay card
+        // Remove overlay after animation
         gsap.to(overlay, {
           opacity: 0,
-          duration: 0.25,
-          ease: "power1.out",
-          onComplete: () => {
-            overlay.remove();
-          },
+          duration: 0.2,
+          onComplete: () => overlay.remove()
         });
-      },
+      }
     });
+    
+    // Switch theme immediately
+    setTheme(newTheme);
   };
 
-  const isDark = !mounted || resolvedTheme === "dark";
+  const iconBtnClass =
+    "p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors duration-150";
+
+  const isDark = theme === "dark";
 
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 glass-nav"
-      style={{ borderBottom: "1px solid transparent" }}
+      className={`fixed top-0 left-0 right-0 z-50 glass-nav${scrolled ? " glass-nav--scrolled" : ""}`}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between h-16 gap-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[60px] gap-4">
 
-          {/* ── Logo ── */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group shrink-0"
-            aria-label="Go to home"
-          >
-            <div className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 group-hover:scale-110 transition-transform duration-200">
-              <Image
-                src="/logo-CQ-tech.png"
-                alt="CodeQuesters Logo"
-                fill
-                sizes="40px"
-                className="object-contain"
-                priority
-              />
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="Go to home">
+            <div className="relative w-8 h-8 shrink-0">
+              <Image src="/logo-CQ-tech.png" alt="CodeQuesters" fill sizes="32px" className="object-contain" priority />
             </div>
-            <span className="text-base sm:text-lg font-bold font-heading tracking-tight text-foreground leading-tight">
+            <span className="text-sm font-semibold tracking-tight text-foreground">
               Code<span className="text-primary">Questers</span>
             </span>
           </Link>
 
-          {/* ── Desktop Navigation (centered) ── */}
-          <div className="hidden lg:flex flex-1 items-center justify-center gap-6">
+          {/* Desktop nav links */}
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-8">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const active = pathname === link.href;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`nav-link px-3 py-1.5 text-sm font-medium transition-colors duration-200 ${
-                    isActive
-                      ? "active text-primary"
-                      : "text-foreground/70 hover:text-foreground"
+                  className={`nav-link text-sm font-medium transition-colors duration-150 ${
+                    active ? "active text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {link.name}
@@ -187,91 +126,62 @@ export function Navbar() {
             })}
           </div>
 
-          {/* ── Desktop: theme toggle + audio controls + CTA ── */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0">
-            {/* Theme Toggle */}
-            <button
-              onClick={handleThemeToggle}
-              className="p-2 rounded-full text-foreground/60 hover:text-primary hover:bg-primary/10 transition-all duration-200"
-              aria-label="Toggle theme"
-            >
-              {mounted && resolvedTheme === "dark"
-                ? <Sun className="w-4 h-4" />
-                : <Moon className="w-4 h-4" />}
+          {/* Desktop right */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            <button onClick={handleThemeToggle} className={iconBtnClass} aria-label="Toggle theme">
+              {mounted && isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            
             <Link
               href="/contact"
-              className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all whitespace-nowrap hover:scale-105 hover:shadow-[0_0_20px_rgba(0,191,99,0.5)] animate-pulse-slow"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
             >
               Join Community
             </Link>
           </div>
 
-          {/* ── Mobile controls ── */}
-          <div className="lg:hidden flex items-center gap-2">
-            {/* Mobile Theme Toggle */}
-            <button
-              onClick={handleThemeToggle}
-              className="p-2 rounded-full text-foreground/60 hover:text-primary hover:bg-primary/10 transition-all"
-              aria-label="Toggle theme"
-            >
-              {mounted && resolvedTheme === "dark"
-                ? <Sun className="w-4 h-4" />
-                : <Moon className="w-4 h-4" />}
+          {/* Mobile right */}
+          <div className="lg:hidden flex items-center gap-1">
+            <button onClick={handleThemeToggle} className={iconBtnClass} aria-label="Toggle theme">
+              {mounted && isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            
-            <button
-              onClick={() => setMobileMenu(!isMobileMenuOpen)}
-              className="p-2 rounded-lg text-foreground/70 hover:text-foreground hover:bg-foreground/10 transition-all"
-              aria-label="Toggle menu"
-            >
+            <button onClick={() => setMobileMenu(!isMobileMenuOpen)} className={iconBtnClass} aria-label="Toggle menu">
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* ── Mobile menu ── */}
-      <div
-        ref={mobileMenuRef}
-        className="absolute top-16 left-0 right-0 lg:hidden flex-col gap-1 p-4"
-        style={{
-          display: "none",
-          background: "rgba(5,8,22,0.97)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          borderBottom: "1px solid rgba(0,191,99,0.15)",
-          boxShadow: "0 16px 40px rgba(0,0,0,0.15)",
-        }}
-      >
-        {navLinks.map((link) => {
-          const isActive = pathname === link.href;
-          return (
+      {/* Mobile menu */}
+      {isMobileMenuOpen && (
+        <div
+          className="absolute top-[60px] left-0 right-0 lg:hidden flex flex-col gap-0.5 p-3 border-t border-border"
+          style={{ background: "var(--background-card)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
+        >
+          {navLinks.map((link) => {
+            const active = pathname === link.href;
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                  active ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                }`}
+                style={active ? { background: "color-mix(in srgb, var(--primary) 10%, transparent)" } : undefined}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+          <div className="pt-2 pb-1">
             <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => setMobileMenu(false)}
-              className={`mobile-nav-item px-4 py-3 rounded-xl text-left text-base font-medium transition-all ${
-                isActive
-                  ? "text-primary bg-primary/10"
-                  : "text-foreground/70 hover:text-foreground hover:bg-foreground/5"
-              }`}
+              href="/contact"
+              className="block text-center py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm"
             >
-              {link.name}
+              Join Community
             </Link>
-          );
-        })}
-        <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-border">
-          <Link
-            href="/contact"
-            onClick={() => setMobileMenu(false)}
-            className="w-full text-center py-3 rounded-xl bg-primary text-primary-foreground font-semibold shadow-[0_0_14px_rgba(0,191,99,0.3)]"
-          >
-            Join Community
-          </Link>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

@@ -2,17 +2,16 @@ import type { Metadata } from "next";
 import { AboutClient } from "./AboutClient";
 
 export const metadata: Metadata = {
-  title: "About Us | CodeQuesters Builder Ecosystem",
-  description: "Learn about the mission, principles, ground rules, and impact of India's student-first tech builder ecosystem.",
+  title: "About | CodeQuesters",
+  description:
+    "Learn about CodeQuesters — a builder-first ecosystem bridging the gap between learning and real-world opportunities for students and developers.",
 };
 
 export default function AboutPage() {
   return (
-    <div className="pt-20">
-      <div className="pt-4 sm:pt-8 pb-2">
-        <h1 className="sr-only">About CodeQuesters</h1>
-      </div>
+    <>
+      <h1 className="sr-only">About CodeQuesters</h1>
       <AboutClient />
-    </div>
+    </>
   );
 }

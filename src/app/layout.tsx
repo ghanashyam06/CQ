@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import ClientShell from "@/components/ClientShell";
-
 import { ScrollProvider } from "@/components/ScrollProvider";
 
 const geistSans = Geist({
@@ -37,29 +36,26 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Force dark background before first paint so preloader never flashes light */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){document.documentElement.style.backgroundColor='#060608';document.addEventListener('DOMContentLoaded',function(){document.body.style.backgroundColor='#060608'})})()`,
+            __html: `(function(){var t=localStorage.getItem('theme')||'dark';var isLight=t==='light';document.documentElement.classList.toggle('light',isLight);document.documentElement.style.backgroundColor=isLight?'#f4f5f3':'#0a0f0c';})()`,
           }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased selection:bg-primary selection:text-primary-foreground`}
-        data-preloading="true"
-        style={{ backgroundColor: '#060608' }}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
         >
           <ScrollProvider>
             <ClientShell>
               <Navbar />
-              <main className="relative z-10 min-h-screen">
+              <main className="relative z-10 min-h-screen pt-[60px]">
                 {children}
               </main>
               <ScrollToTop />

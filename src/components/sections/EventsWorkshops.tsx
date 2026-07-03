@@ -3,39 +3,25 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, ExternalLink, CheckCircle2, Clock } from "lucide-react";
-import { use3DTilt } from "@/hooks/use3DTilt";
 import Image from "next/image";
-import { MobileSwipeCarousel } from "@/components/ui/MobileSwipeCarousel";
 
 interface Event {
   id: number;
   title: string;
   category: string;
   date: string;
-  /** ISO date — used to auto-compute past/upcoming and sort order */
   endDate: string;
   mode: string;
   speaker: string;
   tags: string[];
   image: string;
-  /**
-   * CSS aspect-ratio value for the image container, e.g. "1/1", "16/9", "9/16".
-   * Lets each event poster display at its natural proportions.
-   * @default "16/9"
-   */
   imageAspectRatio?: string;
-  /**
-   * CSS object-fit for the image: "contain" shows the full image (no crop),
-   * "cover" fills the container (may crop).
-   * @default "contain"
-   */
   imageFit?: "contain" | "cover";
   registerUrl?: string;
 }
 
 type EventWithStatus = Event & { status: "completed" | "upcoming" };
 
-/* ── Raw data — add new events here, endDate drives status automatically ── */
 const RAW_EVENTS: Event[] = [
   {
     id: 1,
@@ -47,7 +33,7 @@ const RAW_EVENTS: Event[] = [
     speaker: "T Rishik Goud · Supervity",
     tags: ["AI Agents", "No-Code"],
     image: "/supervity-workshop.png",
-    imageAspectRatio: "1/1",       // 696×700 — nearly square
+    imageAspectRatio: "1/1",
     imageFit: "contain",
   },
   {
@@ -60,7 +46,7 @@ const RAW_EVENTS: Event[] = [
     speaker: "CodeQuesters",
     tags: ["GenAI", "Hackathon"],
     image: "/CodeQuest-2026.jpg",
-    imageAspectRatio: "1/1",       // 2880×2880 — square
+    imageAspectRatio: "1/1",
     imageFit: "contain",
   },
   {
@@ -68,12 +54,12 @@ const RAW_EVENTS: Event[] = [
     title: "Compete & Win: Summer Internship Challenge 2026",
     category: "Internship",
     date: "May 31, 2026 · 9:00 AM – 5:00 PM IST",
-    endDate: "2026-05-31",   // flips to "completed" automatically on June 1
+    endDate: "2026-05-31",
     mode: "CS Coworking Spaces, Raidurg, Hyderabad + Virtual",
     speaker: "GradSkills × CodeQuesters",
     tags: ["Internship", "AI"],
     image: "/summership-2026.jpg",
-    imageAspectRatio: "9/16",      // 3456×6912 — tall portrait
+    imageAspectRatio: "9/16",
     imageFit: "contain",
     registerUrl: "https://luma.com/goekfv3b?tk=xTmxzL",
   },
@@ -87,84 +73,89 @@ const RAW_EVENTS: Event[] = [
     speaker: "CodeQuesters × CDN IGNOU",
     tags: ["GitHub", "Open Source"],
     image: "/github_speaker_post.jpg",
-    imageAspectRatio: "1587/2245",  // 1587×2245 — portrait poster
+    imageAspectRatio: "1587/2245",
     imageFit: "contain",
     registerUrl: "https://luma.com/7igei972?tk=4QSEVV",
   },
 ];
 
-/* ── Card ── */
 function EventCard({ event }: { event: EventWithStatus }) {
-  const cardRef = use3DTilt<HTMLDivElement>(6, 1000);
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      ref={cardRef}
-      className="glass-card overflow-hidden group flex flex-col h-full cursor-default"
-      style={{ willChange: "transform" }}
+      className="card overflow-hidden group flex flex-col h-full"
     >
-      {/* Thumbnail — aspect ratio + fit are per-event so nothing gets cropped */}
+      {/* Image */}
       <div
-        className="relative w-full overflow-hidden bg-black/40 rounded-t-[inherit]"
-        style={{
-          aspectRatio: event.imageAspectRatio ?? "16/9",
-          maxHeight: "24rem",           /* safety cap for very tall posters */
-        }}
+        className="relative w-full overflow-hidden bg-card"
+        style={{ aspectRatio: event.imageAspectRatio ?? "16/9", maxHeight: "22rem" }}
       >
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10" />
         <Image
           src={event.image}
           alt={event.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className={`${(event.imageFit ?? "contain") === "contain"
-            ? "object-contain"
-            : "object-cover"
-            } group-hover:scale-105 transition-transform duration-500`}
+          className={`${(event.imageFit ?? "contain") === "contain" ? "object-contain" : "object-cover"} group-hover:scale-[1.02] transition-transform duration-500`}
         />
         {/* Tags */}
         <div className="absolute top-3 right-3 z-20 flex flex-wrap gap-1.5 justify-end">
           {event.tags.map((tag, i) => (
-            <span key={i} className="px-2 py-0.5 text-xs font-semibold rounded-md bg-background/80 backdrop-blur-md text-foreground">
+            <span key={i} className="px-2 py-0.5 text-xs font-medium rounded-md backdrop-blur-sm text-foreground border border-border"
+              style={{ background: "color-mix(in srgb, var(--background-card) 85%, transparent)" }}
+            >
               {tag}
             </span>
           ))}
+        </div>
+        {/* Status badge */}
+        <div className="absolute top-3 left-3 z-20">
+          {event.status === "upcoming" ? (
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md backdrop-blur-sm text-primary border border-primary/30 text-xs font-medium"
+              style={{ background: "color-mix(in srgb, var(--background-card) 85%, transparent)" }}
+            >
+              <Clock className="w-3 h-3" /> Upcoming
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-md backdrop-blur-sm text-green-600 dark:text-green-400 border border-green-500/30 text-xs font-medium"
+              style={{ background: "color-mix(in srgb, var(--background-card) 85%, transparent)" }}
+            >
+              <CheckCircle2 className="w-3 h-3" /> Completed
+            </div>
+          )}
         </div>
       </div>
 
       {/* Body */}
       <div className="p-5 flex flex-col flex-grow">
-        <h3 className="text-base font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+        <h3 className="text-sm font-semibold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
           {event.title}
         </h3>
-
         <div className="space-y-1.5 mb-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar className="w-4 h-4 text-primary shrink-0" />
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Calendar className="w-3.5 h-3.5 text-primary shrink-0" />
             <span>{event.date}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="w-4 h-4 text-primary shrink-0" />
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
             <span className="line-clamp-1">{event.mode}</span>
           </div>
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
-          <div className="text-sm min-w-0 mr-3">
+          <div className="text-xs min-w-0 mr-3">
             <span className="text-muted-foreground">By </span>
-            <span className="font-semibold text-foreground line-clamp-1">{event.speaker}</span>
+            <span className="font-medium text-foreground line-clamp-1">{event.speaker}</span>
           </div>
           {event.status === "upcoming" && event.registerUrl ? (
             <a
               href={event.registerUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-primary text-sm font-semibold hover:gap-2 transition-all shrink-0"
+              className="flex items-center gap-1 text-primary text-xs font-semibold hover:gap-2 transition-all shrink-0"
             >
-              Register <ExternalLink className="w-4 h-4" />
+              Register <ExternalLink className="w-3.5 h-3.5" />
             </a>
           ) : (
             <span className="text-xs text-muted-foreground shrink-0">Ended</span>
@@ -175,7 +166,6 @@ function EventCard({ event }: { event: EventWithStatus }) {
   );
 }
 
-/* ── Section ── */
 export function EventsWorkshops() {
   const { upcoming, past } = useMemo(() => {
     const today = new Date();
@@ -186,116 +176,67 @@ export function EventsWorkshops() {
       status: new Date(e.endDate) < today ? "completed" : "upcoming",
     }));
 
-    const upcoming = withStatus
-      .filter((e) => e.status === "upcoming")
-      .sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()); // soonest first
-
-    const past = withStatus
-      .filter((e) => e.status === "completed")
-      .sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()); // latest first
-
-    return { upcoming, past };
+    return {
+      upcoming: withStatus
+        .filter((e) => e.status === "upcoming")
+        .sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()),
+      past: withStatus
+        .filter((e) => e.status === "completed")
+        .sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime()),
+    };
   }, []);
 
   return (
-    <section id="events" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-20">
+    <section id="events" className="py-16 sm:py-20 lg:py-28 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-18">
 
-        {/* ── Upcoming Events ── */}
+        {/* Upcoming */}
         {upcoming.length > 0 && (
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-3 mb-8"
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading">
-                  Upcoming <span className="text-gradient">Events</span>
-                </h2>
-              </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+            <div className="flex items-center gap-3 mb-8">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
+                Upcoming <span className="text-gradient">Events</span>
+              </h2>
+              <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-border text-muted-foreground">
                 {upcoming.length} event{upcoming.length !== 1 ? "s" : ""}
               </span>
-            </motion.div>
+            </div>
 
-            <MobileSwipeCarousel
-              desktopGridClass="sm:grid-cols-2 xl:grid-cols-3"
-              hint="Swipe to see all events"
-              items={upcoming.map((event, i) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  {/* Upcoming badge on card */}
-                  <div className="relative">
-                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-primary/15 dark:bg-primary/20 border border-primary/30 dark:border-primary/40 text-primary text-xs font-semibold backdrop-blur-md">
-                      <Clock className="w-3 h-3" /> Upcoming
-                    </div>
-                    <EventCard event={event} />
-                  </div>
-                </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {upcoming.map((event) => (
+                <EventCard key={event.id} event={event} />
               ))}
-            />
+            </div>
           </div>
         )}
 
-        {/* ── Past Events ── */}
+        {/* Past */}
         {past.length > 0 && (
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-3 mb-8"
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-green-500" />
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-heading">
-                  Past <span className="text-gradient">Events</span>
-                </h2>
-              </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-500/10 text-green-500 border border-green-500/20">
+            <div className="flex items-center gap-3 mb-8">
+              <CheckCircle2 className="w-5 h-5 text-green-500" />
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
+                Past <span className="text-gradient">Events</span>
+              </h2>
+              <span className="text-xs font-medium px-2.5 py-1 rounded-full border border-green-500/30 text-green-500">
                 {past.length} completed
               </span>
-            </motion.div>
+            </div>
 
-            <MobileSwipeCarousel
-              desktopGridClass="sm:grid-cols-2 xl:grid-cols-3"
-              hint="Swipe to see past events"
-              items={past.map((event, i) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  {/* Completed badge on card */}
-                  <div className="relative">
-                    <div className="absolute top-3 left-3 z-30 flex items-center gap-1 px-2 py-0.5 rounded-md bg-green-100/90 dark:bg-green-500/20 border border-green-200/60 dark:border-green-500/40 text-green-800 dark:text-green-400 text-xs font-semibold backdrop-blur-md">
-                      <CheckCircle2 className="w-3 h-3" /> Completed
-                    </div>
-                    <EventCard event={event} />
-                  </div>
-                </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {past.map((event) => (
+                <EventCard key={event.id} event={event} />
               ))}
-            />
+            </div>
           </div>
         )}
 
-        {/* Empty state */}
         {upcoming.length === 0 && past.length === 0 && (
           <div className="text-center py-20 text-muted-foreground">
             No events yet. Check back soon!
           </div>
         )}
-
       </div>
     </section>
   );

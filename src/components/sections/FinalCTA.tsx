@@ -4,9 +4,6 @@ import { useEffect, useRef } from "react";
 import { Rocket, Handshake, Mail } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useMagnetic } from "@/hooks/useMagnetic";
-import MagicBento, { type MagicBentoItem } from "@/components/ui/MagicBento";
-import MagicRings from "@/components/ui/MagicRings";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,139 +12,64 @@ if (typeof window !== "undefined") {
 export function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Magnetic buttons
-  const link1Ref = useMagnetic<HTMLAnchorElement>(0.22, 60);
-  const link2Ref = useMagnetic<HTMLAnchorElement>(0.18, 60);
-  const link3Ref = useMagnetic<HTMLAnchorElement>(0.18, 60);
-
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from(".cta-bento", {
-        opacity: 0,
-        scale: 0.95,
-        y: 60,
-        duration: 1,
-        ease: "expo.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Cinematic scale-reveal for headline
-      gsap.from(".cta-headline", {
-        opacity: 0,
-        scale: 0.8,
-        y: 40,
-        duration: 1.2,
-        delay: 0.2,
-        ease: "expo.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      gsap.from(".cta-fade-in", {
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.8,
-        delay: 0.4,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      const st = { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none reverse" };
+      gsap.from(".cta-label",   { opacity: 0, y: 16, duration: 0.5, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".cta-heading", { opacity: 0, y: 24, duration: 0.7, delay: 0.1, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".cta-body",    { opacity: 0, y: 16, duration: 0.5, delay: 0.2, ease: "power3.out", scrollTrigger: st });
+      gsap.from(".cta-btn",     { opacity: 0, y: 16, stagger: 0.08, duration: 0.4, delay: 0.3, ease: "power3.out", scrollTrigger: st });
     }, sectionRef.current);
 
     return () => ctx.revert();
   }, []);
 
-  const ctaItem: MagicBentoItem = {
-    title: "",
-    description: "",
-    children: (
-      <div className="cta-inner flex flex-col items-center text-center w-full py-8 md:py-12 px-4">
-        <p className="cta-fade-in text-xs font-bold tracking-[0.2em] uppercase text-primary mb-4">
-          Ready To Build?
-        </p>
-
-        <h2 className="cta-headline text-2xl sm:text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-foreground">
-          Ready To Build{" "}
-          <span className="text-gradient-shimmer">Something Bigger?</span>
-        </h2>
-
-        <p className="cta-fade-in text-lg text-muted-foreground max-w-2xl mb-10 leading-relaxed">
-          Whether you&apos;re a student, builder, founder, mentor, or organization —
-          CodeQuesters is built for people who grow through execution.
-        </p>
-
-        <div className="cta-fade-in flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
-          <a
-            ref={link1Ref}
-            href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-8 py-4 w-full sm:w-auto rounded-xl bg-primary text-primary-foreground font-bold text-base hover:bg-primary/90 transition-all shadow-[0_0_22px_rgba(0,191,99,0.4)] hover:shadow-[0_0_36px_rgba(0,191,99,0.6)] flex items-center justify-center gap-2 animate-pulse-glow"
-          >
-            <Rocket className="w-5 h-5" />
-            Join Community
-          </a>
-          <a
-            ref={link2Ref}
-            href="/contact"
-            className="px-8 py-4 w-full sm:w-auto rounded-xl glass-card text-foreground font-bold text-base hover:border-primary/40 transition-all flex items-center justify-center gap-2"
-          >
-            <Handshake className="w-5 h-5" />
-            Collaborate With Us
-          </a>
-          <a
-            ref={link3Ref}
-            href="/contact"
-            className="px-8 py-4 w-full sm:w-auto rounded-xl text-primary font-bold text-base hover:bg-primary/10 transition-all flex items-center justify-center gap-2 border border-primary/20"
-          >
-            <Mail className="w-5 h-5" />
-            Partner With CodeQuesters
-          </a>
-        </div>
-      </div>
-    ),
-  };
-
   return (
-    <section ref={sectionRef} id="join" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[300px] sm:w-[500px] lg:w-[700px] h-[300px] sm:h-[500px] lg:h-[700px] bg-primary/8 blur-[140px] rounded-full" />
-      </div>
+    <section ref={sectionRef} id="join" className="py-16 sm:py-20 lg:py-28 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center">
 
-      {/* Concentric rotating rings */}
-      <MagicRings
-        count={5}
-        primaryColor="rgba(0, 168, 82, 0.06)"
-        secondaryColor="rgba(0, 212, 170, 0.04)"
-      />
+          <p className="cta-label text-xs font-semibold tracking-[0.15em] uppercase text-primary mb-4">
+            Ready To Build?
+          </p>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="cta-bento max-w-5xl mx-auto">
-          <MagicBento
-            items={[ctaItem]}
-            gridCols="1fr"
-            enableStars
-            enableSpotlight
-            enableBorderGlow
-            enableTilt={false}
-            enableMagnetism={false}
-            clickEffect
-            spotlightRadius={400}
-            particleCount={16}
-          />
+          <h2 className="cta-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            Ready To Build{" "}
+            <span className="text-gradient-shimmer">Something Bigger?</span>
+          </h2>
+
+          <p className="cta-body text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Whether you&apos;re a student, builder, founder, mentor, or organization —
+            CodeQuesters is built for people who grow through execution.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="https://chat.whatsapp.com/Drc3SOwUSJiJnV3ZZgQz7I"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cta-btn btn-primary w-full sm:w-auto justify-center"
+            >
+              <Rocket className="w-4 h-4" />
+              Join Community
+            </a>
+            <a
+              href="/contact"
+              className="cta-btn btn-secondary w-full sm:w-auto justify-center"
+            >
+              <Handshake className="w-4 h-4" />
+              Collaborate With Us
+            </a>
+            <a
+              href="/contact"
+              className="cta-btn w-full sm:w-auto px-5 py-2.5 rounded-lg text-primary font-semibold text-sm hover:bg-card border border-border hover:border-primary/40 transition-all flex items-center justify-center gap-2"
+            >
+              <Mail className="w-4 h-4" />
+              Partner With CodeQuesters
+            </a>
+          </div>
         </div>
       </div>
     </section>
