@@ -70,13 +70,13 @@ export function SwipeSlider({ children, onSlideChange }: SwipeSliderProps) {
   return (
     <div ref={containerRef} className="w-full bg-background relative flex flex-col">
       {/* Progress Dots */}
-      <div className="fixed right-4 sm:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+      <div className="fixed right-4 sm:right-5 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2.5">
         {childrenArray.map((_, i) => (
           <button
             key={i}
             onClick={() => scrollTo(i)}
-            className={`w-2 transition-all duration-300 rounded-full ${
-              activeIndex === i ? "h-8 bg-primary" : "h-2 bg-primary/30 hover:bg-primary/50"
+            className={`w-1.5 transition-all duration-300 rounded-full ${
+              activeIndex === i ? "h-6 bg-primary" : "h-1.5 bg-border hover:bg-muted-foreground/40"
             }`}
             aria-label={`Go to section ${i + 1}`}
           />

@@ -3,16 +3,15 @@ import { EventsClient } from "./EventsClient";
 
 export const metadata: Metadata = {
   title: "Events & Hackathons | CodeQuesters",
-  description: "Discover upcoming workshops, hybrid hackathons, bootcamps, and track your complete technology growth journey with CodeQuesters.",
+  description:
+    "Explore upcoming and past events, workshops, and hackathons hosted by CodeQuesters for students and builders.",
 };
 
 export default function EventsPage() {
   return (
-    <div className="pt-20">
-      <div className="pt-4 sm:pt-8 pb-2">
-        <h1 className="sr-only">CodeQuesters Events & Hackathons</h1>
-      </div>
+    <>
+      <h1 className="sr-only">CodeQuesters Events</h1>
       <EventsClient />
-    </div>
+    </>
   );
 }

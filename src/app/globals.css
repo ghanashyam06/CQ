@@ -1,136 +1,125 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   DESIGN TOKENS
+   ========================================================================= */
+
 :root {
-  /* Default Dark Theme Colors */
-  --color-bg:            #070d0a;   /* near-black, green-tinted */
-  --color-bg-elevated:   #0b1510;   /* cards, nav bar */
-  --color-bg-grid:       #0e1913;   /* faint grid lines */
+  /* Dark theme (default) */
+  --background:         #0a0f0c;
+  --background-card:    #111a14;
+  --foreground:         #eef2ef;
+  --muted-foreground:   #8a9e92;
+  --border:             #1e2e24;
+  --primary:            #22c17a;
+  --primary-foreground: #050a07;
 
-  --color-accent-bright: #34d399;   /* reserve for ONE hero moment per view */
-  --color-accent:        #22c17a;   /* primary buttons, links, active states */
-  --color-accent-deep:   #1a9d63;   /* hover/pressed states */
-  --color-accent-muted:  #5b8a72;   /* badges, secondary labels, icons */
-  --color-accent-dim:    #2c4438;   /* borders, dividers, inactive states */
-  --color-border:        var(--color-accent-dim);
+  /* Gradient endpoint colours — visible on dark bg */
+  --gradient-end:       #5be3a8;
+  --shimmer-mid:        #a7f3d0;
+  --shimmer-dark:       #0c7d48;
 
-  --color-text-primary:   #f2f7f4;  /* headlines — off-white */
-  --color-text-secondary: #a9b8b0;  /* body copy */
-  --color-text-muted:     #6c7a72;  /* captions, timestamps */
+  --font-sans: var(--font-geist-sans), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "JetBrains Mono", monospace;
 
-  --font-geist-sans: var(--font-geist-sans), "Cabinet Grotesk", "General Sans", sans-serif;
-  --font-geist-mono: var(--font-geist-mono), "Geist Mono", "JetBrains Mono", monospace;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Light Theme — Apple-minimal direction */
-:root.light,
 .light {
-  --color-bg:            #fbfbfa;   /* warm off-white, never stark #fff */
-  --color-bg-elevated:   #ffffff;
-  --color-bg-grid:       transparent; /* grid is dropped entirely in light mode */
+  /*
+    Light theme — Apple-minimal:
+    Background is warm off-white, cards get a white surface with a real
+    visible shadow so they lift off the page. Borders are medium-grey so
+    every edge is readable. Primary is a confident AA-safe green.
+  */
+  --background:         #f4f5f3;   /* warm light grey — NOT pure white */
+  --background-card:    #ffffff;   /* white cards lift against the bg */
+  --foreground:         #111512;   /* near-black, warm */
+  --muted-foreground:   #52635a;   /* readable secondary text */
+  --border:             #d4dbd6;   /* medium grey — clearly visible */
+  --primary:            #0e9456;   /* deep confident green, AA on white */
+  --primary-foreground: #ffffff;
 
-  --color-accent-bright: #0a8f52;   /* the ONE hero moment — deep, confident, AA-safe on white */
-  --color-accent:        #12a563;   /* primary buttons, links, active states */
-  --color-accent-deep:   #0c7d48;   /* hover/pressed */
-  --color-accent-muted:  #6b8478;   /* badges, secondary labels — quiet sage, not bright green */
-  --color-accent-dim:    #e4eae6;   /* hairline borders — nearly invisible, Apple-style */
-  --color-border:        var(--color-accent-dim);
-
-  --color-text-primary:   #0d120e;  /* near-black, warm, not pure #000 */
-  --color-text-secondary: #55605a;
-  --color-text-muted:     #8b948e;
-
-  /* Shadows go neutral + soft in light mode — colored glows read as "cheap" on white */
-  --shadow-glow-sm: 0 2px 10px 0 rgba(13, 18, 14, 0.06);
-  --shadow-glow-md: 0 16px 40px -8px rgba(13, 18, 14, 0.10);
-  --shadow-glow-btn: 0 8px 20px -4px color-mix(in srgb, var(--color-accent) 25%, transparent),
-                      0 2px 6px 0 rgba(13, 18, 14, 0.06);
+  /* Gradient endpoints — deep enough to read on white */
+  --gradient-end:       #059669;
+  --shimmer-mid:        #34d399;
+  --shimmer-dark:       #065f46;
 }
 
-/* Light-mode-only: soft top-down spotlight replaces glow orbs + grid as hero atmosphere */
-.light .spotlight-glow {
-  background: radial-gradient(
-    ellipse 60% 50% at 50% -10%,
-    color-mix(in srgb, var(--color-accent) 12%, transparent),
-    transparent 70%
-  );
-}
-.light .glow-orb { display: none; } /* orbs are a dark-mode device; light mode uses spotlight-glow only */
-.light .bg-noise { display: none; } /* grain reads as texture in dark, dirt on white — drop it */
-
-/* Cards rely on shadow + hairline border for elevation in light mode, not a glow border */
-.light .card-glass {
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-accent-dim);
-  box-shadow: var(--shadow-glow-sm);
-  backdrop-filter: none;
-}
-.light .card-glass:hover {
-  border-color: var(--color-accent-dim);
-  box-shadow: var(--shadow-glow-md);
-  transform: translateY(-2px);
-}
-
-/* Signature element: gradient hairline — active nav underline, section dividers */
-.accent-hairline {
-  height: 1px;
-  background: linear-gradient(90deg, var(--color-accent), transparent);
-}
-
+/* Tailwind v4 theme mapping */
 @theme {
-  --color-bg:            var(--color-bg);
-  --color-bg-elevated:   var(--color-bg-elevated);
-  --color-bg-grid:       var(--color-bg-grid);
-
-  --color-accent-bright: var(--color-accent-bright);
-  --color-accent:        var(--color-accent);
-  --color-accent-deep:   var(--color-accent-deep);
-  --color-accent-muted:  var(--color-accent-muted);
-  --color-accent-dim:    var(--color-accent-dim);
-  --color-border:        var(--color-border);
-
-  --color-text-primary:   var(--color-text-primary);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-muted:     var(--color-text-muted);
-
-  --font-display: var(--font-geist-sans), "Cabinet Grotesk", "General Sans", sans-serif;
-  --font-body:    var(--font-geist-sans), "Inter", "Geist Sans", sans-serif;
-  --font-mono:    var(--font-geist-mono), "Geist Mono", "JetBrains Mono", monospace;
-
-  --tracking-tight-display: -0.03em;
-  --tracking-normal: -0.01em;
-  --tracking-wide-label: 0.08em;
-
-  --radius-card: 1.25rem;
-  --radius-pill: 999px;
-
-  --shadow-glow-sm: 0 0 24px 0 color-mix(in srgb, var(--color-accent) 25%, transparent);
-  --shadow-glow-md: 0 0 60px 0 color-mix(in srgb, var(--color-accent) 20%, transparent);
-  --shadow-glow-btn: 0 0 0 1px color-mix(in srgb, var(--color-accent) 40%, transparent),
-                      0 4px 20px 0 color-mix(in srgb, var(--color-accent) 30%, transparent);
-
-  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-card:               var(--background-card);
+  --color-border:             var(--border);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-muted:              var(--border);
+  --font-sans:                var(--font-sans);
+  --font-mono:                var(--font-mono);
+  --font-heading:             var(--font-sans);
 }
 
 /* =========================================================================
-   BASE LAYER
+   BASE
    ========================================================================= */
 
 * {
   @apply border-border;
+  box-sizing: border-box;
 }
 
 html {
-  scroll-padding-top: 80px;
+  scroll-padding-top: 72px;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text-secondary);
-  font-family: var(--font-body);
-  font-feature-settings: "rlig" 1, "calt" 1;
+  background-color: var(--background);
+  color: var(--muted-foreground);
+  font-family: var(--font-sans);
   overflow-x: hidden;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4 {
+  color: var(--foreground);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  font-family: var(--font-sans);
+}
+
+p {
+  line-height: 1.65;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/* Selection */
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* =========================================================================
+   LAYOUT UTILITIES
+   ========================================================================= */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
 }
 
 section {
@@ -138,320 +127,334 @@ section {
   z-index: 10;
 }
 
-h1, h2, h3, .font-display {
-  font-family: var(--font-display);
-  letter-spacing: var(--tracking-tight-display);
-  color: var(--color-text-primary);
+/* =========================================================================
+   TYPOGRAPHY
+   ========================================================================= */
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--gradient-end) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.font-mono-label {
-  font-family: var(--font-mono);
-  letter-spacing: var(--tracking-wide-label);
-  text-transform: uppercase;
-  font-size: 0.75rem;
+/* Light mode: both endpoints must be dark enough to read on white */
+.light .text-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 7px;
+.text-gradient-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--shimmer-dark)  0%,
+    var(--primary)       35%,
+    var(--shimmer-mid)   50%,
+    var(--primary)       65%,
+    var(--shimmer-dark)  100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 5s ease-in-out infinite;
 }
-::-webkit-scrollbar-track {
-  background: rgba(0, 80, 40, 0.02);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-accent-dim);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-muted);
+
+@keyframes shimmer {
+  0%   { background-position: 100% 50%; }
+  50%  { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 /* =========================================================================
-   REUSABLE UTILITY CLASSES
+   COMPONENTS
    ========================================================================= */
 
-/* Faint background grid — use at LOW opacity, this is atmosphere not a focal point */
-.bg-grid {
-  background-image:
-    linear-gradient(var(--color-bg-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-bg-grid) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.06;
+/* Card */
+.card {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Subtle grain overlay — kills gradient banding, sells "premium" */
-.bg-noise {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  pointer-events: none;
+.card:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
 }
 
-/* Positions the hero atmosphere layer — dark mode fills it via .glow-orb children,
-   light mode uses the radial gradient defined in the .light override above */
-.spotlight-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+/* Light mode: add a real shadow so white cards lift off the warm-grey page */
+.light .card {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
 }
 
-/* Ambient glow orb — layer 2-3 of these at different sizes/opacities, don't use one flat blob */
-.glow-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
+.light .card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.05);
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
 }
-.glow-orb--primary   { background: var(--color-accent);        opacity: 0.15; }
-.glow-orb--secondary { background: var(--color-accent-bright); opacity: 0.08; mix-blend-mode: screen; }
 
-/* Eyebrow/badge — muted, NOT full-saturation green */
-.badge-pill {
+/* Keeping legacy class names so existing JSX doesn't break */
+.glass-card {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+.light .glass-card {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.light .glass-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.05);
+}
+
+/* Dividers */
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 30%, var(--primary) 50%, var(--border) 70%, transparent);
+}
+
+.light .glow-line {
+  background: linear-gradient(90deg, transparent, var(--border) 20%, color-mix(in srgb, var(--primary) 60%, var(--border)) 50%, var(--border) 80%, transparent);
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* Buttons */
+.btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 1rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--color-accent-dim);
-  color: var(--color-accent-muted);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: var(--tracking-wide-label);
-}
-
-/* The ONE full-saturation moment per hero */
-.text-accent-hero {
-  color: var(--color-accent-bright);
-}
-
-/* Primary CTA — brightest, highest-weight element on the page */
-.btn-primary {
-  background: var(--color-accent);
-  color: var(--color-bg);
-  border-radius: var(--radius-pill);
-  padding: 0.75rem 1.75rem;
+  padding: 0.625rem 1.5rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius-md);
   font-weight: 600;
-  box-shadow: var(--shadow-glow-btn);
-  transition: transform 0.3s var(--ease-premium), background 0.3s var(--ease-premium);
+  font-size: 0.875rem;
+  transition: opacity 0.2s ease, transform 0.2s var(--ease-smooth);
+  border: none;
+  cursor: pointer;
 }
+
 .btn-primary:hover {
-  background: var(--color-accent-bright);
-  transform: translateY(-2px);
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
-/* Secondary CTA — outline only, never competes with primary */
 .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
   background: transparent;
-  border: 1px solid var(--color-accent-dim);
-  color: var(--color-text-secondary);
-  border-radius: var(--radius-pill);
-  padding: 0.75rem 1.75rem;
+  color: var(--foreground);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
 }
 
-/* Glass card — for bento tiles, 3D scene panels, contact form container */
-.card-glass {
-  background: color-mix(in srgb, var(--color-bg-elevated) 70%, transparent);
-  border: 1px solid var(--color-accent-dim);
-  border-radius: var(--radius-card);
-  backdrop-filter: blur(16px);
-}
-.card-glass:hover {
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-glow-sm);
+.btn-secondary:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
 }
 
-/* Stat numbers */
-.stat-number {
-  font-family: var(--font-mono);
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  color: var(--color-text-primary);
-  letter-spacing: var(--tracking-normal);
-}
-
-/* Glassmorphism Nav */
+/* Nav */
 .glass-nav {
   background: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: none;
   border-bottom: 1px solid transparent;
-  transition: all 0.1s linear;
+  transition: background 0.2s ease, border-color 0.2s ease, backdrop-filter 0.2s ease;
 }
+
 .glass-nav--scrolled {
-  background: color-mix(in srgb, var(--color-bg-elevated) 85%, transparent) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: color-mix(in srgb, var(--background) 94%, transparent) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--border) !important;
 }
 
-/* Neon Utilities */
-.neon-glow {
-  box-shadow: 0 0 20px 0 color-mix(in srgb, var(--color-accent) 15%, transparent);
-}
-.neon-border {
-  border: 1px solid var(--color-accent-dim);
-}
-.neon-text {
-  text-shadow: 0 0 10px color-mix(in srgb, var(--color-accent-bright) 50%, transparent);
+/* Light: pure white nav on scroll — cleaner than tinted */
+.light .glass-nav--scrolled {
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 1px 0 var(--border);
 }
 
-/* Glowing line dividers */
-.glow-line {
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(90deg, transparent, var(--color-accent-dim) 20%, var(--color-accent) 50%, var(--color-accent-dim) 80%, transparent);
-  position: relative;
-}
-.glow-line::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 4px;
-  background: var(--color-accent);
-  filter: blur(3px);
-  border-radius: 50%;
-  opacity: 0.5;
-}
-
-/* Section divider */
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-accent-dim), transparent);
-  margin: 0;
-}
-
-/* Subtle section noise */
-.section-noise {
-  position: relative;
-}
-.section-noise::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.035;
-  pointer-events: none;
-  z-index: 1;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  mix-blend-mode: overlay;
-}
-
-/* ─── Floating Animation ─── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-12px) rotate(2deg); }
-  66% { transform: translateY(-6px) rotate(-1deg); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(34, 193, 122, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(34, 193, 122, 0.4), 0 0 60px rgba(34, 193, 122, 0.15); }
-}
-
-@keyframes drift-glow-1 {
-  0% { transform: translate(-10%, -10%) scale(1); opacity: 0.05; }
-  100% { transform: translate(15%, 20%) scale(1.2); opacity: 0.1; }
-}
-
-@keyframes drift-glow-2 {
-  0% { transform: translate(15%, 15%) scale(1.1); opacity: 0.04; }
-  100% { transform: translate(-15%, -10%) scale(0.9); opacity: 0.08; }
-}
-
-.animate-float {
-  will-change: transform;
-  backface-visibility: hidden;
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  will-change: box-shadow;
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
-}
-
-.animate-pulse-slow {
-  will-change: opacity;
-  animation: pulse-slow 2s ease-in-out infinite;
-}
-
-.glow-bubble-1 {
-  will-change: transform;
-  backface-visibility: hidden;
-  animation: drift-glow-1 25s ease-in-out infinite alternate;
-}
-
-.glow-bubble-2 {
-  will-change: transform;
-  backface-visibility: hidden;
-  animation: drift-glow-2 30s ease-in-out infinite alternate;
-}
-
-/* Nav Link Underline Effect */
+/* Nav links */
 .nav-link {
   position: relative;
-  padding: 0.25rem 0;
+  padding-bottom: 2px;
+  transition: color 0.2s ease;
 }
+
 .nav-link::after {
   content: '';
   position: absolute;
   bottom: -2px;
-  left: 50%;
+  left: 0;
   width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
+  height: 1.5px;
+  background: var(--primary);
   border-radius: 1px;
+  transition: width 0.25s var(--ease-smooth);
 }
+
 .nav-link:hover::after,
 .nav-link.active::after {
   width: 100%;
 }
+
 .nav-link.active {
-  color: var(--color-accent);
+  color: var(--primary);
 }
 
-.text-gradient {
-  @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-bright) 100%);
+/* Badge pill */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3rem 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
-.text-gradient-shimmer {
-  @apply bg-clip-text text-transparent;
-  will-change: background-position;
-  background-image: linear-gradient(
-    90deg,
-    var(--color-accent-deep) 0%,
-    var(--color-accent) 25%,
-    #ffffff 50%,
-    var(--color-accent) 75%,
-    var(--color-accent-deep) 100%
-  );
-  background-size: 300% 100%;
-  animation: gradient-shimmer 4s ease-in-out infinite;
+/* Floating / animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
 }
 
-@keyframes gradient-shimmer {
-  0% { background-position: 100% 50%; }
-  50% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.75; }
 }
 
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.06; }
+  50%       { transform: scale(1.08); opacity: 0.1; }
+}
+
+.animate-float { animation: float 5s ease-in-out infinite; }
+.animate-pulse-slow { animation: pulse-slow 2.5s ease-in-out infinite; }
+.animate-fade-up { animation: fade-up 0.6s var(--ease-smooth) both; }
+.animate-pulse-glow { animation: pulse-slow 3s ease-in-out infinite; }
+
+/* Scroll-to-top button */
+.scroll-top-btn {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.scroll-top-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Icon box — the small square icon containers used in feature cards, stat cards etc.
+   Dark: slightly lighter than the card bg.
+   Light: warm grey tint so white icon box is visible against white card. */
+.icon-box {
+  background-color: color-mix(in srgb, var(--border) 40%, var(--background-card));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.group:hover .icon-box {
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+  background-color: color-mix(in srgb, var(--primary) 8%, var(--background-card));
+}
+
+/* Logo inversion: dark mode — invert dark logos to show as light */
+.dark .logo-dark-invert {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(1.05);
+}
+
+/* Light mode: logos are already dark — slight desaturate for polish */
+.light .logo-dark-invert {
+  filter: grayscale(0.2) contrast(1.05);
+}
+
+/*
+  Light mode overrides:
+  - bg-grid is a dark-mode atmosphere device — hide in light
+  - Footer gets a white background so it lifts from the warm page
+*/
+
+/* bg-grid: only meaningful on dark backgrounds */
+.light .bg-grid {
+  display: none;
+}
+
+/* Footer: white surface in light mode */
+.light footer {
+  background-color: var(--background-card);
+}
+
+/* Neon text (backward compat) */
+.neon-text {
+  color: var(--primary);
+}
+
+.neon-border {
+  border-color: color-mix(in srgb, var(--primary) 25%, transparent);
+}
+/* Legacy glass-nav classes kept */
 .canvas-container {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
 }
+
 .canvas-container.interactive {
   pointer-events: auto;
+}
+
+/* Background grid (very subtle, dark-mode only) */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.04;
+}
+
+/* Counter flash (ImpactStats) */
+@keyframes counter-flash {
+  0%   { color: var(--primary); }
+  100% { color: var(--foreground); }
+}
+
+.counter-flash {
+  animation: counter-flash 0.8s ease-out forwards;
 }
 
 /* Reduced motion */
@@ -460,13 +463,5 @@ h1, h2, h3, .font-display {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
-}
-
-/* Logo Dark Mode Filter */
-.dark .logo-dark-invert,
-[data-theme="dark"] .logo-dark-invert,
-html.dark .logo-dark-invert {
-  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(1.1) !important;
 }

@@ -9,20 +9,23 @@ import { SwipeSlider }     from "@/components/ui/SwipeSlider";
 export function EventsClient() {
   return (
     <SwipeSlider>
-      {/* Slide 1: Workshops & Seminars */}
-      <div className="w-full min-h-screen flex items-center justify-center py-16 sm:py-24">
-        <EventsWorkshops />
+      <div className="w-full min-h-screen flex items-center justify-center py-12 sm:py-16">
+        <div className="w-full">
+          <EventsWorkshops />
+        </div>
       </div>
 
-      {/* Slide 2: Hackathons */}
-      <div className="w-full min-h-screen flex items-center justify-center py-16 sm:py-24">
-        <Hackathons />
+      <div className="w-full min-h-screen flex items-center justify-center py-12 sm:py-16">
+        <div className="w-full">
+          <Hackathons />
+        </div>
       </div>
 
-      {/* Slide 3: Growth Roadmap & Footer */}
-      <div className="w-full min-h-screen flex flex-col justify-between pt-16 sm:pt-24">
+      <div className="w-full min-h-screen flex flex-col justify-between py-12 sm:py-16">
         <div className="flex-1 flex items-center justify-center">
-          <JourneyRoadmap />
+          <div className="w-full">
+            <JourneyRoadmap />
+          </div>
         </div>
         <Footer />
       </div>

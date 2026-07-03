@@ -1,10 +1,15 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { BookOpen, Code2, Rocket, IndianRupee, Target, ChevronRight } from "lucide-react";
-import { useMagnetic } from "@/hooks/useMagnetic";
 import { LucideIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface Step {
   id: string;
@@ -47,53 +52,32 @@ const steps: Step[] = [
 ];
 
 function RoadmapStep({ step, index }: { step: Step; index: number }) {
-  const markerRef = useMagnetic<HTMLDivElement>(0.3, 40);
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.15 }}
+      transition={{ delay: index * 0.1 }}
       className="flex flex-col items-center group w-full"
     >
-      {/* Icon marker */}
-      <motion.div
-        ref={markerRef}
-        animate={{
-          boxShadow: [
-            "0 0 14px rgba(0, 191, 99, 0.18)",
-            "0 0 28px rgba(0, 191, 99, 0.45)",
-            "0 0 14px rgba(0, 191, 99, 0.18)",
-          ],
-        }}
-        transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 shrink-0 transition-all duration-300
-          bg-background border-2 border-primary cursor-pointer shadow-[0_2px_12px_rgba(0,80,40,0.06)] dark:shadow-none
-          group-hover:scale-110 group-hover:bg-primary/10"
-      >
-        <step.icon className="w-7 h-7 text-foreground group-hover:text-primary transition-colors duration-300" />
-      </motion.div>
+      {/* Icon */}
+      <div className="icon-box w-14 h-14 mb-5 shrink-0 group-hover:border-primary/40 transition-all duration-200">
+        <step.icon className="w-6 h-6 text-primary" />
+      </div>
 
       {/* Card */}
-      <div
-        className="glass-card p-5 w-full relative overflow-hidden
-          border border-border hover:border-primary/30 transition-colors duration-300"
-      >
-        {/* Faint step number watermark */}
-        <span className="absolute top-1 right-3 text-6xl font-black text-foreground/[0.06] dark:text-foreground/[0.04] select-none pointer-events-none leading-none">
+      <div className="card p-5 w-full relative overflow-hidden group-hover:border-primary/30 transition-colors duration-200">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-primary/40 to-transparent" />
+        <span className="absolute top-1 right-3 text-5xl font-black text-foreground/[0.04] select-none pointer-events-none leading-none">
           0{index + 1}
         </span>
-        {/* Green top accent bar */}
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/60 to-transparent rounded-t-xl" />
-
-        <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+        <h3 className="text-base font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-200">
           {step.title}
         </h3>
         <ul className="space-y-1.5">
           {step.items.map((item, i) => (
             <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+              <span className="w-1 h-1 rounded-full bg-primary/50 shrink-0" />
               {item}
             </li>
           ))}
@@ -104,10 +88,6 @@ function RoadmapStep({ step, index }: { step: Step; index: number }) {
 }
 
 export function JourneyRoadmap() {
-  const ICON_SIZE = 64;
-  const LINE_TOP = ICON_SIZE / 2; // 32px — connector sits at icon centre
-
-  /* ── Mobile carousel state ── */
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -130,22 +110,21 @@ export function JourneyRoadmap() {
   };
 
   return (
-    <section id="journey" className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+    <section id="journey" className="py-16 sm:py-20 lg:py-28 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Heading */}
-        <div className="text-center mb-10 sm:mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-2xl sm:text-3xl md:text-5xl font-bold font-heading mb-4"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
           >
             Your Complete Tech{" "}
             <span className="text-gradient-shimmer">Growth Journey</span>
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
@@ -155,44 +134,25 @@ export function JourneyRoadmap() {
           </motion.p>
         </div>
 
-        {/* ─────────────────────────────────────────
-            MOBILE  (<md) — horizontal scroll-snap
-        ───────────────────────────────────────── */}
+        {/* Mobile */}
         <div className="block md:hidden">
-          {/* Swipe hint */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center justify-center gap-1 mb-4 text-xs text-muted-foreground"
-          >
+          <div className="flex items-center justify-center gap-1 mb-4 text-xs text-muted-foreground">
             <span>Swipe to explore</span>
-            <motion.div
-              animate={{ x: [0, 4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut" }}
-            >
-              <ChevronRight className="w-3.5 h-3.5 text-primary" />
-            </motion.div>
-          </motion.div>
+            <ChevronRight className="w-3.5 h-3.5 text-primary" />
+          </div>
 
-          {/* Scrollable track — peek ~10% of next card to hint continuation */}
           <div
             ref={trackRef}
             className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {steps.map((step, index) => (
-              <div
-                key={step.id}
-                className="snap-center shrink-0"
-                style={{ width: "80vw", maxWidth: "320px" }}
-              >
+              <div key={step.id} className="snap-center shrink-0" style={{ width: "80vw", maxWidth: "300px" }}>
                 <RoadmapStep step={step} index={index} />
               </div>
             ))}
           </div>
 
-          {/* Dot indicators */}
           <div className="flex justify-center items-center gap-2 mt-5">
             {steps.map((_, i) => (
               <button
@@ -200,45 +160,32 @@ export function JourneyRoadmap() {
                 onClick={() => scrollTo(i)}
                 aria-label={`Go to step ${i + 1}`}
                 className={`rounded-full transition-all duration-300 ${
-                  i === activeIndex
-                    ? "w-5 h-2 bg-primary"
-                    : "w-2 h-2 bg-border hover:bg-primary/40"
+                  i === activeIndex ? "w-5 h-2 bg-primary" : "w-2 h-2 bg-border hover:bg-muted-foreground/40"
                 }`}
               />
             ))}
           </div>
         </div>
 
-        {/* ─────────────────────────────────────────
-            TABLET + DESKTOP  (md+) — original grid
-        ───────────────────────────────────────── */}
-        <div className="hidden md:block relative max-w-6xl mx-auto">
-          {/* Connector line base track — lg only */}
-          <div
-            className="hidden lg:block absolute left-0 right-0 h-px bg-border z-0"
-            style={{ top: LINE_TOP }}
-          />
-          {/* Animated green fill */}
+        {/* Desktop */}
+        <div className="hidden md:block relative max-w-5xl mx-auto">
+          {/* Connector line */}
+          <div className="hidden lg:block absolute left-0 right-0 h-px bg-border z-0" style={{ top: 28 }} />
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.4, ease: "easeInOut", delay: 0.3 }}
+            transition={{ duration: 1.2, ease: "easeInOut", delay: 0.2 }}
             className="hidden lg:block absolute left-0 right-0 h-px origin-left z-0"
-            style={{
-              top: LINE_TOP,
-              background: "linear-gradient(90deg, var(--primary), #00e5ff)",
-            }}
+            style={{ top: 28, background: "linear-gradient(90deg, var(--primary), #5be3a8)" }}
           />
 
-          {/* Step grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-5 relative z-10">
             {steps.map((step, index) => (
               <RoadmapStep key={step.id} step={step} index={index} />
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
